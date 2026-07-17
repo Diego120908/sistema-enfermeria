@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Principal - Enfermería</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+</head>
+<body>
+    <div id="introOverlay">
+        <div class="estrellas"></div>
+        <div class="polvo-container" id="polvoContainer"></div>
+        <div class="linea-luz"></div>
+        <div class="linea-luz"></div>
+        <div class="linea-luz"></div>
+        <div class="intro-titulo" id="introTitulo">
+            <span class="letra">E</span>
+            <span class="letra">N</span>
+            <span class="letra">F</span>
+            <span class="letra">E</span>
+            <span class="letra">R</span>
+            <span class="letra">M</span>
+            <span class="letra">E</span>
+            <span class="letra">R</span>
+            <span class="letra">Í</span>
+            <span class="letra">A</span>
+        </div>
+        <div class="intro-curso">
+            <span class="curso-3">3° Medio</span>
+            <span class="separador">✦</span>
+            <span class="curso-4">4° Medio</span>
+        </div>
+        <div class="intro-subtitulo">✦ Sistema de Gestión de Pacientes ✦</div>
+    </div>
+
+    <div id="menuPrincipal">
+        <div class="card text-center">
+            <span class="logo-icon">🏥</span>
+            <h1>Enfermería</h1>
+            <p class="text-muted text-small">Sistema de gestión de pacientes</p>
+            <a href="enfermero_login.html">
+                <button class="btn btn-success btn-block">🩺 Panel de Enfermero</button>
+            </a>
+            <a href="admin_login.html">
+                <button class="btn btn-danger btn-block">🔐 Panel de Administración</button>
+            </a>
+            <a href="juego.html">
+                <button id="gameLauncher">🎮</button>
+            </a>
+            <div>
+                <span>🔒 Acceso restringido · Solo personal autorizado</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let palabraAcumulada = "";
+        document.addEventListener('keydown', function(event) {
+            const tecla = event.key.toLowerCase();
+            if (/[a-z]/.test(tecla)) {
+                palabraAcumulada += tecla;
+                if (palabraAcumulada.length > 12) palabraAcumulada = palabraAcumulada.slice(-12);
+                if (palabraAcumulada.includes("programacion")) {
+                    window.location.href = "programacion.html";
+                }
+            }
+        });
+
+        function generarPolvo() {
+            const container = document.getElementById('polvoContainer');
+            for (let i = 0; i < 40; i++) {
+                const polvo = document.createElement('div');
+                polvo.className = 'polvo';
+                const size = 20 + Math.random() * 60;
+                polvo.style.width = size + 'px';
+                polvo.style.height = size + 'px';
+                polvo.style.left = (Math.random() * 100) + '%';
+                polvo.style.top = (30 + Math.random() * 40) + '%';
+                polvo.style.animationDelay = (0.8 + Math.random() * 1.5) + 's';
+                polvo.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+                container.appendChild(polvo);
+            }
+        }
+
+        function generarImpacto() {
+            const container = document.getElementById('introOverlay');
+            for (let i = 0; i < 4; i++) {
+                const impacto = document.createElement('div');
+                impacto.className = 'impacto';
+                const size = 100 + Math.random() * 200;
+                impacto.style.width = size + 'px';
+                impacto.style.height = size + 'px';
+                impacto.style.left = (20 + Math.random() * 60) + '%';
+                impacto.style.top = (30 + Math.random() * 40) + '%';
+                impacto.style.animationDelay = (1.5 + i * 0.3) + 's';
+                container.appendChild(impacto);
+            }
+        }
+
+        window.addEventListener('load', function() {
+            if (!sessionStorage.getItem('introMostrada')) {
+                sessionStorage.setItem('introMostrada', 'true');
+                setTimeout(generarPolvo, 200);
+                setTimeout(generarImpacto, 1000);
+                setTimeout(function() {
+                    document.getElementById('introOverlay').classList.add('oculto');
+                    setTimeout(function() {
+                        document.getElementById('menuPrincipal').classList.add('visible');
+                    }, 300);
+                }, 3500);
+            } else {
+                document.getElementById('introOverlay').classList.add('oculto');
+                document.getElementById('menuPrincipal').classList.add('visible');
+            }
+        });
+    </script>
+</body>
+</html>

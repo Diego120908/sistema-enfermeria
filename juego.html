@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Juego - Esquivar obstáculos</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+</head>
+<body style="background: #0f0c29; margin: 0; padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Segoe UI', Arial, sans-serif;">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="game-header">
+            <span>🏆 Puntos: <span id="puntajeDisplay">0</span></span>
+            <span>⚡ Nivel: <span id="nivelDisplay">1</span></span>
+            <span>🎯 Skin: <span id="skinDisplay">Clásico</span></span>
+            <span>📈 Dificultad: <span id="dificultadDisplay">★☆☆</span></span>
+        </div>
+        
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
+            <div class="game-over-overlay" id="gameOverOverlay">
+                <h2>💀 GAME OVER</h2>
+                <p>Puntos: <span id="puntajeFinal">0</span></p>
+                <p style="font-size:14px; opacity:0.6;">Nivel alcanzado: <span id="nivelFinal">1</span></p>
+                <button class="btn-restart" onclick="reiniciarJuego()">🔄 Jugar de nuevo</button>
+            </div>
+        </div>
+        
+        <div class="game-controls">
+            <button class="btn-skin active" data-skin="0" onclick="cambiarSkin(0)">🔵 Clásico</button>
+            <button class="btn-skin" data-skin="1" onclick="cambiarSkin(1)">🟣 Neón</button>
+            <button class="btn-skin" data-skin="2" onclick="cambiarSkin(2)">🔥 Fuego</button>
+            <button class="btn-close-game" onclick="window.location.href='index.html'">✖ Cerrar</button>
+        </div>
+        
+        <div class="skin-indicator">⬆️ Usa las flechas ⬆️⬇️⬅️➡️ para moverte</div>
+        <div class="difficulty-indicator">⚡ Dificultad: <span id="dificultadTexto">Normal</span> · 🧭 ¡Obstáculos desde TODAS las direcciones!</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gameOverOverlay = document.getElementById('gameOverOverlay');
+        const puntajeDisplay = document.getElementById('puntajeDisplay');
+        const nivelDisplay = document.getElementById('nivelDisplay');
+        const skinDisplay = document.getElementById('skinDisplay');
+        const dificultadDisplay = document.getElementById('dificultadDisplay');
+        const dificultadTexto = document.getElementById('dificultadTexto');
+        const puntajeFinal = document.getElementById('puntajeFinal');
+        const nivelFinal = document.getElementById('nivelFinal');
+
+        let juegoActivo = true;
+        let frameId = null;
+
+        let jugador = {
+            x: 280,
+            y: 350,
+            ancho: 30,
+            alto: 30,
+            velocidad: 5
+        };
+
+        let obstaculos = [];
+        let puntos = 0;
+        let nivel = 1;
+        let velocidadBase = 2;
+        let spawnRate = 50;
+        let frameCount = 0;
+        let gameOver = false;
+        let skinActual = 0;
+        let maxNivelAlcanzado = 1;
+
+        let teclas = {
+            ArrowUp: false,
+            ArrowDown: false,
+            ArrowLeft: false,
+            ArrowRight: false
+        };
+
+        const DIRECCIONES = {
+            IZQUIERDA: 'izquierda',
+            DERECHA: 'derecha',
+            ARRIBA: 'arriba',
+            ABAJO: 'abajo'
+        };
+
+        const skins = [
+            {
+                nombre: 'Clásico',
+                color: '#4a6fa5',
+                glow: 'rgba(74, 111, 165, 0.3)',
+                borde: '#7c8fc7',
+                trail: 'rgba(74, 111, 165, 0.1)',
+                obstaculoColor1: '#b05a6e',
+                obstaculoColor2: '#8f4758',
+                obstaculoGlow: 'rgba(176, 90, 110, 0.3)'
+            },
+            {
+                nombre: 'Neón',
+                color: '#8b7fc7',
+                glow: 'rgba(139, 127, 199, 0.5)',
+                borde: '#c4b8e8',
+                trail: 'rgba(139, 127, 199, 0.15)',
+                obstaculoColor1: '#f59e0b',
+                obstaculoColor2: '#d97706',
+                obstaculoGlow: 'rgba(245, 158, 11, 0.3)'
+            },
+            {
+                nombre: 'Fuego',
+                color: '#b05a6e',
+                glow: 'rgba(176, 90, 110, 0.4)',
+                borde: '#c97a8a',
+                trail: 'rgba(176, 90, 110, 0.15)',
+                obstaculoColor1: '#4a6fa5',
+                obstaculoColor2: '#2c3e7a',
+                obstaculoGlow: 'rgba(74, 111, 165, 0.3)'
+            }
+        ];
+
+        function loopJuego() {
+            if (!juegoActivo) return;
+            actualizar();
+            dibujar();
+            frameId = requestAnimationFrame(loopJuego);
+        }
+
+        function generarObstaculo() {
+            const skin = skins[skinActual];
+            const sizeMultiplier = 1 + (nivel - 1) * 0.03;
+            const ancho = Math.min((18 + Math.random() * 28) * sizeMultiplier, 45);
+            const alto = Math.min((18 + Math.random() * 28) * sizeMultiplier, 45);
+            
+            const velocidadActual = velocidadBase + (nivel - 1) * 0.35;
+            const velocidad = velocidadActual + Math.random() * 0.5;
+            
+            const direcciones = [DIRECCIONES.IZQUIERDA, DIRECCIONES.DERECHA, DIRECCIONES.ARRIBA, DIRECCIONES.ABAJO];
+            const direccion = direcciones[Math.floor(Math.random() * direcciones.length)];
+            
+            let x, y, dx, dy;
+            const margen = 10;
+            
+            switch(direccion) {
+                case DIRECCIONES.IZQUIERDA:
+                    x = -ancho - margen;
+                    y = Math.random() * (canvas.height - alto);
+                    dx = velocidad;
+                    dy = 0;
+                    break;
+                case DIRECCIONES.DERECHA:
+                    x = canvas.width + margen;
+                    y = Math.random() * (canvas.height - alto);
+                    dx = -velocidad;
+                    dy = 0;
+                    break;
+                case DIRECCIONES.ARRIBA:
+                    x = Math.random() * (canvas.width - ancho);
+                    y = -alto - margen;
+                    dx = 0;
+                    dy = velocidad;
+                    break;
+                case DIRECCIONES.ABAJO:
+                    x = Math.random() * (canvas.width - ancho);
+                    y = canvas.height + margen;
+                    dx = 0;
+                    dy = -velocidad;
+                    break;
+            }
+            
+            obstaculos.push({
+                x: x,
+                y: y,
+                ancho: ancho,
+                alto: alto,
+                dx: dx,
+                dy: dy,
+                direccion: direccion,
+                color1: skin.obstaculoColor1,
+                color2: skin.obstaculoColor2,
+                glow: skin.obstaculoGlow
+            });
+        }
+
+        function actualizar() {
+            if (gameOver) return;
+            
+            frameCount++;
+            
+            let dx = 0, dy = 0;
+            if (teclas.ArrowLeft) dx = -jugador.velocidad;
+            if (teclas.ArrowRight) dx = jugador.velocidad;
+            if (teclas.ArrowUp) dy = -jugador.velocidad;
+            if (teclas.ArrowDown) dy = jugador.velocidad;
+            
+            if (dx !== 0 && dy !== 0) {
+                dx *= 0.707;
+                dy *= 0.707;
+            }
+            
+            jugador.x += dx;
+            jugador.y += dy;
+            
+            jugador.x = Math.max(0, Math.min(canvas.width - jugador.ancho, jugador.x));
+            jugador.y = Math.max(0, Math.min(canvas.height - jugador.alto, jugador.y));
+            
+            const spawnRateActual = Math.max(12, spawnRate - (nivel - 1) * 2);
+            
+            if (frameCount % Math.max(12, spawnRateActual) === 0) {
+                const cantidad = nivel > 10 ? 2 : 1;
+                for (let i = 0; i < cantidad; i++) {
+                    generarObstaculo();
+                }
+            }
+            
+            for (let i = obstaculos.length - 1; i >= 0; i--) {
+                const obs = obstaculos[i];
+                obs.x += obs.dx;
+                obs.y += obs.dy;
+                
+                const margenFuera = 30;
+                const fueraDePantalla = (
+                    obs.x + obs.ancho < -margenFuera ||
+                    obs.x > canvas.width + margenFuera ||
+                    obs.y + obs.alto < -margenFuera ||
+                    obs.y > canvas.height + margenFuera
+                );
+                
+                if (fueraDePantalla) {
+                    obstaculos.splice(i, 1);
+                    puntos++;
+                    actualizarUI();
+                    
+                    const nuevoNivel = Math.floor(puntos / 8) + 1;
+                    if (nuevoNivel > nivel) {
+                        nivel = nuevoNivel;
+                        if (nivel > maxNivelAlcanzado) {
+                            maxNivelAlcanzado = nivel;
+                        }
+                        actualizarUI();
+                        actualizarDificultad();
+                    }
+                    continue;
+                }
+                
+                const margen = Math.max(2, 8 - nivel * 0.3);
+                if (jugador.x + margen < obs.x + obs.ancho - margen &&
+                    jugador.x + jugador.ancho - margen > obs.x + margen &&
+                    jugador.y + margen < obs.y + obs.alto - margen &&
+                    jugador.y + jugador.alto - margen > obs.y + margen) {
+                    gameOver = true;
+                    puntajeFinal.textContent = puntos;
+                    nivelFinal.textContent = maxNivelAlcanzado;
+                    gameOverOverlay.classList.add('show');
+                    return;
+                }
+            }
+        }
+
+        function dibujar() {
+            const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grad.addColorStop(0, '#0f0c29');
+            grad.addColorStop(0.5, '#302b63');
+            grad.addColorStop(1, '#24243e');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < canvas.width; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, canvas.height);
+                ctx.stroke();
+            }
+            for (let i = 0; i < canvas.height; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(canvas.width, i);
+                ctx.stroke();
+            }
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            const flechas = ['⬅', '➡', '⬆', '⬇'];
+            ctx.fillText(flechas[0], 15, canvas.height/2);
+            ctx.fillText(flechas[1], canvas.width - 15, canvas.height/2);
+            ctx.fillText(flechas[2], canvas.width/2, 15);
+            ctx.fillText(flechas[3], canvas.width/2, canvas.height - 15);
+            
+            for (const obs of obstaculos) {
+                ctx.shadowColor = obs.glow || 'rgba(176, 90, 110, 0.2)';
+                ctx.shadowBlur = 20 + nivel * 2;
+                
+                const gradObs = ctx.createRadialGradient(
+                    obs.x + obs.ancho/2 - 5, obs.y + obs.alto/2 - 5, 0,
+                    obs.x + obs.ancho/2, obs.y + obs.alto/2, obs.ancho
+                );
+                gradObs.addColorStop(0, obs.color1);
+                gradObs.addColorStop(1, obs.color2);
+                
+                ctx.fillStyle = gradObs;
+                ctx.shadowColor = obs.glow || 'rgba(176, 90, 110, 0.3)';
+                ctx.shadowBlur = 25 + nivel;
+                ctx.beginPath();
+                ctx.roundRect(obs.x, obs.y, obs.ancho, obs.alto, 6);
+                ctx.fill();
+                
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+                ctx.beginPath();
+                ctx.roundRect(obs.x + 4, obs.y + 4, obs.ancho * 0.25, obs.alto * 0.15, 4);
+                ctx.fill();
+            }
+            
+            const skin = skins[skinActual];
+            ctx.shadowColor = skin.glow;
+            ctx.shadowBlur = 30;
+            
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = skin.trail;
+            ctx.beginPath();
+            ctx.arc(jugador.x + jugador.ancho/2, jugador.y + jugador.alto/2, 25 + nivel * 0.5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.shadowColor = skin.glow;
+            ctx.shadowBlur = 35;
+            
+            const gradJug = ctx.createRadialGradient(
+                jugador.x + jugador.ancho/2 - 5, jugador.y + jugador.alto/2 - 5, 0,
+                jugador.x + jugador.ancho/2, jugador.y + jugador.alto/2, jugador.ancho
+            );
+            gradJug.addColorStop(0, '#ffffff');
+            gradJug.addColorStop(0.3, skin.color);
+            gradJug.addColorStop(1, skin.borde);
+            
+            ctx.fillStyle = gradJug;
+            ctx.beginPath();
+            ctx.roundRect(jugador.x, jugador.y, jugador.ancho, jugador.alto, 8);
+            ctx.fill();
+            
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.roundRect(jugador.x, jugador.y, jugador.ancho, jugador.alto, 8);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#fff';
+            ctx.shadowBlur = 0;
+            ctx.beginPath();
+            ctx.arc(jugador.x + 8, jugador.y + 10, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(jugador.x + 22, jugador.y + 10, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#1a1a2e';
+            ctx.beginPath();
+            ctx.arc(jugador.x + 7, jugador.y + 9, 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(jugador.x + 21, jugador.y + 9, 2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.shadowBlur = 0;
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.beginPath();
+            ctx.moveTo(jugador.x + jugador.ancho/2, jugador.y - 8);
+            ctx.lineTo(jugador.x + jugador.ancho/2 - 5, jugador.y - 14);
+            ctx.lineTo(jugador.x + jugador.ancho/2 + 5, jugador.y - 14);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function actualizarUI() {
+            puntajeDisplay.textContent = puntos;
+            nivelDisplay.textContent = nivel;
+            skinDisplay.textContent = skins[skinActual].nombre;
+        }
+
+        function actualizarDificultad() {
+            let estrellas = '';
+            let texto = '';
+            
+            if (nivel <= 3) {
+                estrellas = '★☆☆';
+                texto = 'Fácil';
+            } else if (nivel <= 6) {
+                estrellas = '★★☆';
+                texto = 'Media';
+            } else if (nivel <= 10) {
+                estrellas = '★★★';
+                texto = 'Difícil';
+            } else if (nivel <= 15) {
+                estrellas = '★★★★';
+                texto = 'Experto';
+            } else {
+                estrellas = '★★★★★';
+                texto = '¡Imposible!';
+            }
+            
+            dificultadDisplay.textContent = estrellas;
+            dificultadTexto.textContent = texto + ` (Nv. ${nivel})`;
+        }
+
+        function cambiarSkin(index) {
+            skinActual = index;
+            actualizarUI();
+            
+            const skin = skins[index];
+            for (const obs of obstaculos) {
+                obs.color1 = skin.obstaculoColor1;
+                obs.color2 = skin.obstaculoColor2;
+                obs.glow = skin.obstaculoGlow;
+            }
+            
+            document.querySelectorAll('.btn-skin').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+        }
+
+        function reiniciarJuego() {
+            gameOver = false;
+            gameOverOverlay.classList.remove('show');
+            jugador.x = 280;
+            jugador.y = 350;
+            obstaculos = [];
+            puntos = 0;
+            nivel = 1;
+            velocidadBase = 2;
+            spawnRate = 50;
+            frameCount = 0;
+            maxNivelAlcanzado = 1;
+            actualizarUI();
+            actualizarDificultad();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key.startsWith('Arrow')) {
+                e.preventDefault();
+                teclas[e.key] = true;
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.key.startsWith('Arrow')) {
+                e.preventDefault();
+                teclas[e.key] = false;
+            }
+        });
+
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+                if (r > w/2) r = w/2;
+                if (r > h/2) r = h/2;
+                this.moveTo(x + r, y);
+                this.arcTo(x + w, y, x + w, y + h, r);
+                this.arcTo(x + w, y + h, x, y + h, r);
+                this.arcTo(x, y + h, x, y, r);
+                this.arcTo(x, y, x + w, y, r);
+                return this;
+            };
+        }
+
+        actualizarUI();
+        actualizarDificultad();
+        loopJuego();
+    </script>
+</body>
+</html>

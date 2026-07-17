@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Administrador - Enfermería</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+</head>
+<body>
+    <div class="card login-card">
+        <div class="text-center">
+            <span class="icon">🔐</span>
+            <h2>Acceso Administrador</h2>
+            <p class="text-muted text-small">Panel de administración del sistema</p>
+        </div>
+        
+        <form id="adminLoginForm">
+            <label for="adminRut">RUT del administrador</label>
+            <input type="text" id="adminRut" placeholder="Ingrese su RUT" required>
+            
+            <div class="info-rut" id="infoRut">
+                <span id="badgeEstado"></span>
+            </div>
+            
+            <div class="info-contrasena-admin" id="infoContrasena">
+                🔑 <strong>Contraseña:</strong> 2448enfermeria
+                <br>
+                <span>Contraseña general del sistema.</span>
+            </div>
+            
+            <label for="adminPass">Contraseña de acceso</label>
+            <input type="password" id="adminPass" placeholder="Ingrese la contraseña" required>
+            
+            <button type="submit" class="btn btn-danger btn-block">🔓 Ingresar al panel</button>
+            <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='index.html'">⬅ Volver al inicio</button>
+        </form>
+        
+        <div>
+            <span>🔒 Acceso autorizado exclusivo</span>
+        </div>
+        <div>
+            👥 Administradores autorizados: <span id="totalAdmins">3</span>
+        </div>
+    </div>
+
+    <script>
+        const administradoresAutorizados = [
+            { nombre: "Angelica Retamal Peña", rut: "15698265-2" },
+            { nombre: "Graciela Leon Campos", rut: "14015138-6" },
+            { nombre: "Carla Moraga Figueroa", rut: "15699047-7" }
+        ];
+
+        const CONTRASENA_ADMIN = "2448enfermeria";
+
+        document.getElementById('adminRut').addEventListener('input', function() {
+            const rut = this.value.trim();
+            const infoDiv = document.getElementById('infoRut');
+            const badgeSpan = document.getElementById('badgeEstado');
+            const passDiv = document.getElementById('infoContrasena');
+            
+            if (rut.length >= 6) {
+                const admin = administradoresAutorizados.find(a => a.rut === rut);
+                if (admin) {
+                    badgeSpan.innerHTML = `👤 <strong>${admin.nombre}</strong> <span>✅ Autorizado</span>`;
+                    infoDiv.style.display = 'block';
+                    passDiv.style.display = 'block';
+                    document.getElementById('adminPass').placeholder = 'Ingrese la contraseña';
+                } else {
+                    badgeSpan.innerHTML = '<span>❌ RUT no autorizado</span>';
+                    infoDiv.style.display = 'block';
+                    passDiv.style.display = 'none';
+                    document.getElementById('adminPass').value = '';
+                    document.getElementById('adminPass').placeholder = 'RUT no autorizado';
+                }
+            } else {
+                infoDiv.style.display = 'none';
+                passDiv.style.display = 'none';
+                document.getElementById('adminPass').placeholder = 'Ingrese la contraseña';
+            }
+        });
+
+        document.getElementById('adminLoginForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const rut = document.getElementById('adminRut').value.trim();
+    const pass = document.getElementById('adminPass').value.trim();
+    if (!rut || !pass) { alert("❌ Complete todos los campos"); return; }
+    const admin = administradoresAutorizados.find(a => a.rut === rut);
+    if (!admin) { alert("❌ RUT no autorizado"); return; }
+    if (pass !== CONTRASENA_ADMIN) { alert("❌ Contraseña incorrecta"); return; }
+    let accesos = JSON.parse(localStorage.getItem('accesos_admin')) || [];
+    accesos.push({ id: Date.now(), rutAdmin: rut, nombreAdmin: admin.nombre, fecha: new Date().toLocaleString(), accion: "Ingreso al panel de administración" });
+    localStorage.setItem('accesos_admin', JSON.stringify(accesos));
+    localStorage.setItem('admin_actual', JSON.stringify({ rut: rut, nombre: admin.nombre }));
+    
+    // ✅ Registrar acceso en la nube
+    await guardarAccesoCloud({
+        tipo: 'Administrador',
+        nombre: admin.nombre,
+        rut: admin.rut,
+        accion: 'Ingreso al panel de administración'
+    });
+    
+    alert("✅ Bienvenida " + admin.nombre);
+    window.location.href = "admin.html";
+});
+
+        document.getElementById('totalAdmins').textContent = administradoresAutorizados.length;
+    </script>
+</body>
+</html>

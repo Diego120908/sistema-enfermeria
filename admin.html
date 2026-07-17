@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Enfermería</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <script src="config.js"></script>
+</head>
+<body>
+    <div class="card panel-container">
+        <div class="admin-header">
+            <h2>📊 Panel de Administración</h2>
+            <p>Gestión de atenciones médicas y accesos al sistema</p>
+            <div class="badge">
+                👨‍⚕️ Administrador: <span id="adminActual">Cargando...</span>
+            </div>
+        </div>
+
+        <div class="stat-unica">
+            <div class="stat-item">
+                <span class="numero" id="totalAtencionesMes">0</span>
+                <div class="label">
+                    🩺 Atenciones médicas en <span id="mesLabel">Julio 2026</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendario-container">
+            <div class="calendario-header">
+                <h3>📅 Calendario de atenciones</h3>
+                <div class="mes-ano">
+                    <button onclick="cambiarMes(-1)">◀</button>
+                    <span id="mesAnoDisplay">Julio 2026</span>
+                    <button onclick="cambiarMes(1)">▶</button>
+                </div>
+            </div>
+            <div class="calendario-grid" id="calendarioGrid"></div>
+            <div class="calendario-leyenda">
+                <div class="item"><div class="color verde"></div> Días con atención médica</div>
+                <div class="item"><div class="color azul"></div> Hoy</div>
+            </div>
+        </div>
+
+        <div>
+            <h2 class="section-title">🩺 Registro de Atenciones Médicas</h2>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchAtenciones" placeholder="Buscar por paciente o RUT...">
+            </div>
+        </div>
+        <hr class="section-divider">
+        <div id="tablaAtenciones"></div>
+
+        <div>
+            <div>
+                <h2 class="section-title">📋 Accesos al Sistema</h2>
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchAccesos" placeholder="Buscar por nombre o RUT...">
+                </div>
+            </div>
+            <hr class="section-divider">
+            <div class="accesos-wrapper" id="tablaAccesos"></div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-success" onclick="exportarExcel()">📎 Exportar a Excel</button>
+            <button class="btn btn-danger" onclick="abrirModalLimpieza()">🗑️ Limpiar atenciones</button>
+            <button class="btn btn-secondary" onclick="window.location.href='index.html'">⬅ Volver al inicio</button>
+        </div>
+
+        <div class="footer">
+            © 2024 Sistema de Gestión de Enfermería - Todos los registros son confidenciales
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalDetalle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📋 Detalle de Atención</h3>
+                <button class="close-btn" onclick="cerrarModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay modal-limpieza" id="modalLimpieza">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🧹 Limpiar atenciones médicas</h3>
+                <button class="close-btn" onclick="cerrarModalLimpieza()">✕</button>
+            </div>
+            <div class="aviso-limpieza">
+                ⚠️ Esta acción eliminará <strong>TODAS</strong> las atenciones médicas registradas.
+                <br>Esta acción es <strong>irreversible</strong>.
+            </div>
+            <div class="opcion-limpieza" onclick="toggleCheckbox('checkAtenciones')">
+                <input type="checkbox" id="checkAtenciones">
+                <div class="info">
+                    <div class="titulo">🩺 Atenciones médicas</div>
+                    <div class="descripcion">Elimina todas las fichas médicas y atenciones registradas</div>
+                </div>
+            </div>
+            <button class="btn-limpiar-seleccion" id="btnLimpiarSeleccion" onclick="ejecutarLimpieza()" disabled>
+                🗑️ Eliminar atenciones seleccionadas
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let atencionesData = [];
+        let enfermerosData = [];
+        let adminData = [];
+        let fechaActual = new Date();
+        let mesActual = fechaActual.getMonth();
+        let anoActual = fechaActual.getFullYear();
+
+        function cargarDatos() {
+            atencionesData = JSON.parse(localStorage.getItem('fichas_medicas')) || [];
+            if (atencionesData.length === 0) {
+                atencionesData = JSON.parse(localStorage.getItem('atenciones_enfermeria')) || [];
+            }
+            enfermerosData = JSON.parse(localStorage.getItem('accesos_enfermeros')) || [];
+            adminData = JSON.parse(localStorage.getItem('accesos_admin')) || [];
+            
+            const adminActual = JSON.parse(localStorage.getItem('admin_actual'));
+            document.getElementById('adminActual').innerText = adminActual ? adminActual.nombre + ' (' + adminActual.rut + ')' : "No especificado";
+            
+            renderCalendario();
+            renderAtenciones();
+            renderAccesos();
+            actualizarContadorAtenciones();
+        }
+
+        function actualizarContadorAtenciones() {
+            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            const atencionesMes = atencionesData.filter(a => {
+                if (!a.fecha) return false;
+                const fechaParts = a.fecha.split('-');
+                if (fechaParts.length !== 3) return false;
+                const year = parseInt(fechaParts[0]);
+                const month = parseInt(fechaParts[1]) - 1;
+                return year === anoActual && month === mesActual;
+            });
+            document.getElementById('totalAtencionesMes').textContent = atencionesMes.length;
+            document.getElementById('mesLabel').textContent = `${meses[mesActual]} ${anoActual}`;
+        }
+
+        function renderCalendario() {
+            const grid = document.getElementById('calendarioGrid');
+            const mesDisplay = document.getElementById('mesAnoDisplay');
+            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            mesDisplay.textContent = `${meses[mesActual]} ${anoActual}`;
+            const primerDia = new Date(anoActual, mesActual, 1).getDay();
+            const diasEnMes = new Date(anoActual, mesActual + 1, 0).getDate();
+            const diasEnMesAnterior = new Date(anoActual, mesActual, 0).getDate();
+            const diasConAtencion = atencionesData.filter(a => a.fecha).map(a => a.fecha);
+            let html = '';
+            const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            diasSemana.forEach(d => { html += `<div class="dia-semana">${d}</div>`; });
+            const inicio = primerDia;
+            for (let i = inicio - 1; i >= 0; i--) {
+                const dia = diasEnMesAnterior - i;
+                html += `<div class="dia vacio otro-mes">${dia}</div>`;
+            }
+            const hoy = new Date();
+            const hoyNum = hoy.getDate();
+            const hoyMes = hoy.getMonth();
+            const hoyAno = hoy.getFullYear();
+            for (let i = 1; i <= diasEnMes; i++) {
+                const fechaStr = `${anoActual}-${String(mesActual + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                const tieneAtencion = diasConAtencion.includes(fechaStr);
+                const cantidad = diasConAtencion.filter(d => d === fechaStr).length;
+                const esHoy = (i === hoyNum && mesActual === hoyMes && anoActual === hoyAno);
+                let clases = 'dia';
+                if (esHoy) clases += ' hoy';
+                if (tieneAtencion) clases += ' con-atencion';
+                const badge = cantidad > 1 ? `<span class="badge-cantidad">${cantidad}</span>` : '';
+                const indicador = tieneAtencion ? `<span class="indicador">●</span>` : '';
+                html += `<div class="${clases}" onclick="verAtencionesDia('${fechaStr}')">${i}${badge}${indicador}</div>`;
+            }
+            const totalDias = inicio + diasEnMes;
+            const diasRestantes = (7 - (totalDias % 7)) % 7;
+            for (let i = 1; i <= diasRestantes; i++) {
+                html += `<div class="dia vacio otro-mes">${i}</div>`;
+            }
+            grid.innerHTML = html;
+            actualizarContadorAtenciones();
+        }
+
+        function cambiarMes(delta) {
+            mesActual += delta;
+            if (mesActual < 0) { mesActual = 11; anoActual--; }
+            else if (mesActual > 11) { mesActual = 0; anoActual++; }
+            renderCalendario();
+        }
+
+        function verAtencionesDia(fecha) {
+            const atencionesDia = atencionesData.filter(a => a.fecha === fecha);
+            if (atencionesDia.length === 0) {
+                alert(`📅 No hay atenciones registradas para el día ${fecha}`);
+                return;
+            }
+            const modalBody = document.getElementById('modalBody');
+            let html = `<p><strong>📅 ${fecha}</strong> - ${atencionesDia.length} atención(es)</p>`;
+            atencionesDia.forEach(a => {
+                html += `
+                    <div>
+                        <div>
+                            <strong>${a.nombre || a.nombrePaciente || 'Paciente'}</strong>
+                            <span>${a.hora || 'Hora no registrada'}</span>
+                        </div>
+                        <div>👨‍⚕️ ${a.enfermero_registro || a.enfermero || 'No especificado'}</div>
+                        ${a.temperatura || a.frecuenciaCardiaca || a.presion || a.saturacion ? `
+                            <div>
+                                ${a.temperatura ? `<span>🌡️ ${a.temperatura}°C</span>` : ''}
+                                ${a.frecuenciaCardiaca ? `<span>❤️ ${a.frecuenciaCardiaca} lpm</span>` : ''}
+                                ${a.presion ? `<span>💓 ${a.presion} mmHg</span>` : ''}
+                                ${a.saturacion ? `<span>🫁 ${a.saturacion}%</span>` : ''}
+                            </div>
+                        ` : ''}
+                        <div>📋 ${a.antecedentesMorbidos || a.descripcion || 'Sin observaciones'}</div>
+                    </div>
+                `;
+            });
+            modalBody.innerHTML = html;
+            document.getElementById('modalDetalle').classList.add('active');
+        }
+
+        function renderAtenciones(filtro = '') {
+            let data = [...atencionesData];
+            if (filtro) {
+                const term = filtro.toLowerCase();
+                data = data.filter(a => 
+                    (a.nombre && a.nombre.toLowerCase().includes(term)) || 
+                    (a.nombrePaciente && a.nombrePaciente.toLowerCase().includes(term)) ||
+                    (a.rut && a.rut.includes(term)) ||
+                    (a.rutPaciente && a.rutPaciente.includes(term))
+                );
+            }
+            data.sort((a, b) => new Date(b.fecha + ' ' + b.hora) - new Date(a.fecha + ' ' + a.hora));
+            const container = document.getElementById('tablaAtenciones');
+            if (data.length === 0) {
+                container.innerHTML = '<div class="empty-message">🩺 No hay atenciones médicas registradas</div>';
+                return;
+            }
+            let html = `<div><span class="badge-count">📌 Total de atenciones: ${data.length}</span></div>`;
+            data.forEach(a => {
+                const fechaMostrar = a.fecha ? new Date(a.fecha + 'T' + (a.hora || '00:00')).toLocaleDateString('es-CL', {
+                    day: '2-digit', month: '2-digit', year: 'numeric'
+                }) : a.fechaCompleta || 'Fecha no disponible';
+                const horaMostrar = a.hora || 'Hora no disponible';
+                const nombrePaciente = a.nombre || a.nombrePaciente || 'Paciente';
+                const rutPaciente = a.rut || a.rutPaciente || 'No especificado';
+                const enfermero = a.enfermero_registro || a.enfermero || 'No especificado';
+                const tieneSignos = a.temperatura || a.frecuenciaCardiaca || a.presion || a.saturacion;
+                html += `
+                    <div class="atencion-item-detalle" onclick="verDetalleCompleto(${a.id})">
+                        <div class="header-row">
+                            <div>
+                                <span class="fecha">📅 ${fechaMostrar}</span>
+                                <span>🕐 ${horaMostrar}</span>
+                            </div>
+                            <div>
+                                <span>${a.estado || 'Registrado'}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="paciente-nombre">👤 ${nombrePaciente}</span>
+                            <span>📋 ${rutPaciente}</span>
+                        </div>
+                        <div class="enfermero">👨‍⚕️ Atendido por: <strong>${enfermero}</strong></div>
+                        ${tieneSignos ? `
+                            <div>
+                                ${a.temperatura ? `<span>🌡️ ${a.temperatura}°C</span>` : ''}
+                                ${a.frecuenciaCardiaca ? `<span>❤️ ${a.frecuenciaCardiaca} lpm</span>` : ''}
+                                ${a.presion ? `<span>💓 ${a.presion} mmHg</span>` : ''}
+                                ${a.saturacion ? `<span>🫁 ${a.saturacion}%</span>` : ''}
+                            </div>
+                        ` : ''}
+                        <div class="resultado">
+                            <strong>📝 Resultado:</strong> ${a.resultado || a.descripcion || a.observaciones || 'Sin observaciones'}
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderAccesos(filtro = '') {
+            let accesosCombinados = [];
+            enfermerosData.forEach(e => {
+                accesosCombinados.push({
+                    id: e.id,
+                    nombre: e.nombre || 'Enfermero',
+                    rut: e.rut || 'N/E',
+                    fecha: e.fecha || 'N/E',
+                    tipo: '🩺 Enfermero',
+                    clase: 'badge-enfermero',
+                    accion: e.accion || 'Acceso'
+                });
+            });
+            adminData.forEach(a => {
+                accesosCombinados.push({
+                    id: a.id,
+                    nombre: 'Administrador',
+                    rut: a.rutAdmin || a.rut || 'N/E',
+                    fecha: a.fecha || 'N/E',
+                    tipo: '🔐 Administrador',
+                    clase: 'badge-admin',
+                    accion: a.accion || 'Acceso'
+                });
+            });
+            accesosCombinados.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+            if (filtro) {
+                const term = filtro.toLowerCase();
+                accesosCombinados = accesosCombinados.filter(a => 
+                    a.nombre.toLowerCase().includes(term) || 
+                    a.rut.includes(term)
+                );
+            }
+            const container = document.getElementById('tablaAccesos');
+            if (accesosCombinados.length === 0) {
+                container.innerHTML = '<div class="empty-message">📋 No hay accesos registrados</div>';
+                return;
+            }
+            let html = `<div><span class="badge-count">📌 Total de accesos: ${accesosCombinados.length}</span></div>
+                <table class="tabla-accesos">
+                    <thead><tr><th>ID</th><th>Tipo</th><th>Nombre</th><th>RUT</th><th>Fecha</th><th>Acción</th></tr></thead>
+                    <tbody>`;
+            accesosCombinados.forEach(a => {
+                html += `<tr>
+                    <td>${a.id}</td>
+                    <td><span class="badge-tipo ${a.clase}">${a.tipo}</span></td>
+                    <td>${a.nombre}</td>
+                    <td>${a.rut}</td>
+                    <td>${a.fecha}</td>
+                    <td>${a.accion}</td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function verDetalleCompleto(id) {
+            const atencion = atencionesData.find(a => a.id === id);
+            if (!atencion) { alert("No se encontró la atención"); return; }
+            const modalBody = document.getElementById('modalBody');
+            const campos = [
+                { etiqueta: '👤 Paciente', valor: atencion.nombre || atencion.nombrePaciente || 'No especificado' },
+                { etiqueta: '📋 RUT', valor: atencion.rut || atencion.rutPaciente || 'No especificado' },
+                { etiqueta: '📅 Fecha', valor: atencion.fecha || 'No especificada' },
+                { etiqueta: '🕐 Hora', valor: atencion.hora || 'No especificada' },
+                { etiqueta: '👨‍⚕️ Enfermero', valor: atencion.enfermero_registro || atencion.enfermero || 'No especificado' },
+                { etiqueta: '🎂 Edad', valor: atencion.edad || 'No especificada' },
+                { etiqueta: '📚 Curso', valor: atencion.curso || 'No especificado' },
+                { etiqueta: '📍 Dirección', valor: atencion.direccion || 'No especificada' },
+                { etiqueta: '👤 Encargado', valor: atencion.encargado || 'No especificado' },
+                { etiqueta: '📋 Antecedentes familiares', valor: atencion.antecedentesFamiliares || 'No registrados' },
+                { etiqueta: '📋 Antecedentes mórbidos', valor: atencion.antecedentesMorbidos || 'No registrados' },
+                { etiqueta: '🌡️ Temperatura', valor: atencion.temperatura ? atencion.temperatura + ' °C' : 'No registrada' },
+                { etiqueta: '❤️ Frecuencia Cardíaca', valor: atencion.frecuenciaCardiaca ? atencion.frecuenciaCardiaca + ' lpm' : 'No registrada' },
+                { etiqueta: '💓 Presión', valor: atencion.presion ? atencion.presion + ' mmHg' : 'No registrada' },
+                { etiqueta: '🫁 Saturación O₂', valor: atencion.saturacion ? atencion.saturacion + ' %' : 'No registrada' },
+                { etiqueta: '📝 Resultado', valor: atencion.resultado || atencion.descripcion || atencion.observaciones || 'Sin observaciones' },
+                { etiqueta: '📅 Fecha registro', valor: atencion.fecha_registro || 'No especificada' }
+            ];
+            let html = '';
+            campos.forEach(c => {
+                html += `<div class="campo"><span class="etiqueta">${c.etiqueta}</span><span class="valor">${c.valor}</span></div>`;
+            });
+            modalBody.innerHTML = html;
+            document.getElementById('modalDetalle').classList.add('active');
+        }
+
+        document.getElementById('searchAtenciones').addEventListener('keyup', function() { renderAtenciones(this.value); });
+        document.getElementById('searchAccesos').addEventListener('keyup', function() { renderAccesos(this.value); });
+
+        function cerrarModal() { document.getElementById('modalDetalle').classList.remove('active'); }
+        document.getElementById('modalDetalle').addEventListener('click', function(e) { if (e.target === this) cerrarModal(); });
+
+        function abrirModalLimpieza() {
+            document.getElementById('modalLimpieza').classList.add('active');
+            document.getElementById('checkAtenciones').checked = false;
+            document.getElementById('btnLimpiarSeleccion').disabled = true;
+        }
+        function cerrarModalLimpieza() { document.getElementById('modalLimpieza').classList.remove('active'); }
+        function toggleCheckbox(id) { const cb = document.getElementById(id); cb.checked = !cb.checked; actualizarBotonLimpieza(); }
+        function actualizarBotonLimpieza() {
+            const cb = document.getElementById('checkAtenciones');
+            document.getElementById('btnLimpiarSeleccion').disabled = !cb.checked;
+        }
+        document.getElementById('checkAtenciones').addEventListener('change', actualizarBotonLimpieza);
+        document.getElementById('modalLimpieza').addEventListener('click', function(e) { if (e.target === this) cerrarModalLimpieza(); });
+
+        function ejecutarLimpieza() {
+            if (!document.getElementById('checkAtenciones').checked) {
+                alert("❌ Seleccione las atenciones para eliminar.");
+                return;
+            }
+            if (!confirm("⚠️ ¿Está seguro de eliminar TODAS las atenciones médicas? Esta acción es irreversible.")) return;
+            localStorage.removeItem('fichas_medicas');
+            localStorage.removeItem('atenciones_enfermeria');
+            cerrarModalLimpieza();
+            cargarDatos();
+            alert("✅ Atenciones médicas eliminadas correctamente.");
+        }
+
+        function exportarExcel() {
+            const data = atencionesData.map(a => ({
+                ID: a.id,
+                Paciente: a.nombre || a.nombrePaciente || 'No especificado',
+                RUT: a.rut || a.rutPaciente || 'No especificado',
+                Fecha: a.fecha || 'No especificada',
+                Hora: a.hora || 'No especificada',
+                Enfermero: a.enfermero_registro || a.enfermero || 'No especificado',
+                Edad: a.edad || 'No especificada',
+                Curso: a.curso || 'No especificado',
+                Direccion: a.direccion || 'No especificada',
+                Encargado: a.encargado || 'No especificado',
+                Antecedentes_Familiares: a.antecedentesFamiliares || 'No registrados',
+                Antecedentes_Morbidos: a.antecedentesMorbidos || 'No registrados',
+                Temperatura: a.temperatura || 'No registrada',
+                Frecuencia_Cardiaca: a.frecuenciaCardiaca || 'No registrada',
+                Presion: a.presion || 'No registrada',
+                Saturacion_O2: a.saturacion || 'No registrada',
+                Resultado: a.resultado || a.descripcion || a.observaciones || 'Sin observaciones',
+                Fecha_Registro: a.fecha_registro || 'No especificada'
+            }));
+            const ws = XLSX.utils.json_to_sheet(data);
+            ws['!cols'] = [{wch:10},{wch:25},{wch:15},{wch:12},{wch:10},{wch:20},
+                {wch:10},{wch:15},{wch:25},{wch:20},{wch:30},{wch:30},
+                {wch:12},{wch:15},{wch:12},{wch:12},{wch:40},{wch:22}];
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Atenciones_Medicas');
+            const fecha = new Date().toISOString().slice(0,19).replace(/:/g, '-');
+            XLSX.writeFile(wb, `atenciones_medicas_${fecha}.xlsx`);
+            alert("✅ Atenciones exportadas a Excel");
+        }
+
+        cargarDatos();
+    </script>
+</body>
+</html>
