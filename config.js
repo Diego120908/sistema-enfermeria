@@ -1,10 +1,10 @@
 // =============================================
 // CONFIGURACIÓN DE GOOGLE SHEETS API
-// SOLO ATENCIONES
+// SOLO ATENCIONES (CON RANGO DE TEMPERATURA)
 // =============================================
 
 const CONFIG = {
-    API_URL: 'https://script.google.com/macros/s/AKfycbw7UgMMHbjumdMAd5selhphawktx3anHCnm4X4eBOAsGp-5FPdusGaHXtXk8X8MdA/exec',
+    API_URL: 'https://script.google.com/macros/s/AKfycbzkq88sk_XLvecYNLDGBjIJS2f0c8Y2eZ2zZkUm98EcloiAmA-6GnqGp7vO_Cvipve22Q/exec',
     TIEMPO_SINCRONIZACION: 30000,
 };
 
