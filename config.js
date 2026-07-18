@@ -1,5 +1,5 @@
 const CONFIG = {
-    API_URL: 'https://script.google.com/macros/s/AKfycbwaxNoQLKPxJSEckYXDESY6xfK885tKD7_UoGUiLQ91jyn_YU463LKN1etRUoI0wbk3HQ/exec',
+    API_URL: 'https://script.google.com/macros/s/AKfycbw54uz43o_q2lmKQg7wEUscGkD8k0-OVK2wArDGofxwNVuqOjJJrdy5WjHb6-3ZRcmSJQ/exec',
     TIEMPO_SINCRONIZACION: 30000,
 };
 
