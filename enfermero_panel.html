@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Enfermero - Enfermería</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="estilos-fiebre.css">
     <script src="config.js"></script>
 </head>
 <body>
@@ -89,6 +90,7 @@
                     </div>
                 </div>
 
+                <!-- ⭐ SECCIÓN SIGNOS VITALES CON INDICADOR DE FIEBRE -->
                 <div class="seccion">
                     <div class="seccion-titulo">💓 Signos Vitales</div>
                     <div class="signos-vitales">
@@ -108,6 +110,10 @@
                             <label for="saturacion">Saturación O₂ (%)</label>
                             <input type="number" id="saturacion" placeholder="98" min="0" max="100">
                         </div>
+                    </div>
+                    <!-- INDICADOR DE FIEBRE -->
+                    <div class="fiebre-container">
+                        <span id="estadoFiebre">🌡️ Esperando temperatura...</span>
                     </div>
                 </div>
 
@@ -156,7 +162,7 @@
 
     <script>
         // =============================================
-        // BASE DE DATOS DE ESTUDIANTES (COMPLETA)
+        // BASE DE DATOS DE ESTUDIANTES
         // =============================================
         const estudiantesPorCurso = {
             "3° A": [
@@ -296,297 +302,9 @@
                 { nombre: "Mariana Torres Ibarra", rut: "22824891-6" },
                 { nombre: "Dallan Valenzuela Martínez", rut: "22676708-8" },
                 { nombre: "Alicia Valenzuela Yáñez", rut: "22899663-7" }
-            ],
-            "4° E (Programación)": [
-                { nombre: "Joaquín Alejandro Cantillana Gamboa", rut: "22894216-2" },
-                { nombre: "Cristóbal Vicente Celis Ruz", rut: "22724160-8" },
-                { nombre: "Diego Alonso Céspedes Figueroa", rut: "22824389-2" },
-                { nombre: "Belén Isidora De La Maza Faúndez", rut: "22437777-0" },
-                { nombre: "Cris Ignacio Díaz Rosel", rut: "22622757-1" },
-                { nombre: "Patricio Maximiliano Domínguez Osorio", rut: "22795006-4" },
-                { nombre: "Martín Ignacio Abamo Fuentes Espinoza", rut: "22057111-4" },
-                { nombre: "Luciano Alonso Horta Cabrera", rut: "22100293-8" },
-                { nombre: "Sebastián Antonio Maureira Pérez", rut: "22731814-7" },
-                { nombre: "Luciano Alejandro Navarro Robledo", rut: "23038451-7" },
-                { nombre: "Martín Rodrigo Peñaloza Llanos", rut: "22420173-7" },
-                { nombre: "Mayckool Ignacio Pérez Berríos", rut: "22793944-3" },
-                { nombre: "Víctor Eduardo Tillería Llantén", rut: "22785939-3" },
-                { nombre: "Aalon Isen Alin Tapia Yáñez", rut: "22154132-4" }
-            ],
-            "2° A": [
-                { nombre: "Valentina De Las Mercedes Aguilera Solís", rut: "23455424-7" },
-                { nombre: "Evolet Danna Aguirre Lobos", rut: "23490231-8" },
-                { nombre: "Alan Moisés Alvear Ruz", rut: "23379151-2" },
-                { nombre: "Antonella Del Pilar Aravena Poblete", rut: "23313406-6" },
-                { nombre: "Matías Antonio Bustamante Gálvez", rut: "23463617-0" },
-                { nombre: "Jesús Alexis Contreras Lorca", rut: "23368821-5" },
-                { nombre: "Maicol Alexander Díaz Manriquez", rut: "23191272-K" },
-                { nombre: "Antonella Paz Espinoza Lobos", rut: "23437551-2" },
-                { nombre: "Vanessa Isidora Farías Galaz", rut: "23117574-1" },
-                { nombre: "Tomás Arturo Galaz Silva", rut: "23236075-5" },
-                { nombre: "Claudio Nicolás Gálvez Becerra", rut: "23544391-0" },
-                { nombre: "Thiare Alexandra Gálvez Pérez", rut: "23378210-6" },
-                { nombre: "Anaís Monserrat González Fuentes", rut: "23103371-8" },
-                { nombre: "Diego Antonio Hernández Medina", rut: "23208401-4" },
-                { nombre: "Zaid Mateo Irribarra Castro", rut: "22796396-4" },
-                { nombre: "Vai Tiare Millaray Jofre Cornejo", rut: "23352424-7" },
-                { nombre: "Carolina Elizabeth López Paredes", rut: "23644768-5" },
-                { nombre: "Adriana Carlota Márquez Chacón", rut: "100512203-8" },
-                { nombre: "Benjamín Alexander Darío Martinez Manriquez", rut: "23103012-3" },
-                { nombre: "Isidora Margarita Mena Riquelme", rut: "23407575-6" },
-                { nombre: "Juan Francisco Orellana Rodríguez", rut: "23152575-0" },
-                { nombre: "Scarlet Alexandra Ormazábal Caneo", rut: "23608526-0" },
-                { nombre: "Aracely Antonella Ponce Poblete", rut: "23256483-0" },
-                { nombre: "Isidora Alejandra Román Aránguiz", rut: "23382998-6" },
-                { nombre: "Matilda Florencia Romero Piña", rut: "23613428-8" },
-                { nombre: "Sharelly Rossel Jimenez", rut: "28335819-4" },
-                { nombre: "Damián Alejandro Sáez Cabello", rut: "22910707-0" },
-                { nombre: "Aranza Millaray Saldivia Guerrero", rut: "23465063-7" },
-                { nombre: "Mateo Alonso Salgado Arias", rut: "23601153-4" },
-                { nombre: "Alisson Margarita Silva Díaz", rut: "23578970-1" },
-                { nombre: "Bastyan Jesús Soto Vidal", rut: "23389620-9" },
-                { nombre: "Misael Benjamín Vargas Farfán", rut: "23369749-4" }
-            ],
-            "2° B": [
-                { nombre: "Evita Valentina Arce Toro", rut: "23616615-5" },
-                { nombre: "Katerine Alejandra Bravo Bravo", rut: "23083968-9" },
-                { nombre: "Eysy Monserrat Briones Donnay", rut: "23136704-7" },
-                { nombre: "Antonella Ignacia Carvajal Oyarce", rut: "23643265-3" },
-                { nombre: "Yahir Alexander Cruz Ramírez", rut: "23481562-8" },
-                { nombre: "Techarly Dorcillen", rut: "100769751-8" },
-                { nombre: "Luna Mariette Constanza Echeverría Valle", rut: "23611362-0" },
-                { nombre: "Alaynn Justin Fuentes Fuentes", rut: "23507908-9" },
-                { nombre: "Richard Alexander Gálvez González", rut: "23157059-4" },
-                { nombre: "Isidora Ignacia González Fuentealba", rut: "23680366-K" },
-                { nombre: "Jhordy Gutierrez Alvarez", rut: "27901457-K" },
-                { nombre: "Daniela Del Pilar Iturriaga Iturriaga", rut: "22974883-1" },
-                { nombre: "Nicolás Ignacio Laura Arteaga", rut: "100859849-1" },
-                { nombre: "Anays Estefanía Mejías Paredes", rut: "22906751-6" },
-                { nombre: "Helmuth Miguelangel Sterland Meza Meza", rut: "23187497-6" },
-                { nombre: "Madeley Selinda Del Carmen Mora Parrague", rut: "23468592-9" },
-                { nombre: "Antonella Ignacia Olmedo Catalán", rut: "23578489-0" },
-                { nombre: "Emilia Antonela Padilla Rodríguez", rut: "23433302-K" },
-                { nombre: "Dastan Jorge Perez Arce", rut: "100524899-6" },
-                { nombre: "Camila Javiera Pino Méndez", rut: "23387568-6" },
-                { nombre: "Rose Monserrat Ponce Jofre", rut: "23214695-8" },
-                { nombre: "Kevin Alejandro Puebla Pérez", rut: "23584005-7" },
-                { nombre: "Isidora Ignacia Quezada Sierra", rut: "23332569-4" },
-                { nombre: "Haminton Manuel Robles Uribe", rut: "25618191-6" },
-                { nombre: "Maria Stephania Rock Rock", rut: "27154413-8" },
-                { nombre: "Emiliano Alexander Romero Peña", rut: "23367858-9" },
-                { nombre: "Noemi Odemaris Valenzuela López", rut: "23559780-2" },
-                { nombre: "Roxana Isabel Valenzuela Navarrete", rut: "23445514-1" },
-                { nombre: "Camila Ivonne Villagrán Huaquir", rut: "23212358-3" },
-                { nombre: "Ivan Andrés Zúñiga López", rut: "23476853-0" }
-            ],
-            "2° D": [
-                { nombre: "José Tomás Alcaíno Epul", rut: "23450541-6" },
-                { nombre: "Trinidad Alejandra Álvarez Tapia", rut: "23492537-7" },
-                { nombre: "Agustina Amparo Catrián Figueroa", rut: "23424383-7" },
-                { nombre: "Martina Catalina Chandía Aravena", rut: "23161671-3" },
-                { nombre: "Laura Chitiva Urbano", rut: "26182786-7" },
-                { nombre: "Ihanzu Antoinealla De Lourdes Cornejo Navarro", rut: "23658470-4" },
-                { nombre: "Constanza Paz Corrales Manríquez", rut: "23364243-6" },
-                { nombre: "Flavia Antonia De La Maza Faúndez", rut: "23151953-K" },
-                { nombre: "Sefora-Dieunaelle Doxy", rut: "28770776-2" },
-                { nombre: "Angemika Elisme", rut: "28891573-3" },
-                { nombre: "Alexander Daniel Espinoza Cevallos", rut: "23379906-8" },
-                { nombre: "Ayelén Yaiza González Martínez", rut: "23421996-0" },
-                { nombre: "Rayen Estephanía González Trujillo", rut: "23097292-3" },
-                { nombre: "Mateo Fabricio Jimenez Llanos", rut: "26930379-4" },
-                { nombre: "Paula Valentina Jiménez Zagal", rut: "23413400-0" },
-                { nombre: "Aylin Beatriz López Silva", rut: "23318085-8" },
-                { nombre: "Lucas Alfonso Martinez Suazo", rut: "23473002-9" },
-                { nombre: "Milena Catalina Neira González", rut: "23151302-7" },
-                { nombre: "Fiorella Pascal De Jesús Ortiz Becerra", rut: "23563377-9" },
-                { nombre: "Prissyla Trinidad Ortiz Oyarce", rut: "23372837-3" },
-                { nombre: "Angela Ignacia Parrague González", rut: "23353351-3" },
-                { nombre: "Lovensdia Philemond Nostalove", rut: "28712296-9" },
-                { nombre: "Antonela Del Pilar Quezada Jerez", rut: "23439448-7" },
-                { nombre: "Johan Humberto Quezada Núñez", rut: "23295878-2" },
-                { nombre: "Jenifer Jemi Quezada Rivas", rut: "23102817-K" },
-                { nombre: "Angela Arelis Riquelme Peña", rut: "23533209-4" },
-                { nombre: "Lauren Daniela Sinisterra Ibarguen", rut: "28408299-0" },
-                { nombre: "Yohana Valentina Uzcategui Marquez", rut: "100790244-8" },
-                { nombre: "Jendelyn Guiselle Valenzuela Cerpa", rut: "23583239-9" },
-                { nombre: "Luz Amparo Vásquez Valenzuela", rut: "23378108-8" },
-                { nombre: "Dakenlove Venette", rut: "28841306-1" },
-                { nombre: "Yanixa Constanza Villagra Briones", rut: "22697625-6" },
-                { nombre: "Máximo Ignacio Zúñiga Herrera", rut: "22991607-6" }
-            ],
-            "1° A": [
-                { nombre: "Thomas Alexander Aracena Carrasco", rut: "23268833-5" },
-                { nombre: "Kevin Alexander Astete Riquelme", rut: "23869068-4" },
-                { nombre: "Thiare Danna Atenas Avendaño", rut: "23338898-K" },
-                { nombre: "Alisson Dannaht Cabeza Carreno", rut: "23836588-0" },
-                { nombre: "Joaquín Humberto Cabrera Martínez", rut: "23471574-7" },
-                { nombre: "Jesús Alonso Calderón Faúndez", rut: "23835393-9" },
-                { nombre: "Antonella Fernanda Cárdenas Castro", rut: "23757391-9" },
-                { nombre: "Constanza Antonella Carrasco Calvo", rut: "23844848-4" },
-                { nombre: "Anais Gabriela Díaz Celis", rut: "23786195-7" },
-                { nombre: "Raúl Enrique Domínguez Moraga", rut: "23912794-0" },
-                { nombre: "Mónica Monserrat Gomez Nilo", rut: "23899986-3" },
-                { nombre: "Julián Alonso González Pérez", rut: "23909317-5" },
-                { nombre: "Hada Francisca Henríquez Silva", rut: "23680382-1" },
-                { nombre: "Julieta Alejandra Trinidad Molina Pavez", rut: "23926230-9" },
-                { nombre: "Camila Florencia Muñoz Reyes", rut: "23770413-4" },
-                { nombre: "Nicolet Pascal Olmedo Becerra", rut: "23528421-9" },
-                { nombre: "Maximiliano Jesús Ortega Rivera", rut: "23483764-8" },
-                { nombre: "Zulema Beatriz Pavez Abarca", rut: "23893934-8" },
-                { nombre: "Benjamín Fernando Peña Cortez", rut: "22993036-2" },
-                { nombre: "Maite Carolina Peña Cortez", rut: "23778569-K" },
-                { nombre: "Valentina Isidora Riquelme Moreno", rut: "23643232-7" },
-                { nombre: "Carolina Belén Romero Pino", rut: "23638511-6" },
-                { nombre: "Daniela Nellanyer Sierra Diaz", rut: "28413377-3" },
-                { nombre: "Matías Eduardo Torres Fuentes", rut: "23752202-8" },
-                { nombre: "Danahe Renata Varas Cabello", rut: "23885449-0" },
-                { nombre: "Maite Anastasia Vidal Ibacache", rut: "23876309-6" },
-                { nombre: "Nicolás Antonio Rioseco Pereira", rut: "23689002-3" },
-                { nombre: "Fernanda Cristina Sánchez Díaz", rut: "23804803-6" },
-                { nombre: "Isabella Agustina Vidal Cornejo", rut: "23810847-0" },
-                { nombre: "Juan Carlos Hernandez Sanabria", rut: "29116144-0" },
-                { nombre: "Mális Paschal Caisedon Huacha", rut: "23831573-5" },
-                { nombre: "Augustina Odaz Rona", rut: "23848637-3" },
-                { nombre: "Antoniola Alejandra Zärenzucéa Tapia", rut: "23884611-1" },
-                { nombre: "Anabel Tasalco Higenio Hernán", rut: "28480934-5" }
-            ],
-            "1° B": [
-                { nombre: "Ashton Prince Bradley Abaca León", rut: "23927716-0" },
-                { nombre: "Valentina Fernanda Ahumada Durán", rut: "23826630-0" },
-                { nombre: "Zahira Francisca Andrades Barra", rut: "23071858-K" },
-                { nombre: "Lissette Antonella Arias Roa", rut: "23830784-8" },
-                { nombre: "Alondra Ignacia Astete Astete", rut: "23534588-9" },
-                { nombre: "Renata Alejandra De Jesus Bravo Sequeida", rut: "23846513-3" },
-                { nombre: "Isabella Carmona Barbosa", rut: "28028600-1" },
-                { nombre: "José Fernando Concha Gutiérrez", rut: "22854061-7" },
-                { nombre: "Paz Antonella Díaz Calderón", rut: "23648473-4" },
-                { nombre: "María Isabel Díaz Olmedo", rut: "23765614-8" },
-                { nombre: "Natalia De Las Mercedes Díaz Rosel", rut: "23633555-0" },
-                { nombre: "Francisca Belén Galaz Cerpa", rut: "23734288-7" },
-                { nombre: "Jhon Ignacio Higueras Rojas", rut: "23649391-1" },
-                { nombre: "Anahís Antonella Lizana Castro", rut: "23797138-8" },
-                { nombre: "Jhonny Alberto Lopez Argote", rut: "100805486-6" },
-                { nombre: "Genesis Belén López Mura", rut: "23527660-7" },
-                { nombre: "Abigail Mery Mamani Cason", rut: "100809731-K" },
-                { nombre: "Emaná Angel Manríquez Cruz", rut: "23432860-3" },
-                { nombre: "Ayzamar Juliette Meza Meza", rut: "23912773-8" },
-                { nombre: "Bastián Andrés Muñoz Bustamante", rut: "23852962-K" },
-                { nombre: "Florencia Belén Palacios Aguilera", rut: "23689641-2" },
-                { nombre: "Freddy Ezequiel Pérez Torreyes", rut: "28979896-K" },
-                { nombre: "Paulina Alejandra Pérez Guzmán", rut: "23746504-0" },
-                { nombre: "Nicolás Alejandro Rodríguez Maldonado", rut: "23628992-3" },
-                { nombre: "Martin Olivier Salazar Gomez", rut: "27699551-0" },
-                { nombre: "Juan Manuel Savich Estevanovich", rut: "24258850-9" },
-                { nombre: "Andrea Antonia Sepúlveda Valenzuela", rut: "23459461-3" },
-                { nombre: "Sebastian Alejandro Stevens Rodríguez", rut: "26553983-1" },
-                { nombre: "Anelhy Margarita Troncoso Herrera", rut: "23459485-0" },
-                { nombre: "Ignacio Andrés Valdivia Castro", rut: "23826166-K" },
-                { nombre: "Esteban Amaro Zamora Saavedra", rut: "23378781-7" },
-                { nombre: "Nicolás Antonio Ríoseco Pérez", rut: "23689002-3" },
-                { nombre: "Agustín Ignacio Margas Marínoves", rut: "23653196-1" }
-            ],
-            "1° C": [
-                { nombre: "Yessica Natalia Arenas Calvimontes", rut: "28832245-7" },
-                { nombre: "Matt Demian Phillip Avendaño Díaz", rut: "23663391-8" },
-                { nombre: "Michelle Scarleth Bustamante Vergara", rut: "23419645-6" },
-                { nombre: "Javiera Ignacia Cáceres Valdebenito", rut: "23749779-1" },
-                { nombre: "Sofía Anaís Campos Albornoz", rut: "23631610-6" },
-                { nombre: "Katherin Estefanía Castillo Durán", rut: "23901153-5" },
-                { nombre: "Felipe Andrés Celis Sandoval", rut: "23928749-2" },
-                { nombre: "Leandro Ignacio Agustín Duarte Orellana", rut: "23509818-0" },
-                { nombre: "Álvaro Francisco Durán Pando", rut: "23934967-6" },
-                { nombre: "Paula Alison Elgueta Moena", rut: "23679656-6" },
-                { nombre: "Dylan Manuel Farias Navarro", rut: "23861640-9" },
-                { nombre: "Antonella Alejandra Fuentes Garrido", rut: "23642328-K" },
-                { nombre: "Luis Alfredo Gajardo Rojas", rut: "23613293-5" },
-                { nombre: "Jocelyn Danae Lizama San Martín", rut: "23379973-4" },
-                { nombre: "Alejandra Emiliana Mira Campos", rut: "23857002-6" },
-                { nombre: "Florencia Ignacia Muñoz Palta", rut: "23841781-3" },
-                { nombre: "Giancarlo Andrés Muñoz Parra", rut: "23789768-4" },
-                { nombre: "Scarlett Alexandra Catalina Ollanadel Valdés", rut: "23695608-3" },
-                { nombre: "Antonella Stephania Paillamán Vallejos", rut: "23709385-2" },
-                { nombre: "María Paz Paredes Valenzuela", rut: "23799467-1" },
-                { nombre: "Renata Antonella Pérez Donoso", rut: "23930255-6" },
-                { nombre: "Dante Agustín Roa Salazar", rut: "23841616-7" },
-                { nombre: "Catalina Anays Salazar Araya", rut: "23957226-K" },
-                { nombre: "Fernanda Cristina Sánchez Díaz", rut: "23804803-6" },
-                { nombre: "Renata Sofía Tobar San Martín", rut: "23820510-7" },
-                { nombre: "Antonella Ignacia Vargas Flores", rut: "23748451-7" },
-                { nombre: "Juliette Edith Vargas Oporto", rut: "23850807-K" },
-                { nombre: "Iker Amaro De Jesús Celedón Ojeda", rut: "23994397-7" },
-                { nombre: "Morena Aimara Salgado González", rut: "25399305-7" },
-                { nombre: "Bernardo Ignacio Oimebo Oimebo", rut: "23304363-3" }
-            ],
-            "1° D": [
-                { nombre: "Jireh Antonia Constanza Sarai Agurto Del Valle", rut: "23030748-2" },
-                { nombre: "Héctor Andrés Aranda Castro", rut: "23718504-8" },
-                { nombre: "Laura Isabel Aranda Castro", rut: "23718539-0" },
-                { nombre: "Ayleen Constanza Auger Del Valle", rut: "23760750-3" },
-                { nombre: "Oswaldo Enrique Borrego Iturbe", rut: "27830454-K" },
-                { nombre: "Yulianna Alejandra Bravo Espinoza", rut: "23764805-6" },
-                { nombre: "Benjamín Antonio Domínguez Osorio", rut: "23543937-9" },
-                { nombre: "Key Dahian Hinojosa Velez", rut: "100808874-4" },
-                { nombre: "Ariel Tomás Inostroza Villagra", rut: "23680824-6" },
-                { nombre: "Oscarlis Chiquinquira Iturbe Leon", rut: "27886580-0" },
-                { nombre: "Danae Anaís Jara Cabrera", rut: "23801805-6" },
-                { nombre: "Yan Pierre Alexander Leiva Moran", rut: "23891184-2" },
-                { nombre: "Tomás Alonso Leiva Rojas", rut: "23790726-4" },
-                { nombre: "Gabriela Anaís Estrella Lineros Espinoza", rut: "23640983-K" },
-                { nombre: "Sofía Estefanía Pardo Olmedo", rut: "23865930-2" },
-                { nombre: "Madelaine Antonia Rabelo Peñaloza", rut: "23636193-4" },
-                { nombre: "Yaira Alexandra Ramírez Santander", rut: "23749750-3" },
-                { nombre: "Vicente Javier Rebolledo Correa", rut: "23648791-1" },
-                { nombre: "Maximiliano Alonso Rodríguez Panguilf", rut: "23698388-9" },
-                { nombre: "Sofía Antonella Rodríguez Vergara", rut: "23899415-2" },
-                { nombre: "Felipe Alfredo Ignacio Romero Morales", rut: "23869480-9" },
-                { nombre: "José Mauricio Tapia Galaz", rut: "23860450-8" },
-                { nombre: "Darinka Karolina Traipe Díaz", rut: "23967226-4" },
-                { nombre: "Cristopher Francesco Troncoso Anton", rut: "23760687-6" },
-                { nombre: "Mesken Venette", rut: "26158704-1" },
-                { nombre: "Esteban Amaro Zamora Saavedra", rut: "23378781-7" },
-                { nombre: "Maximiliano Andrés Arriagada Rifo", rut: "23849626-8" },
-                { nombre: "Daniela Nellanyer Sierra Díaz", rut: "28413377-3" },
-                { nombre: "Jesús Alejandro Mora Guerrero", rut: "100457005-3" }
-            ],
-            "1° E": [
-                { nombre: "Enzy Valentina Álvarez Reyes", rut: "" },
-                { nombre: "Donovan Justin Andrade Pumacayo", rut: "23482459-7" },
-                { nombre: "Antonella Ignacia De Los Angeles Araya Reyes", rut: "25098210-0" },
-                { nombre: "Alice Fernanda Briones Muñoz", rut: "23544232-9" },
-                { nombre: "Luis Beymar Camacho Campos", rut: "23836145-1" },
-                { nombre: "Jesus Manuel Carrasquero Parra", rut: "25467960-7" },
-                { nombre: "Constanza Belén Castro Lazo", rut: "100704458-1" },
-                { nombre: "Leednie Berlandine Civil", rut: "23818588-2" },
-                { nombre: "Jessy-Anne Clerger", rut: "28439963-3" },
-                { nombre: "Analia Danais González Cárdenas", rut: "27040919-9" },
-                { nombre: "Samantha Angelina González Fredes", rut: "23135437-9" },
-                { nombre: "Bárbara Antonia Guerrero Herrera", rut: "23917156-7" },
-                { nombre: "Nayareth Alexandra Jordán Pereira", rut: "23637308-8" },
-                { nombre: "Fabián Alexander Lizama Valenzuela", rut: "23248837-9" },
-                { nombre: "Kattia Louis", rut: "23531758-3" },
-                { nombre: "Constanza Valentina Mejías Núñez", rut: "100825289-7" },
-                { nombre: "Cristopher Alejandro Norambuena Romero", rut: "22935467-1" },
-                { nombre: "Luis Andrés Olea Riquelme", rut: "23368659-K" },
-                { nombre: "Javier Amaro Salinas Salas", rut: "23633689-1" },
-                { nombre: "Monserath Saucedo Caballero", rut: "23392398-2" },
-                { nombre: "Katherine Esperanza Solorza Encina", rut: "28512607-K" },
-                { nombre: "Katalina Antonella Soto Durán", rut: "23517583-5" },
-                { nombre: "Pascale Danae Valdés Benítez", rut: "23674284-9" },
-                { nombre: "Valentina Antonia Vásquez Gallardo", rut: "23648521-8" },
-                { nombre: "Kiara Beatriz Vásquez González", rut: "23831204-9" },
-                { nombre: "Javiera Ignacia Rodríguez Cabezas", rut: "23322443-K" },
-                { nombre: "Francisca Javiera Hidalgo Olivares", rut: "23692936-1" },
-                { nombre: "Geneisis Franchesca García Bániclos", rut: "100624803-5" },
-                { nombre: "Roberta Antoniá Alavena Dustamante", rut: "23449065-7" },
-                { nombre: "Annaís Andrea Kadinat-Pintó", rut: "23759180-6" },
-                { nombre: "Hahi Quet Julian Hahi Venreses Flores", rut: "23102930-3" },
-                { nombre: "Keyler Ignacio Ontega Héiza", rut: "237508705-6" }
             ]
         };
 
-        // =============================================
-        // FUNCIONES DE BÚSQUEDA
-        // =============================================
         function obtenerTodosLosEstudiantes() {
             const todos = [];
             for (const curso in estudiantesPorCurso) {
@@ -597,16 +315,10 @@
             return todos;
         }
 
-        // =============================================
-        // VARIABLES GLOBALES
-        // =============================================
         let registrosData = [];
         let enfermeroActual = null;
         let editandoId = null;
 
-        // =============================================
-        // CARGAR DATOS DEL ENFERMERO
-        // =============================================
         function cargarInfoEnfermero() {
             const enfermero = JSON.parse(localStorage.getItem('enfermero_actual'));
             if (enfermero) {
@@ -617,9 +329,6 @@
             }
         }
 
-        // =============================================
-        // CARGAR REGISTROS
-        // =============================================
         function cargarRegistros() {
             registrosData = JSON.parse(localStorage.getItem('fichas_medicas')) || [];
             if (registrosData.length === 0) {
@@ -629,16 +338,10 @@
             renderRegistros();
         }
 
-        // =============================================
-        // ACTUALIZAR CONTADOR
-        // =============================================
         function actualizarContador() {
             document.getElementById('totalRegistros').textContent = registrosData.length;
         }
 
-        // =============================================
-        // RENDER REGISTROS
-        // =============================================
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>]/g, function(m) {
@@ -696,9 +399,6 @@
             container.innerHTML = html;
         }
 
-        // =============================================
-        // EDITAR REGISTRO DESDE LA TABLA
-        // =============================================
         function editarRegistro(id) {
             const registro = registrosData.find(r => r.id === id);
             if (!registro) { alert("❌ No se encontró el registro"); return; }
@@ -724,9 +424,6 @@
             document.getElementById('fichaMedica').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // =============================================
-        // GUARDAR EDICIÓN DESDE LA TABLA
-        // =============================================
         function guardarEdicionRegistro(id) {
             const nombre = document.getElementById('edit_nombre_' + id).value.trim();
             const rut = document.getElementById('edit_rut_' + id).value.trim();
@@ -763,17 +460,11 @@
             alert("✅ Registro actualizado correctamente");
         }
 
-        // =============================================
-        // CANCELAR EDICIÓN DESDE LA TABLA
-        // =============================================
         function cancelarEdicionRegistro() {
             editandoId = null;
             renderRegistros(document.getElementById('searchRegistros').value);
         }
 
-        // =============================================
-        // ELIMINAR REGISTRO
-        // =============================================
         function eliminarRegistro(id) {
             if (!confirm("⚠️ ¿Está seguro de eliminar este registro? Esta acción es irreversible.")) return;
             const index = registrosData.findIndex(r => r.id === id);
@@ -786,9 +477,6 @@
             alert("✅ Registro eliminado correctamente");
         }
 
-        // =============================================
-        // LIMPIAR FICHA
-        // =============================================
         function limpiarFicha() {
             document.getElementById('pacienteNombre').value = '';
             document.getElementById('pacienteRut').value = '';
@@ -810,20 +498,70 @@
             document.getElementById('btnGuardar').textContent = '💾 Guardar ficha médica';
             document.getElementById('btnCancelarEdicion').style.display = 'none';
             editandoId = null;
+            
+            var estadoSpan = document.getElementById('estadoFiebre');
+            if (estadoSpan) {
+                estadoSpan.textContent = '🌡️ Esperando temperatura...';
+                estadoSpan.className = 'fiebre-esperando';
+            }
         }
 
         function cancelarEdicion() { limpiarFicha(); }
 
-        // =============================================
-        // MODAL DE SALIDA
-        // =============================================
         function abrirModalSalir() { document.getElementById('modalSalir').classList.add('active'); }
         function cerrarModalSalir() { document.getElementById('modalSalir').classList.remove('active'); }
         function irAlInicio() { cerrarModalSalir(); window.location.href = 'index.html'; }
 
         // =============================================
-        // AUTOCOMPLETADO DE PACIENTE POR RUT
+        // ⭐ AUTO-DETECCIÓN DE FIEBRE (ESCALA MÉDICA)
         // =============================================
+        function actualizarEstadoFiebre() {
+            var tempInput = document.getElementById('temperatura');
+            var estadoSpan = document.getElementById('estadoFiebre');
+            
+            if (!tempInput || !estadoSpan) return;
+            
+            var temp = parseFloat(tempInput.value);
+            
+            if (isNaN(temp) || tempInput.value === '') {
+                estadoSpan.textContent = '🌡️ Esperando temperatura...';
+                estadoSpan.className = 'fiebre-esperando';
+                return;
+            }
+            
+            var estado = '';
+            var clase = '';
+            
+            if (temp < 32.0) {
+                estado = '🚨 Hipotermia grave (menos de 32°C) - ¡URGENCIA!';
+                clase = 'fiebre-hipotermia-grave';
+            } else if (temp >= 32.0 && temp < 35.0) {
+                estado = '❄️ Hipotermia (32-35°C) - requiere atención';
+                clase = 'fiebre-hipotermia';
+            } else if (temp >= 35.0 && temp <= 35.9) {
+                estado = '🌡️ Temperatura baja (35-35.9°C) - vigilar';
+                clase = 'fiebre-baja';
+            } else if (temp >= 36.0 && temp <= 37.4) {
+                estado = '✅ Temperatura normal (36-37.4°C)';
+                clase = 'fiebre-normal';
+            } else if (temp >= 37.5 && temp <= 37.9) {
+                estado = '🌡️ Fiebre leve (37.5-37.9°C)';
+                clase = 'fiebre-leve';
+            } else if (temp >= 38.0 && temp <= 38.9) {
+                estado = '🔥 Fiebre moderada (38-38.9°C)';
+                clase = 'fiebre-moderada';
+            } else if (temp >= 39.0 && temp <= 40.0) {
+                estado = '🔥 Fiebre alta (39-40°C) - requiere atención';
+                clase = 'fiebre-alta';
+            } else if (temp > 40.0) {
+                estado = '🚨 Fiebre muy alta o hipertermia (más de 40°C) - ¡URGENCIA!';
+                clase = 'fiebre-muy-alta';
+            }
+            
+            estadoSpan.textContent = estado + ' (' + temp + '°C)';
+            estadoSpan.className = clase;
+        }
+
         function configurarAutocompletado() {
             const rutInput = document.getElementById('pacienteRut');
             const sugerenciasDiv = document.getElementById('sugerenciasRut');
@@ -858,9 +596,15 @@
             document.getElementById('sugerenciasRut').style.display = 'none';
         }
 
-        // =============================================
-        // GUARDAR NUEVA FICHA (CON NUBE)
-        // =============================================
+        // ⭐ Escuchar cambios en temperatura
+        document.addEventListener('DOMContentLoaded', function() {
+            var tempInput = document.getElementById('temperatura');
+            if (tempInput) {
+                tempInput.addEventListener('input', actualizarEstadoFiebre);
+                tempInput.addEventListener('change', actualizarEstadoFiebre);
+            }
+        });
+
         document.getElementById('fichaMedicaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -886,7 +630,6 @@
                 return;
             }
             
-            // Mostrar mensaje de carga
             const btn = document.querySelector('#fichaMedicaForm .btn-guardar');
             const textoOriginal = btn.textContent;
             btn.textContent = '⏳ Guardando...';
@@ -934,7 +677,6 @@
                 return;
             }
             
-            // ✅ Guardar en Google Sheets
             const datosAtencion = {
                 nombrePaciente: nombre,
                 rutPaciente: rut,
@@ -952,7 +694,6 @@
                 const resultadoCloud = await guardarAtencionCloud(datosAtencion);
                 
                 if (resultadoCloud.success) {
-                    // Guardar también localmente como respaldo
                     const ficha = {
                         id: Date.now(),
                         nombre: nombre,
@@ -1003,23 +744,14 @@
             btn.disabled = false;
         });
 
-        // =============================================
-        // FILTRO DE BÚSQUEDA
-        // =============================================
         document.getElementById('searchRegistros').addEventListener('keyup', function() {
             renderRegistros(this.value);
         });
 
-        // =============================================
-        // MODAL DE SALIDA
-        // =============================================
         document.getElementById('modalSalir').addEventListener('click', function(e) {
             if (e.target === this) cerrarModalSalir();
         });
 
-        // =============================================
-        // INICIALIZAR
-        // =============================================
         cargarInfoEnfermero();
         cargarRegistros();
         configurarAutocompletado();
