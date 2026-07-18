@@ -1,29 +1,7 @@
 const CONFIG = {
-    API_URL: 'https://script.google.com/macros/s/AKfycbyDI52Ns_10KZ5O1nmRXgeZHQUWQW_SNHpMw-dICraRSEWCTqMwFZdV4fjgZCfTtWGZuw/exec',
+    API_URL: 'https://script.google.com/macros/s/AKfycbwaxNoQLKPxJSEckYXDESY6xfK885tKD7_UoGUiLQ91jyn_YU463LKN1etRUoI0wbk3HQ/exec',
     TIEMPO_SINCRONIZACION: 30000,
 };
-
-async function guardarAtencionCloud(datos) {
-    try {
-        const response = await fetch(CONFIG.API_URL + '?accion=guardarAtencion&datos=' + encodeURIComponent(JSON.stringify(datos)));
-        const resultado = await response.json();
-        return resultado;
-    } catch (error) {
-        console.error('Error guardando atención:', error);
-        return { success: false, error: error.toString() };
-    }
-}
-
-async function obtenerAtencionesCloud() {
-    try {
-        const response = await fetch(CONFIG.API_URL + '?accion=obtenerAtenciones');
-        const resultado = await response.json();
-        return resultado;
-    } catch (error) {
-        console.error('Error obteniendo atenciones:', error);
-        return [];
-    }
-}
 
 async function guardarPacienteCloud(datos) {
     try {
@@ -32,6 +10,17 @@ async function guardarPacienteCloud(datos) {
         return resultado;
     } catch (error) {
         console.error('Error guardando paciente:', error);
+        return { success: false, error: error.toString() };
+    }
+}
+
+async function guardarAtencionCloud(datos) {
+    try {
+        const response = await fetch(CONFIG.API_URL + '?accion=guardarAtencion&datos=' + encodeURIComponent(JSON.stringify(datos)));
+        const resultado = await response.json();
+        return resultado;
+    } catch (error) {
+        console.error('Error guardando atención:', error);
         return { success: false, error: error.toString() };
     }
 }
@@ -54,6 +43,17 @@ async function obtenerPacientesCloud() {
         return resultado;
     } catch (error) {
         console.error('Error obteniendo pacientes:', error);
+        return [];
+    }
+}
+
+async function obtenerAtencionesCloud() {
+    try {
+        const response = await fetch(CONFIG.API_URL + '?accion=obtenerAtenciones');
+        const resultado = await response.json();
+        return resultado;
+    } catch (error) {
+        console.error('Error obteniendo atenciones:', error);
         return [];
     }
 }
