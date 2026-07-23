@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Enfermero - Enfermería</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="estilos-fiebre.css">
     <script src="config.js"></script>
 </head>
 <body>
@@ -111,7 +110,7 @@
                             <input type="number" id="saturacion" placeholder="98" min="0" max="100">
                         </div>
                     </div>
-                    <!-- INDICADOR DE FIEBRE -->
+                    <!-- INDICADOR DE FIEBRE - SIN REPETIR GRADOS -->
                     <div class="fiebre-container">
                         <span id="estadoFiebre">🌡️ Esperando temperatura...</span>
                     </div>
@@ -513,7 +512,7 @@
         function irAlInicio() { cerrarModalSalir(); window.location.href = 'index.html'; }
 
         // =============================================
-        // ⭐ AUTO-DETECCIÓN DE FIEBRE (ESCALA MÉDICA)
+        // ⭐ AUTO-DETECCIÓN DE FIEBRE - SIN REPETIR GRADOS
         // =============================================
         function actualizarEstadoFiebre() {
             var tempInput = document.getElementById('temperatura');
@@ -542,13 +541,13 @@
                 estado = '🌡️ Temperatura baja - vigilar';
                 clase = 'fiebre-baja';
             } else if (temp >= 36.0 && temp <= 37.4) {
-                estado = '✅ Temperatura normal ';
+                estado = '✅ Temperatura normal';
                 clase = 'fiebre-normal';
             } else if (temp >= 37.5 && temp <= 37.9) {
-                estado = '🌡️ Fiebre leve ';
+                estado = '🌡️ Fiebre leve';
                 clase = 'fiebre-leve';
             } else if (temp >= 38.0 && temp <= 38.9) {
-                estado = '🔥 Fiebre moderada ';
+                estado = '🔥 Fiebre moderada';
                 clase = 'fiebre-moderada';
             } else if (temp >= 39.0 && temp <= 40.0) {
                 estado = '🔥 Fiebre alta - requiere atención';
@@ -558,7 +557,8 @@
                 clase = 'fiebre-muy-alta';
             }
             
-            estadoSpan.textContent = estado + ' (' + temp + '°C)';
+            // ✅ Solo muestra el mensaje, sin repetir los grados
+            estadoSpan.textContent = estado;
             estadoSpan.className = clase;
         }
 
@@ -757,5 +757,4 @@
         configurarAutocompletado();
     </script>
 </body>
-</html>
 </html>
