@@ -2762,6 +2762,7 @@ table tbody tr:last-child td {
         letter-spacing: 4px;
     }
 }
+
 /* ============================================
    CORRECCIÓN - CURSO Y EDAD (MORADO)
    ============================================ */
@@ -2816,6 +2817,7 @@ table tbody tr:last-child td {
     color: #f0e8f8 !important;
     border: 2px solid rgba(180, 140, 210, 0.10) !important;
 }
+
 /* ============================================
    CORRECCIÓN - CALENDARIO MÁS ANCHO
    ============================================ */
@@ -2860,4 +2862,134 @@ table tbody tr:last-child td {
 .card-wide .calendario-container {
     width: 100% !important;
     max-width: 100% !important;
+}
+
+/* ============================================
+   ESTILOS PARA INDICADOR DE FIEBRE (integrado)
+   ============================================ */
+
+.fiebre-container {
+    margin-top: 10px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    background: rgba(30, 15, 50, 0.25);
+    text-align: center;
+    border: 1px solid rgba(180, 140, 210, 0.06);
+    transition: all 0.3s ease;
+}
+
+#estadoFiebre {
+    font-size: 15px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 10px;
+    display: inline-block;
+    transition: all 0.3s ease;
+    background: rgba(30, 15, 50, 0.30);
+    min-width: 180px;
+}
+
+/* --- Estados de temperatura --- */
+.fiebre-esperando {
+    color: #b898d8;
+    background: rgba(180, 140, 210, 0.06);
+}
+
+.fiebre-normal {
+    color: #6b8c5e;
+    background: rgba(107, 140, 94, 0.12);
+    border: 1px solid rgba(107, 140, 94, 0.15);
+}
+
+.fiebre-leve {
+    color: #c9a84c;
+    background: rgba(201, 168, 76, 0.12);
+    border: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.fiebre-moderada {
+    color: #d4875e;
+    background: rgba(212, 135, 94, 0.12);
+    border: 1px solid rgba(212, 135, 94, 0.15);
+}
+
+.fiebre-alta {
+    color: #c95a5a;
+    background: rgba(201, 90, 90, 0.12);
+    border: 1px solid rgba(201, 90, 90, 0.15);
+}
+
+.fiebre-muy-alta {
+    color: #b54040;
+    background: rgba(181, 64, 64, 0.15);
+    border: 1px solid rgba(181, 64, 64, 0.25);
+    animation: pulse-fiebre 1.0s ease-in-out infinite;
+}
+
+.fiebre-hipotermia {
+    color: #5a8aa8;
+    background: rgba(90, 138, 168, 0.12);
+    border: 1px solid rgba(90, 138, 168, 0.15);
+}
+
+.fiebre-hipotermia-grave {
+    color: #3a6a8a;
+    background: rgba(58, 106, 138, 0.15);
+    border: 1px solid rgba(58, 106, 138, 0.25);
+    animation: pulse-fiebre 1.0s ease-in-out infinite;
+}
+
+.fiebre-baja {
+    color: #8a8aaa;
+    background: rgba(138, 138, 170, 0.10);
+    border: 1px solid rgba(138, 138, 170, 0.10);
+}
+
+/* --- Animaciones --- */
+@keyframes pulse-fiebre {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(0.98);
+    }
+}
+
+@keyframes fadeInFiebre {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#estadoFiebre {
+    animation: fadeInFiebre 0.3s ease forwards;
+}
+
+/* --- Responsive fiebre --- */
+@media (max-width: 768px) {
+    .fiebre-container {
+        padding: 6px 10px;
+        margin-top: 6px;
+    }
+    
+    #estadoFiebre {
+        font-size: 13px;
+        padding: 6px 12px;
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    #estadoFiebre {
+        font-size: 12px;
+        padding: 5px 10px;
+        min-width: 100px;
+    }
 }
