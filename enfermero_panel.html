@@ -533,28 +533,28 @@
             var clase = '';
             
             if (temp < 32.0) {
-                estado = '🚨 Hipotermia grave (menos de 32°C) - ¡URGENCIA!';
+                estado = '🚨 Hipotermia grave - ¡URGENCIA!';
                 clase = 'fiebre-hipotermia-grave';
             } else if (temp >= 32.0 && temp < 35.0) {
-                estado = '❄️ Hipotermia (32-35°C) - requiere atención';
+                estado = '❄️ Hipotermia - requiere atención';
                 clase = 'fiebre-hipotermia';
             } else if (temp >= 35.0 && temp <= 35.9) {
-                estado = '🌡️ Temperatura baja (35-35.9°C) - vigilar';
+                estado = '🌡️ Temperatura baja - vigilar';
                 clase = 'fiebre-baja';
             } else if (temp >= 36.0 && temp <= 37.4) {
-                estado = '✅ Temperatura normal (36-37.4°C)';
+                estado = '✅ Temperatura normal ';
                 clase = 'fiebre-normal';
             } else if (temp >= 37.5 && temp <= 37.9) {
-                estado = '🌡️ Fiebre leve (37.5-37.9°C)';
+                estado = '🌡️ Fiebre leve ';
                 clase = 'fiebre-leve';
             } else if (temp >= 38.0 && temp <= 38.9) {
-                estado = '🔥 Fiebre moderada (38-38.9°C)';
+                estado = '🔥 Fiebre moderada ';
                 clase = 'fiebre-moderada';
             } else if (temp >= 39.0 && temp <= 40.0) {
-                estado = '🔥 Fiebre alta (39-40°C) - requiere atención';
+                estado = '🔥 Fiebre alta - requiere atención';
                 clase = 'fiebre-alta';
             } else if (temp > 40.0) {
-                estado = '🚨 Fiebre muy alta o hipertermia (más de 40°C) - ¡URGENCIA!';
+                estado = '🚨 Fiebre muy alta o hipertermia - ¡URGENCIA!';
                 clase = 'fiebre-muy-alta';
             }
             
@@ -757,4 +757,5 @@
         configurarAutocompletado();
     </script>
 </body>
+</html>
 </html>
