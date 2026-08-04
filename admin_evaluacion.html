@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Evaluación - Enfermería</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+</head>
+<body>
+    <div class="card panel-container">
+        <div class="admin-header-eval">
+            <h2>📋 Panel de Control de Evaluaciones</h2>
+            <p>Seleccione el curso y los indicadores automáticos a desactivar</p>
+            <div class="badge">
+                👨‍⚕️ Administrador: <span id="adminActual">Cargando...</span>
+            </div>
+            <div class="badge-eval">
+                ⚠️ MODO EVALUACIÓN ACTIVO
+            </div>
+        </div>
+
+        <div class="todas-evaluaciones" id="todasEvaluacionesContainer">
+            <div class="titulo">📌 Evaluaciones activas en el sistema</div>
+            <div id="listaEvaluaciones"></div>
+        </div>
+
+        <div class="estado-bloqueo" id="estadoBloqueo">
+            <div class="estado-card" id="estadoCard">
+                <div class="estado-icono" id="estadoIcono">🔓</div>
+                <div class="estado-info">
+                    <h3 id="estadoTitulo">Sistema desbloqueado</h3>
+                    <p id="estadoDescripcion">No hay ninguna evaluación activa para este curso.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="config-evaluacion" id="configEvaluacion">
+            <h3 class="section-title">⚙️ Configuración de la Evaluación</h3>
+            
+            <div class="config-duracion">
+                <div class="grupo">
+                    <label for="cursoEvaluacion">📚 Curso</label>
+                    <select id="cursoEvaluacion" onchange="cambiarCurso()">
+                        <option value="3° A">3° A</option>
+                        <option value="3° B">3° B</option>
+                        <option value="4° A">4° A</option>
+                        <option value="4° B">4° B</option>
+                    </select>
+                </div>
+                <div class="grupo">
+                    <label for="duracionEvaluacion">⏱️ Duración (minutos)</label>
+                    <input type="number" id="duracionEvaluacion" placeholder="90" min="1" max="300" value="90">
+                </div>
+            </div>
+
+            <div style="margin: 16px 0 12px 0;">
+                <h3 class="section-title" style="font-size:16px;">🔒 Indicadores a desactivar</h3>
+                <p style="color: var(--texto-medio); font-size: 13px; margin-bottom: 10px;">
+                    Seleccione qué indicadores automáticos se desactivarán durante la evaluación.
+                    <br>Los enfermeros no verán el estado automático de los campos seleccionados.
+                </p>
+
+                <div class="opciones-bloqueo-grid">
+                    <div class="opcion-bloqueo-item" id="opcion_temperatura" onclick="toggleOpcion(this)">
+                        <input type="checkbox" id="checkTemperatura" value="temperatura">
+                        <div class="info-opcion">
+                            <div class="titulo">🌡️ Temperatura</div>
+                            <div class="descripcion">Desactiva el estado automático de temperatura</div>
+                        </div>
+                        <span class="check-icon">☐</span>
+                    </div>
+
+                    <div class="opcion-bloqueo-item" id="opcion_fc" onclick="toggleOpcion(this)">
+                        <input type="checkbox" id="checkFC" value="frecuencia_cardiaca">
+                        <div class="info-opcion">
+                            <div class="titulo">❤️ Frecuencia Cardíaca</div>
+                            <div class="descripcion">Desactiva el estado automático de FC</div>
+                        </div>
+                        <span class="check-icon">☐</span>
+                    </div>
+
+                    <div class="opcion-bloqueo-item" id="opcion_presion" onclick="toggleOpcion(this)">
+                        <input type="checkbox" id="checkPresion" value="presion">
+                        <div class="info-opcion">
+                            <div class="titulo">💓 Presión Arterial</div>
+                            <div class="descripcion">Desactiva el estado automático de presión</div>
+                        </div>
+                        <span class="check-icon">☐</span>
+                    </div>
+
+                    <div class="opcion-bloqueo-item" id="opcion_saturacion" onclick="toggleOpcion(this)">
+                        <input type="checkbox" id="checkSaturacion" value="saturacion">
+                        <div class="info-opcion">
+                            <div class="titulo">🫁 Saturación O₂</div>
+                            <div class="descripcion">Desactiva el estado automático de saturación</div>
+                        </div>
+                        <span class="check-icon">☐</span>
+                    </div>
+
+                    <div class="opcion-bloqueo-item" id="opcion_imc" onclick="toggleOpcion(this)">
+                        <input type="checkbox" id="checkImc" value="imc">
+                        <div class="info-opcion">
+                            <div class="titulo">📊 Cálculo automático de IMC</div>
+                            <div class="descripcion">Desactiva el cálculo automático de IMC</div>
+                        </div>
+                        <span class="check-icon">☐</span>
+                    </div>
+
+                    <div class="opcion-bloqueo-item" id="opcion_derivacion" onclick="toggleOpcion(this)">
+                        <input type="checkbox" id="checkDerivacion" value="derivacion">
+                        <div class="info-opcion">
+                            <div class="titulo">🚑 Derivación del paciente</div>
+                            <div class="descripcion">Oculta el campo de derivación</div>
+                        </div>
+                        <span class="check-icon">☐</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: rgba(42, 90, 138, 0.06); padding: 10px 16px; border-radius: 8px; margin: 8px 0; border-left: 3px solid var(--azul-medio);">
+                <p style="color: var(--texto-medio); font-size: 13px; margin: 0;">
+                    🔒 Al activar la evaluación, los indicadores seleccionados se desactivarán para los enfermeros de este curso.
+                    <br>
+                    <span style="color: #8a9aaa; font-size: 12px;">Los campos de entrada seguirán siendo editables, pero no mostrarán el estado automático.</span>
+                </p>
+            </div>
+
+            <div class="info-evaluacion-activa" id="infoEvaluacionActiva" style="display:none;">
+                <strong>📚 Curso:</strong> <span id="infoCurso">--</span> &nbsp;|&nbsp;
+                <strong>⏱️ Duración:</strong> <span id="infoDuracion">--</span> minutos &nbsp;|&nbsp;
+                <strong>🕐 Inicio:</strong> <span id="infoHoraInicio">--</span>
+            </div>
+
+            <div class="acciones-evaluacion">
+                <button class="btn-bloquear" id="btnBloquear" onclick="bloquearSistema()">🔒 Activar bloqueo</button>
+                <button class="btn-desbloquear" id="btnDesbloquear" onclick="desbloquearSistema()" style="display:none;">🔓 Cancelar bloqueo</button>
+            </div>
+        </div>
+
+        <div class="opciones-bloqueadas-lista">
+            <h3 class="section-title">🚫 Indicadores desactivados para este curso</h3>
+            <hr class="section-divider">
+            <div id="opcionesBloqueadas">
+                <div class="empty-message">🔓 No hay indicadores desactivados para este curso.</div>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-secondary" onclick="window.location.href='admin.html'">⬅ Volver al panel de administración</button>
+            <button class="btn btn-secondary" onclick="window.location.href='index.html'">🏠 Volver al inicio</button>
+        </div>
+
+        <div class="footer">
+            © 2024 Sistema de Gestión de Enfermería - Modo Evaluación
+        </div>
+    </div>
+
+    <script>
+        let adminActual = null;
+        let adminRut = null;
+        let cursoActual = '3° A';
+        let estadoBloqueo = null;
+        let opcionesSeleccionadas = [];
+
+        const NOMBRES_OPCIONES = {
+            'temperatura': '🌡️ Temperatura',
+            'frecuencia_cardiaca': '❤️ Frecuencia Cardíaca',
+            'presion': '💓 Presión Arterial',
+            'saturacion': '🫁 Saturación O₂',
+            'imc': '📊 Cálculo automático de IMC',
+            'derivacion': '🚑 Derivación del paciente'
+        };
+
+        function cargarDatos() {
+            adminActual = JSON.parse(localStorage.getItem('admin_actual'));
+            adminRut = adminActual ? adminActual.rut : null;
+            
+            document.getElementById('adminActual').innerText = adminActual ? adminActual.nombre + ' (' + adminActual.rut + ')' : "No especificado";
+            
+            cursoActual = document.getElementById('cursoEvaluacion').value;
+            
+            const todasEvaluaciones = JSON.parse(localStorage.getItem('evaluaciones_activas')) || {};
+            
+            if (todasEvaluaciones[cursoActual] && todasEvaluaciones[cursoActual].activo) {
+                estadoBloqueo = todasEvaluaciones[cursoActual];
+            } else {
+                const bloqueo = JSON.parse(localStorage.getItem('evaluacion_bloqueo'));
+                if (bloqueo && bloqueo.activo && bloqueo.curso === cursoActual) {
+                    estadoBloqueo = bloqueo;
+                } else {
+                    estadoBloqueo = null;
+                }
+            }
+            
+            renderTodasEvaluaciones();
+            actualizarEstadoUI();
+            renderOpcionesBloqueadas();
+            restaurarSelecciones();
+            
+            if (estadoBloqueo && estadoBloqueo.activo) {
+                document.getElementById('duracionEvaluacion').value = estadoBloqueo.duracion || 90;
+            }
+        }
+
+        function cambiarCurso() {
+            cursoActual = document.getElementById('cursoEvaluacion').value;
+            cargarDatos();
+        }
+
+        function toggleOpcion(elemento) {
+            if (estadoBloqueo && estadoBloqueo.activo) {
+                alert("🔒 No se pueden modificar selecciones mientras el bloqueo está activo.");
+                return;
+            }
+
+            const checkbox = elemento.querySelector('input[type="checkbox"]');
+            const checkIcon = elemento.querySelector('.check-icon');
+            
+            checkbox.checked = !checkbox.checked;
+            
+            if (checkbox.checked) {
+                elemento.classList.add('seleccionada');
+                checkIcon.textContent = '✅';
+                if (!opcionesSeleccionadas.includes(checkbox.value)) {
+                    opcionesSeleccionadas.push(checkbox.value);
+                }
+            } else {
+                elemento.classList.remove('seleccionada');
+                checkIcon.textContent = '☐';
+                opcionesSeleccionadas = opcionesSeleccionadas.filter(v => v !== checkbox.value);
+            }
+            
+            actualizarResumenOpciones();
+        }
+
+        function actualizarResumenOpciones() {
+            const container = document.getElementById('opcionesSeleccionadasResumen');
+            if (!container) {
+                const configDiv = document.querySelector('.config-evaluacion');
+                const existing = document.getElementById('opcionesSeleccionadasResumen');
+                if (existing) existing.remove();
+                
+                const nuevo = document.createElement('div');
+                nuevo.id = 'opcionesSeleccionadasResumen';
+                nuevo.style.cssText = 'color: var(--texto-medio); font-size: 14px; min-height: 30px; padding: 8px 0; margin-top: 8px;';
+                configDiv.appendChild(nuevo);
+            }
+            
+            const container2 = document.getElementById('opcionesSeleccionadasResumen');
+            if (opcionesSeleccionadas.length === 0) {
+                container2.innerHTML = '<span style="color: #8a9aaa;">No hay indicadores seleccionados</span>';
+                return;
+            }
+            const nombres = opcionesSeleccionadas.map(c => NOMBRES_OPCIONES[c] || c);
+            container2.innerHTML = '📌 <strong style="color: var(--azul-oscuro);">' + nombres.join(' · ') + '</strong>';
+        }
+
+        function restaurarSelecciones() {
+            document.querySelectorAll('.opcion-bloqueo-item').forEach(el => {
+                const cb = el.querySelector('input[type="checkbox"]');
+                const icon = el.querySelector('.check-icon');
+                cb.checked = false;
+                el.classList.remove('seleccionada');
+                icon.textContent = '☐';
+            });
+            opcionesSeleccionadas = [];
+
+            if (estadoBloqueo && estadoBloqueo.activo) {
+                const campos = estadoBloqueo.campos_bloqueados || [];
+                campos.forEach(campo => {
+                    const item = document.querySelector(`.opcion-bloqueo-item input[value="${campo}"]`);
+                    if (item) {
+                        const parent = item.closest('.opcion-bloqueo-item');
+                        const icon = parent.querySelector('.check-icon');
+                        item.checked = true;
+                        parent.classList.add('seleccionada');
+                        icon.textContent = '✅';
+                        opcionesSeleccionadas.push(campo);
+                    }
+                });
+                actualizarResumenOpciones();
+            }
+        }
+
+        function renderTodasEvaluaciones() {
+            const todasEvaluaciones = JSON.parse(localStorage.getItem('evaluaciones_activas')) || {};
+            const container = document.getElementById('listaEvaluaciones');
+            
+            let activas = [];
+            for (const [curso, evalData] of Object.entries(todasEvaluaciones)) {
+                if (evalData.activo) {
+                    activas.push({ curso, ...evalData });
+                }
+            }
+            
+            const bloqueo = JSON.parse(localStorage.getItem('evaluacion_bloqueo'));
+            if (bloqueo && bloqueo.activo && !activas.find(e => e.curso === bloqueo.curso)) {
+                activas.push({ curso: bloqueo.curso, ...bloqueo });
+            }
+            
+            if (activas.length === 0) {
+                container.innerHTML = '<div class="sin-evaluaciones">📭 No hay evaluaciones activas en el sistema.</div>';
+                return;
+            }
+            
+            let html = '';
+            activas.forEach(e => {
+                const esMiEvaluacion = (e.rut_admin === adminRut);
+                const campos = e.campos_bloqueados || [];
+                const nombres = campos.map(c => NOMBRES_OPCIONES[c] || c).join(', ');
+                
+                html += `
+                    <div class="evaluacion-card ${esMiEvaluacion ? 'mi-evaluacion' : ''}">
+                        <div>
+                            <span class="curso-tag">📚 ${e.curso || 'Curso'}</span>
+                            <span class="admin-nombre">👤 ${e.admin || 'Administrador'}</span>
+                            ${esMiEvaluacion ? ' <span style="color:#b89400; font-size:11px;">⭐ Tu evaluación</span>' : ''}
+                        </div>
+                        <div class="campos-bloqueados">
+                            🚫 ${nombres || 'Ninguno'}
+                        </div>
+                        <div class="tiempo-info">
+                            ⏱️ ${e.duracion || '--'} min · 🕐 ${e.hora_inicio || '--'}
+                            <span class="estado-activo"> ● Activa</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function actualizarEstadoUI() {
+            const estadoCard = document.getElementById('estadoCard');
+            const icono = document.getElementById('estadoIcono');
+            const titulo = document.getElementById('estadoTitulo');
+            const descripcion = document.getElementById('estadoDescripcion');
+            const btnBloquear = document.getElementById('btnBloquear');
+            const btnDesbloquear = document.getElementById('btnDesbloquear');
+            const infoEval = document.getElementById('infoEvaluacionActiva');
+            const infoDuracion = document.getElementById('infoDuracion');
+            const infoHoraInicio = document.getElementById('infoHoraInicio');
+            const infoCurso = document.getElementById('infoCurso');
+
+            if (estadoBloqueo && estadoBloqueo.activo) {
+                estadoCard.className = 'estado-card bloqueado';
+                icono.textContent = '🔒';
+                titulo.textContent = `🔒 Evaluación ACTIVA - ${estadoBloqueo.curso || cursoActual}`;
+                
+                const camposLista = estadoBloqueo.campos_bloqueados || [];
+                let camposTexto = camposLista.map(c => NOMBRES_OPCIONES[c] || c).join(', ');
+                
+                infoEval.style.display = 'block';
+                infoCurso.textContent = estadoBloqueo.curso || cursoActual;
+                infoDuracion.textContent = estadoBloqueo.duracion || '90';
+                infoHoraInicio.textContent = estadoBloqueo.hora_inicio || 'No registrada';
+                
+                descripcion.innerHTML = `
+                    <strong>Indicadores desactivados:</strong> ${camposTexto || 'Ninguno'}
+                    <br>
+                    <span style="font-size:12px; color: var(--azul-medio);">
+                        ⚠️ Los enfermeros de ${estadoBloqueo.curso || cursoActual} no verán el estado automático de estos indicadores
+                    </span>
+                    <br>
+                    <span style="font-size:12px; color: #8a9aaa;">
+                        📚 Curso: ${estadoBloqueo.curso || cursoActual} · ⏱️ Duración: ${estadoBloqueo.duracion || '90'} min · 🕐 Inicio: ${estadoBloqueo.hora_inicio || 'No registrada'}
+                        <br>
+                        👤 Bloqueado por: ${estadoBloqueo.admin || 'Administrador'}
+                    </span>
+                `;
+                btnBloquear.style.display = 'none';
+                btnDesbloquear.style.display = 'inline-flex';
+                document.getElementById('cursoEvaluacion').disabled = true;
+                document.querySelectorAll('.opcion-bloqueo-item input[type="checkbox"]').forEach(cb => cb.disabled = true);
+            } else {
+                estadoCard.className = 'estado-card';
+                icono.textContent = '🔓';
+                titulo.textContent = 'Sistema desbloqueado';
+                descripcion.textContent = `No hay ninguna evaluación activa para ${cursoActual}.`;
+                btnBloquear.style.display = 'inline-flex';
+                btnDesbloquear.style.display = 'none';
+                infoEval.style.display = 'none';
+                document.getElementById('cursoEvaluacion').disabled = false;
+                document.querySelectorAll('.opcion-bloqueo-item input[type="checkbox"]').forEach(cb => cb.disabled = false);
+            }
+        }
+
+        function bloquearSistema() {
+            if (opcionesSeleccionadas.length === 0) {
+                alert("❌ Por favor, seleccione al menos un indicador para desactivar.");
+                return;
+            }
+
+            const duracion = document.getElementById('duracionEvaluacion').value || '90';
+            if (duracion < 1) {
+                alert("❌ La duración debe ser al menos 1 minuto.");
+                return;
+            }
+
+            const todasEvaluaciones = JSON.parse(localStorage.getItem('evaluaciones_activas')) || {};
+            if (todasEvaluaciones[cursoActual] && todasEvaluaciones[cursoActual].activo) {
+                if (!confirm(`⚠️ Ya hay una evaluación activa para ${cursoActual}. ¿Desea reemplazarla?`)) {
+                    return;
+                }
+            }
+
+            const ahora = new Date();
+            const horaActual = ahora.toTimeString().slice(0, 5);
+
+            const nombresSeleccionados = opcionesSeleccionadas.map(c => NOMBRES_OPCIONES[c] || c).join('\n• ');
+
+            if (!confirm(`⚠️ ¿Está seguro de activar la evaluación para ${cursoActual}?\n\nIndicadores a desactivar:\n• ${nombresSeleccionados}\n\n⏱️ Duración: ${duracion} minutos\n🕐 Hora de inicio: ${horaActual}`)) {
+                return;
+            }
+
+            const bloqueo = {
+                activo: true,
+                curso: cursoActual,
+                campos_bloqueados: [...opcionesSeleccionadas],
+                duracion: duracion,
+                hora_inicio: horaActual,
+                fecha_bloqueo: new Date().toLocaleString(),
+                admin: adminActual ? adminActual.nombre : 'Administrador',
+                rut_admin: adminRut
+            };
+
+            let todasEvaluaciones2 = JSON.parse(localStorage.getItem('evaluaciones_activas')) || {};
+            todasEvaluaciones2[cursoActual] = bloqueo;
+            localStorage.setItem('evaluaciones_activas', JSON.stringify(todasEvaluaciones2));
+            
+            localStorage.setItem('evaluacion_bloqueo', JSON.stringify(bloqueo));
+            
+            estadoBloqueo = bloqueo;
+
+            let historial = JSON.parse(localStorage.getItem('evaluacion_historial')) || [];
+            historial.push({
+                id: Date.now(),
+                ...bloqueo,
+                estado: 'activo'
+            });
+            localStorage.setItem('evaluacion_historial', JSON.stringify(historial));
+
+            renderTodasEvaluaciones();
+            actualizarEstadoUI();
+            renderOpcionesBloqueadas();
+
+            alert(`✅ Evaluación activada exitosamente para ${cursoActual}.`);
+        }
+
+        function desbloquearSistema() {
+            if (!estadoBloqueo || !estadoBloqueo.activo) {
+                alert("ℹ️ No hay ninguna evaluación activa para este curso.");
+                return;
+            }
+
+            if (!confirm(`⚠️ ¿Está seguro de cancelar la evaluación para ${cursoActual}?\n\nLos enfermeros de ${cursoActual} podrán ver todos los indicadores automáticos nuevamente.`)) {
+                return;
+            }
+
+            let historial = JSON.parse(localStorage.getItem('evaluacion_historial')) || [];
+            const index = historial.findIndex(h => h.activo === true && h.curso === cursoActual);
+            if (index !== -1) {
+                historial[index].activo = false;
+                historial[index].estado = 'finalizado';
+                historial[index].fecha_fin = new Date().toLocaleString();
+                if (historial[index].hora_inicio) {
+                    const inicio = new Date();
+                    const [h, m] = historial[index].hora_inicio.split(':').map(Number);
+                    inicio.setHours(h, m, 0, 0);
+                    const fin = new Date();
+                    const diffMs = fin - inicio;
+                    const diffMin = Math.round(diffMs / 60000);
+                    historial[index].duracion_real = diffMin + ' min';
+                }
+                localStorage.setItem('evaluacion_historial', JSON.stringify(historial));
+            }
+
+            let todasEvaluaciones = JSON.parse(localStorage.getItem('evaluaciones_activas')) || {};
+            delete todasEvaluaciones[cursoActual];
+            localStorage.setItem('evaluaciones_activas', JSON.stringify(todasEvaluaciones));
+            
+            localStorage.removeItem('evaluacion_bloqueo');
+            estadoBloqueo = null;
+
+            renderTodasEvaluaciones();
+            actualizarEstadoUI();
+            renderOpcionesBloqueadas();
+            restaurarSelecciones();
+
+            alert(`✅ Bloqueo cancelado exitosamente para ${cursoActual}. Todos los indicadores están disponibles nuevamente.`);
+        }
+
+        function renderOpcionesBloqueadas() {
+            const container = document.getElementById('opcionesBloqueadas');
+            
+            if (!estadoBloqueo || !estadoBloqueo.activo) {
+                container.innerHTML = `<div class="empty-message">🔓 No hay indicadores desactivados para ${cursoActual}.</div>`;
+                return;
+            }
+
+            const campos = estadoBloqueo.campos_bloqueados || [];
+            if (campos.length === 0) {
+                container.innerHTML = `<div class="empty-message">🔓 No hay indicadores desactivados para ${cursoActual}.</div>`;
+                return;
+            }
+
+            let html = `
+                <div style="padding: 8px 0; color: var(--texto-medio); font-size: 13px; border-bottom: 1px solid rgba(42,90,138,0.04); margin-bottom: 8px;">
+                    📚 <strong style="color: var(--azul-oscuro);">${estadoBloqueo.curso || cursoActual}</strong> &nbsp;|&nbsp;
+                    ⏱️ Duración: <strong style="color: var(--azul-oscuro);">${estadoBloqueo.duracion || '90'}</strong> minutos &nbsp;|&nbsp;
+                    🕐 Inicio: <strong style="color: var(--azul-oscuro);">${estadoBloqueo.hora_inicio || 'No registrada'}</strong>
+                </div>
+            `;
+            
+            campos.forEach(campo => {
+                const nombre = NOMBRES_OPCIONES[campo] || campo;
+                html += `
+                    <div class="opcion-bloqueada-activa">
+                        <span class="icono">🚫</span>
+                        <span>${nombre}</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        document.addEventListener('DOMContentLoaded', cargarDatos);
+
+        setInterval(() => {
+            const todasEvaluaciones = JSON.parse(localStorage.getItem('evaluaciones_activas')) || {};
+            let nuevoEstado = null;
+            
+            if (todasEvaluaciones[cursoActual] && todasEvaluaciones[cursoActual].activo) {
+                nuevoEstado = todasEvaluaciones[cursoActual];
+            } else {
+                const bloqueo = JSON.parse(localStorage.getItem('evaluacion_bloqueo'));
+                if (bloqueo && bloqueo.activo && bloqueo.curso === cursoActual) {
+                    nuevoEstado = bloqueo;
+                }
+            }
+            
+            if (JSON.stringify(nuevoEstado) !== JSON.stringify(estadoBloqueo)) {
+                estadoBloqueo = nuevoEstado;
+                renderTodasEvaluaciones();
+                actualizarEstadoUI();
+                renderOpcionesBloqueadas();
+                if (!estadoBloqueo || !estadoBloqueo.activo) {
+                    restaurarSelecciones();
+                }
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
