@@ -6,6 +6,7 @@
     <title>Panel de Enfermero - Enfermería</title>
     <link rel="stylesheet" href="styles.css">
     <script src="config.js"></script>
+    <script src="data_pacientes.js"></script>
 </head>
 <body>
     <div class="card panel-container">
@@ -17,6 +18,7 @@
             <button class="btn-casa" onclick="abrirModalSalir()">🏠 <span class="texto">Salir</span></button>
         </div>
 
+        <!-- Banner de evaluación -->
         <div id="bloqueoActivo" style="display:none; background: rgba(212,135,94,0.10); border: 2px solid rgba(212,135,94,0.20); border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; text-align: center;">
             <div style="font-size:32px;">🔒</div>
             <p style="color:#d4875e; font-weight:700; margin:4px 0; font-size:18px;">
@@ -108,6 +110,7 @@
                     </div>
                 </div>
 
+                <!-- SECCIÓN SIGNOS VITALES -->
                 <div class="seccion" id="seccionSignosVitales">
                     <div class="seccion-titulo">💓 Signos Vitales y Antropometría</div>
                     <div class="signos-vitales">
@@ -129,6 +132,7 @@
                         </div>
                     </div>
 
+                    <!-- INDICADORES DE SIGNOS VITALES -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-top: 10px;">
                         <div class="indicador-signo" id="indicadorTemperatura">
                             <span style="font-size:12px; color:#8a6aaa;">🌡️ Temperatura</span>
@@ -148,6 +152,7 @@
                         </div>
                     </div>
 
+                    <!-- SECCIÓN IMC -->
                     <div id="seccionIMC">
                         <div class="signos-vitales" style="margin-top: 12px;">
                             <div>
@@ -173,6 +178,7 @@
                     </div>
                 </div>
 
+                <!-- SECCIÓN DERIVACIÓN -->
                 <div class="seccion" id="seccionDerivacion">
                     <div class="seccion-titulo">🚑 Derivación del Paciente</div>
                     <div class="row-full">
@@ -273,6 +279,9 @@
             return null;
         }
 
+        // =============================================
+        // VERIFICAR BLOQUEO DE INDICADOR ESPECÍFICO
+        // =============================================
         function verificarBloqueoIndicador(campo) {
             const bloqueo = obtenerEvaluacionPorCurso();
             if (bloqueo && bloqueo.activo) {
@@ -595,7 +604,7 @@
         }
 
         // =============================================
-        // APLICAR BLOQUEO - BANNER Y OPCIONES
+        // APLICAR BLOQUEO
         // =============================================
         function aplicarBloqueoCampos() {
             const bloqueo = obtenerEvaluacionPorCurso();
@@ -688,78 +697,74 @@
         }
 
         // =============================================
-        // BASE DE DATOS DE ESTUDIANTES (ENFERMEROS)
+        // AUTOCOMPLETADO POR RUT (usando data_pacientes.js)
         // =============================================
-        const estudiantesPorCurso = {
-            // ... (todos los estudiantes)
-            "3° A": [],
-            "3° B": [],
-            "4° A": [],
-            "4° B": []
-            // (Aquí van todos los estudiantes de tu base de datos)
-        };
-
-        // =============================================
-        // FUNCIONES PARA OBTENER TODOS LOS PACIENTES
-        // =============================================
-
-        function obtenerTodosLosEstudiantes() {
-            const todos = [];
-            for (const curso in estudiantesPorCurso) {
-                estudiantesPorCurso[curso].forEach(e => {
-                    todos.push({ ...e, curso: curso });
-                });
+        function configurarAutocompletado() {
+            const rutInput = document.getElementById('pacienteRut');
+            const sugerenciasDiv = document.getElementById('sugerenciasRut');
+            
+            if (!rutInput) return;
+            
+            // Obtener todos los estudiantes
+            let todosLosEstudiantes = [];
+            
+            // Intentar usar la función global de data_pacientes.js
+            if (typeof obtenerTodosLosEstudiantes === 'function') {
+                todosLosEstudiantes = obtenerTodosLosEstudiantes();
+            } else {
+                // Si no está disponible, usar datos locales de estudiantesPorCurso
+                if (typeof estudiantesPorCurso !== 'undefined') {
+                    for (const curso in estudiantesPorCurso) {
+                        estudiantesPorCurso[curso].forEach(e => {
+                            todosLosEstudiantes.push({ ...e, curso: curso });
+                        });
+                    }
+                }
             }
-            return todos;
+            
+            rutInput.addEventListener('input', function() {
+                const rut = this.value.trim();
+                
+                if (rut.length < 3) {
+                    sugerenciasDiv.style.display = 'none';
+                    return;
+                }
+                
+                const coincidencias = todosLosEstudiantes.filter(e => 
+                    e.rut.includes(rut) || 
+                    e.nombre.toLowerCase().includes(rut.toLowerCase())
+                );
+                
+                if (coincidencias.length === 0) {
+                    sugerenciasDiv.style.display = 'none';
+                    return;
+                }
+                
+                let html = '';
+                coincidencias.slice(0, 10).forEach(e => {
+                    const nombreEscapado = e.nombre.replace(/'/g, "\\'");
+                    html += `<div onclick="seleccionarEstudiante('${e.rut}', '${nombreEscapado}', '${e.curso || ''}')">`;
+                    html += `<span><strong>${e.nombre}</strong></span>`;
+                    html += `<span class="sugerencia-curso">${e.rut} - ${e.curso || 'Sin curso'}</span>`;
+                    html += '</div>';
+                });
+                
+                sugerenciasDiv.innerHTML = html;
+                sugerenciasDiv.style.display = 'block';
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (e.target !== rutInput && e.target !== sugerenciasDiv) {
+                    sugerenciasDiv.style.display = 'none';
+                }
+            });
         }
 
-        function obtenerTodosLosPacientes() {
-            const pacientes = [];
-            
-            const solicitudes = JSON.parse(localStorage.getItem('solicitudes_pacientes')) || [];
-            solicitudes.forEach(s => {
-                if (s.nombre && s.rut) {
-                    pacientes.push({ 
-                        nombre: s.nombre, 
-                        rut: s.rut, 
-                        curso: s.curso || 'Paciente' 
-                    });
-                }
-            });
-            
-            const fichas = JSON.parse(localStorage.getItem('fichas_medicas')) || [];
-            fichas.forEach(f => {
-                const nombre = f.nombre || f.nombrePaciente;
-                const rut = f.rut || f.rutPaciente;
-                if (nombre && rut) {
-                    const existe = pacientes.some(p => p.rut === rut);
-                    if (!existe) {
-                        pacientes.push({ 
-                            nombre: nombre, 
-                            rut: rut, 
-                            curso: f.curso || 'Paciente' 
-                        });
-                    }
-                }
-            });
-            
-            const atenciones = JSON.parse(localStorage.getItem('atenciones_enfermeria')) || [];
-            atenciones.forEach(a => {
-                const nombre = a.nombre || a.nombrePaciente;
-                const rut = a.rut || a.rutPaciente;
-                if (nombre && rut) {
-                    const existe = pacientes.some(p => p.rut === rut);
-                    if (!existe) {
-                        pacientes.push({ 
-                            nombre: nombre, 
-                            rut: rut, 
-                            curso: a.curso || 'Paciente' 
-                        });
-                    }
-                }
-            });
-            
-            return pacientes;
+        function seleccionarEstudiante(rut, nombre, curso) {
+            document.getElementById('pacienteRut').value = rut;
+            document.getElementById('pacienteNombre').value = nombre;
+            document.getElementById('pacienteCurso').value = curso || '';
+            document.getElementById('sugerenciasRut').style.display = 'none';
         }
 
         // =============================================
@@ -1015,70 +1020,7 @@
         function irAlInicio() { cerrarModalSalir(); window.location.href = 'index.html'; }
 
         // =============================================
-        // CONFIGURAR AUTOCOMPLETADO (ENFERMEROS + PACIENTES)
-        // =============================================
-        function configurarAutocompletado() {
-            const rutInput = document.getElementById('pacienteRut');
-            const sugerenciasDiv = document.getElementById('sugerenciasRut');
-            if (!rutInput) return;
-            
-            rutInput.addEventListener('input', function() {
-                const rut = this.value.trim();
-                if (rut.length < 3) { 
-                    sugerenciasDiv.style.display = 'none'; 
-                    return; 
-                }
-                
-                const estudiantes = obtenerTodosLosEstudiantes();
-                const pacientes = obtenerTodosLosPacientes();
-                const todos = [...estudiantes, ...pacientes];
-                
-                const unicos = [];
-                const rutsVistos = new Set();
-                todos.forEach(item => {
-                    if (!rutsVistos.has(item.rut)) {
-                        rutsVistos.add(item.rut);
-                        unicos.push(item);
-                    }
-                });
-                
-                const coincidencias = unicos.filter(e => 
-                    e.rut.includes(rut) || 
-                    e.nombre.toLowerCase().includes(rut.toLowerCase())
-                );
-                
-                if (coincidencias.length === 0) { 
-                    sugerenciasDiv.style.display = 'none'; 
-                    return; 
-                }
-                
-                let html = '';
-                coincidencias.slice(0, 10).forEach(e => {
-                    html += '<div onclick="seleccionarEstudiante(\'' + e.rut + '\', \'' + e.nombre.replace(/'/g, "\\'") + '\', \'' + (e.curso || 'Paciente') + '\')">';
-                    html += '<span><strong>' + e.nombre + '</strong></span>';
-                    html += '<span class="sugerencia-curso">' + e.rut + ' - ' + (e.curso || 'Paciente') + '</span>';
-                    html += '</div>';
-                });
-                sugerenciasDiv.innerHTML = html;
-                sugerenciasDiv.style.display = 'block';
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (e.target !== rutInput && e.target !== sugerenciasDiv) {
-                    sugerenciasDiv.style.display = 'none';
-                }
-            });
-        }
-
-        function seleccionarEstudiante(rut, nombre, curso) {
-            document.getElementById('pacienteRut').value = rut;
-            document.getElementById('pacienteNombre').value = nombre;
-            document.getElementById('pacienteCurso').value = curso || '';
-            document.getElementById('sugerenciasRut').style.display = 'none';
-        }
-
-        // =============================================
-        // EVENTOS Y GUARDAR
+        // EVENTOS
         // =============================================
         document.addEventListener('DOMContentLoaded', function() {
             var tempInput = document.getElementById('temperatura');
@@ -1105,8 +1047,10 @@
             
             calcularIMC();
             aplicarBloqueoCampos();
+            configurarAutocompletado();
         });
 
+        // Submit del formulario
         document.getElementById('fichaMedicaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1243,7 +1187,8 @@
                         descripcion: resultado || 'Sin observaciones',
                         enfermero_registro: enfermeroActual ? enfermeroActual.nombre : 'Desconocido',
                         enfermero: enfermeroActual ? enfermeroActual.nombre : 'Desconocido',
-                        fecha_registro: new Date().toLocaleString()
+                        fecha_registro: new Date().toLocaleString(),
+                        estado: 'Activo'
                     };
                     
                     registrosData.push(ficha);
@@ -1284,7 +1229,6 @@
 
         cargarInfoEnfermero();
         cargarRegistros();
-        configurarAutocompletado();
         aplicarBloqueoCampos();
     </script>
 </body>
