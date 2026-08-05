@@ -17,6 +17,25 @@
             <button class="btn-casa" onclick="abrirModalSalir()">🏠 <span class="texto">Salir</span></button>
         </div>
 
+        <div id="bloqueoActivo" style="display:none; background: rgba(212,135,94,0.10); border: 2px solid rgba(212,135,94,0.20); border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; text-align: center;">
+            <div style="font-size:32px;">🔒</div>
+            <p style="color:#d4875e; font-weight:700; margin:4px 0; font-size:18px;">
+                📚 <span id="cursoEvaluacionLabel">--</span> - EN EVALUACIÓN
+            </p>
+            <p style="color:#b898d8; font-size:14px; margin:4px 0;" id="infoBloqueoPanel">
+                Algunos indicadores automáticos están desactivados durante la evaluación.
+            </p>
+            <div style="background: rgba(212,135,94,0.06); padding: 8px 12px; border-radius: 8px; margin: 8px 0; font-size: 13px; color: #d8c0e8;">
+                👤 <strong>Administrador:</strong> <span id="infoAdminPanel">--</span>
+                <br>
+                ⏱️ <strong>Duración:</strong> <span id="infoDuracionPanel">--</span> minutos &nbsp;|&nbsp;
+                🕐 <strong>Inicio:</strong> <span id="infoHoraPanel">--</span>
+            </div>
+            <p style="color:#8a6aaa; font-size:13px; margin:4px 0;" id="opcionesBloqueadasInfo">
+                Indicadores desactivados: Ninguno
+            </p>
+        </div>
+
         <div class="stat-unica">
             <div class="stat-item">
                 <span class="numero" id="totalRegistros">0</span>
@@ -89,30 +108,99 @@
                     </div>
                 </div>
 
-                <!-- ⭐ SECCIÓN SIGNOS VITALES CON INDICADOR DE FIEBRE -->
-                <div class="seccion">
-                    <div class="seccion-titulo">💓 Signos Vitales</div>
+                <div class="seccion" id="seccionSignosVitales">
+                    <div class="seccion-titulo">💓 Signos Vitales y Antropometría</div>
                     <div class="signos-vitales">
                         <div>
-                            <label for="temperatura">Temperatura (°C)</label>
+                            <label for="temperatura">🌡️ Temperatura (°C)</label>
                             <input type="number" id="temperatura" placeholder="36.5" step="0.1">
                         </div>
                         <div>
-                            <label for="frecuenciaCardiaca">Frec. Cardiaca (lpm)</label>
+                            <label for="frecuenciaCardiaca">❤️ Frec. Cardiaca (lpm)</label>
                             <input type="number" id="frecuenciaCardiaca" placeholder="72">
                         </div>
                         <div>
-                            <label for="presion">Presión (mmHg)</label>
+                            <label for="presion">💓 Presión (mmHg)</label>
                             <input type="text" id="presion" placeholder="120/80">
                         </div>
                         <div>
-                            <label for="saturacion">Saturación O₂ (%)</label>
+                            <label for="saturacion">🫁 Saturación O₂ (%)</label>
                             <input type="number" id="saturacion" placeholder="98" min="0" max="100">
                         </div>
                     </div>
-                    <!-- INDICADOR DE FIEBRE - SIN REPETIR GRADOS -->
-                    <div class="fiebre-container">
-                        <span id="estadoFiebre">🌡️ Esperando temperatura...</span>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-top: 10px;">
+                        <div class="indicador-signo" id="indicadorTemperatura">
+                            <span style="font-size:12px; color:#8a6aaa;">🌡️ Temperatura</span>
+                            <span id="estadoTemperatura" style="font-size:13px; font-weight:600; display:block; padding:4px 8px; border-radius:6px; background:rgba(30,15,50,0.20);">⏳ Pendiente</span>
+                        </div>
+                        <div class="indicador-signo" id="indicadorFC">
+                            <span style="font-size:12px; color:#8a6aaa;">❤️ Frec. Cardiaca</span>
+                            <span id="estadoFC" style="font-size:13px; font-weight:600; display:block; padding:4px 8px; border-radius:6px; background:rgba(30,15,50,0.20);">⏳ Pendiente</span>
+                        </div>
+                        <div class="indicador-signo" id="indicadorPresion">
+                            <span style="font-size:12px; color:#8a6aaa;">💓 Presión</span>
+                            <span id="estadoPresion" style="font-size:13px; font-weight:600; display:block; padding:4px 8px; border-radius:6px; background:rgba(30,15,50,0.20);">⏳ Pendiente</span>
+                        </div>
+                        <div class="indicador-signo" id="indicadorSaturacion">
+                            <span style="font-size:12px; color:#8a6aaa;">🫁 Saturación O₂</span>
+                            <span id="estadoSaturacion" style="font-size:13px; font-weight:600; display:block; padding:4px 8px; border-radius:6px; background:rgba(30,15,50,0.20);">⏳ Pendiente</span>
+                        </div>
+                    </div>
+
+                    <div id="seccionIMC">
+                        <div class="signos-vitales" style="margin-top: 12px;">
+                            <div>
+                                <label for="talla">📏 Talla (cm)</label>
+                                <input type="number" id="talla" placeholder="170" step="0.1" min="50" max="250">
+                            </div>
+                            <div>
+                                <label for="peso">⚖️ Peso (kg)</label>
+                                <input type="number" id="peso" placeholder="70" step="0.1" min="10" max="300">
+                            </div>
+                            <div>
+                                <label for="imc">📊 IMC</label>
+                                <input type="text" id="imc" placeholder="Calculado automáticamente" readonly style="font-weight: 700; color: #c8a8e8;">
+                            </div>
+                            <div>
+                                <label for="estadoImc">📌 Estado IMC</label>
+                                <input type="text" id="estadoImc" placeholder="---" readonly style="font-weight: 700;">
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: #8a6aaa; margin-top: 6px; text-align: center;" id="imcMensaje">
+                            ℹ️ El IMC se calcula automáticamente al ingresar talla y peso.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="seccion" id="seccionDerivacion">
+                    <div class="seccion-titulo">🚑 Derivación del Paciente</div>
+                    <div class="row-full">
+                        <label for="derivacion">¿A dónde fue derivado el paciente?</label>
+                        <select id="derivacion" style="width:100%; padding:10px 14px; border:2px solid rgba(180,140,210,0.10); border-radius:10px; font-size:14px; font-family:inherit; background:rgba(30,15,50,0.70); color:#f0e8f8;">
+                            <option value="">Seleccione una opción...</option>
+                            <option value="No derivado">No derivado</option>
+                            <option value="Hospital">Hospital</option>
+                            <option value="Centro de Salud">Centro de Salud</option>
+                            <option value="Especialista">Especialista</option>
+                            <option value="Urgencias">Urgencias</option>
+                            <option value="Traumatología">Traumatología</option>
+                            <option value="Neurología">Neurología</option>
+                            <option value="Cardiología">Cardiología</option>
+                            <option value="Dermatología">Dermatología</option>
+                            <option value="Ginecología">Ginecología</option>
+                            <option value="Oftalmología">Oftalmología</option>
+                            <option value="Otorrinolaringología">Otorrinolaringología</option>
+                            <option value="Psiquiatría">Psiquiatría</option>
+                            <option value="Rehabilitación">Rehabilitación</option>
+                            <option value="Laboratorio">Laboratorio</option>
+                            <option value="Imagenología">Imagenología</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="row-full mt-10">
+                        <label for="motivoDerivacion">Motivo de la derivación</label>
+                        <textarea id="motivoDerivacion" placeholder="Describa el motivo por el cual se deriva al paciente..."></textarea>
                     </div>
                 </div>
 
@@ -161,148 +249,459 @@
 
     <script>
         // =============================================
-        // BASE DE DATOS DE ESTUDIANTES
+        // VERIFICACIÓN DE BLOQUEO POR CURSO
+        // =============================================
+        function obtenerCursoEnfermero() {
+            const enfermero = JSON.parse(localStorage.getItem('enfermero_actual'));
+            return enfermero ? enfermero.curso : null;
+        }
+
+        function obtenerEvaluacionPorCurso() {
+            const curso = obtenerCursoEnfermero();
+            if (!curso) return null;
+            
+            const todasEvaluaciones = JSON.parse(localStorage.getItem('evaluaciones_activas')) || {};
+            if (todasEvaluaciones[curso] && todasEvaluaciones[curso].activo) {
+                return todasEvaluaciones[curso];
+            }
+            
+            const bloqueo = JSON.parse(localStorage.getItem('evaluacion_bloqueo'));
+            if (bloqueo && bloqueo.activo && bloqueo.curso === curso) {
+                return bloqueo;
+            }
+            
+            return null;
+        }
+
+        function verificarBloqueoIndicador(campo) {
+            const bloqueo = obtenerEvaluacionPorCurso();
+            if (bloqueo && bloqueo.activo) {
+                const camposBloqueados = bloqueo.campos_bloqueados || [];
+                if (camposBloqueados.includes(campo)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // =============================================
+        // INDICADORES DE SIGNOS VITALES
+        // =============================================
+        function actualizarEstadoTemperatura() {
+            var tempInput = document.getElementById('temperatura');
+            var estadoSpan = document.getElementById('estadoTemperatura');
+            
+            if (!tempInput || !estadoSpan) return;
+            
+            if (verificarBloqueoIndicador('temperatura')) {
+                estadoSpan.textContent = '⏳ Pendiente (Evaluación)';
+                estadoSpan.style.color = '#8a6aaa';
+                estadoSpan.style.background = 'rgba(30,15,50,0.10)';
+                return;
+            }
+            
+            var temp = parseFloat(tempInput.value);
+            
+            if (isNaN(temp) || tempInput.value === '') {
+                estadoSpan.textContent = '⏳ Pendiente';
+                estadoSpan.style.color = '#8a6aaa';
+                estadoSpan.style.background = 'rgba(30,15,50,0.15)';
+                return;
+            }
+            
+            var estado = '';
+            var color = '';
+            var bg = '';
+            
+            if (temp < 32.0) {
+                estado = '🚨 Hipotermia severa (< 32.0°C)';
+                color = '#b54040';
+                bg = 'rgba(181,64,64,0.15)';
+            } else if (temp >= 32.0 && temp < 35.0) {
+                estado = '❄️ Hipotermia moderada (32-34.9°C)';
+                color = '#5a8aa8';
+                bg = 'rgba(90,138,168,0.12)';
+            } else if (temp >= 35.0 && temp <= 35.9) {
+                estado = '📉 Hipotermia leve (35-35.9°C)';
+                color = '#8a8aaa';
+                bg = 'rgba(138,138,170,0.10)';
+            } else if (temp >= 36.0 && temp <= 37.4) {
+                estado = '✅ Normotermia (36-37.4°C)';
+                color = '#6b8c5e';
+                bg = 'rgba(107,140,94,0.12)';
+            } else if (temp >= 37.5 && temp <= 37.9) {
+                estado = '🌡️ Febrícula (37.5-37.9°C)';
+                color = '#c9a84c';
+                bg = 'rgba(201,168,76,0.12)';
+            } else if (temp >= 38.0 && temp <= 38.9) {
+                estado = '🔥 Fiebre moderada (38-38.9°C)';
+                color = '#d4875e';
+                bg = 'rgba(212,135,94,0.12)';
+            } else if (temp >= 39.0 && temp <= 40.0) {
+                estado = '🔥 Hipertermia (39-40°C)';
+                color = '#c95a5a';
+                bg = 'rgba(201,90,90,0.12)';
+            } else if (temp > 40.0) {
+                estado = '🚨 Hipertermia severa (> 40°C)';
+                color = '#b54040';
+                bg = 'rgba(181,64,64,0.15)';
+            }
+            
+            estadoSpan.textContent = estado;
+            estadoSpan.style.color = color;
+            estadoSpan.style.background = bg;
+        }
+
+        function actualizarEstadoFC() {
+            var fcInput = document.getElementById('frecuenciaCardiaca');
+            var estadoSpan = document.getElementById('estadoFC');
+            
+            if (!fcInput || !estadoSpan) return;
+            
+            if (verificarBloqueoIndicador('frecuencia_cardiaca')) {
+                estadoSpan.textContent = '⏳ Pendiente (Evaluación)';
+                estadoSpan.style.color = '#8a6aaa';
+                estadoSpan.style.background = 'rgba(30,15,50,0.10)';
+                return;
+            }
+            
+            var fc = parseFloat(fcInput.value);
+            
+            if (isNaN(fc) || fcInput.value === '') {
+                estadoSpan.textContent = '⏳ Pendiente';
+                estadoSpan.style.color = '#8a6aaa';
+                estadoSpan.style.background = 'rgba(30,15,50,0.15)';
+                return;
+            }
+            
+            var estado = '';
+            var color = '';
+            var bg = '';
+            
+            if (fc < 40) {
+                estado = '🚨 Bradicardia severa (< 40 lpm)';
+                color = '#b54040';
+                bg = 'rgba(181,64,64,0.15)';
+            } else if (fc >= 40 && fc < 60) {
+                estado = '📉 Bradicardia (40-59 lpm)';
+                color = '#d4875e';
+                bg = 'rgba(212,135,94,0.10)';
+            } else if (fc >= 60 && fc <= 100) {
+                estado = '✅ Normocardia (60-100 lpm)';
+                color = '#6b8c5e';
+                bg = 'rgba(107,140,94,0.12)';
+            } else if (fc >= 101 && fc <= 120) {
+                estado = '📈 Taquicardia leve (101-120 lpm)';
+                color = '#c9a84c';
+                bg = 'rgba(201,168,76,0.10)';
+            } else if (fc >= 121 && fc <= 150) {
+                estado = '🔥 Taquicardia moderada (121-150 lpm)';
+                color = '#d4875e';
+                bg = 'rgba(212,135,94,0.12)';
+            } else if (fc > 150) {
+                estado = '🚨 Taquicardia severa (> 150 lpm)';
+                color = '#b54040';
+                bg = 'rgba(181,64,64,0.15)';
+            }
+            
+            estadoSpan.textContent = estado;
+            estadoSpan.style.color = color;
+            estadoSpan.style.background = bg;
+        }
+
+        function actualizarEstadoPresion() {
+            var presionInput = document.getElementById('presion');
+            var estadoSpan = document.getElementById('estadoPresion');
+            
+            if (!presionInput || !estadoSpan) return;
+            
+            if (verificarBloqueoIndicador('presion')) {
+                estadoSpan.textContent = '⏳ Pendiente (Evaluación)';
+                estadoSpan.style.color = '#8a6aaa';
+                estadoSpan.style.background = 'rgba(30,15,50,0.10)';
+                return;
+            }
+            
+            var valor = presionInput.value.trim();
+            
+            if (valor === '') {
+                estadoSpan.textContent = '⏳ Pendiente';
+                estadoSpan.style.color = '#8a6aaa';
+                estadoSpan.style.background = 'rgba(30,15,50,0.15)';
+                return;
+            }
+            
+            var partes = valor.split('/');
+            if (partes.length === 2) {
+                var sistolica = parseInt(partes[0].trim());
+                var diastolica = parseInt(partes[1].trim());
+                
+                if (!isNaN(sistolica) && !isNaN(diastolica)) {
+                    var estado = '';
+                    var color = '';
+                    var bg = '';
+                    
+                    if (sistolica < 90 || diastolica < 60) {
+                        estado = '📉 Hipotensión (' + sistolica + '/' + diastolica + ' mmHg)';
+                        color = '#d4875e';
+                        bg = 'rgba(212,135,94,0.10)';
+                    } else if (sistolica >= 90 && sistolica <= 120 && diastolica >= 60 && diastolica <= 80) {
+                        estado = '✅ Presión normal (' + sistolica + '/' + diastolica + ' mmHg)';
+                        color = '#6b8c5e';
+                        bg = 'rgba(107,140,94,0.12)';
+                    } else if ((sistolica >= 121 && sistolica <= 139) || (diastolica >= 81 && diastolica <= 89)) {
+                        estado = '📈 Prehipertensión (' + sistolica + '/' + diastolica + ' mmHg)';
+                        color = '#c9a84c';
+                        bg = 'rgba(201,168,76,0.10)';
+                    } else if ((sistolica >= 140 && sistolica <= 159) || (diastolica >= 90 && diastolica <= 99)) {
+                        estado = '🔥 Hipertensión grado 1 (' + sistolica + '/' + diastolica + ' mmHg)';
+                        color = '#d4875e';
+                        bg = 'rgba(212,135,94,0.12)';
+                    } else if ((sistolica >= 160 && sistolica <= 179) || (diastolica >= 100 && diastolica <= 109)) {
+                        estado = '🔥 Hipertensión grado 2 (' + sistolica + '/' + diastolica + ' mmHg)';
+                        color = '#c95a5a';
+                        bg = 'rgba(201,90,90,0.12)';
+                    } else if (sistolica >= 180 || diastolica >= 110) {
+                        estado = '🚨 Hipertensión grado 3 (' + sistolica + '/' + diastolica + ' mmHg) - ¡URGENCIA!';
+                        color = '#b54040';
+                        bg = 'rgba(181,64,64,0.15)';
+                    }
+                    
+                    estadoSpan.textContent = estado;
+                    estadoSpan.style.color = color;
+                    estadoSpan.style.background = bg;
+                    return;
+                }
+            }
+            
+            estadoSpan.textContent = '📊 ' + valor + ' mmHg';
+            estadoSpan.style.color = '#8a6aaa';
+            estadoSpan.style.background = 'rgba(30,15,50,0.15)';
+        }
+
+        function actualizarEstadoSaturacion() {
+            var satInput = document.getElementById('saturacion');
+            var estadoSpan = document.getElementById('estadoSaturacion');
+            
+            if (!satInput || !estadoSpan) return;
+            
+            if (verificarBloqueoIndicador('saturacion')) {
+                estadoSpan.textContent = '⏳ Pendiente (Evaluación)';
+                estadoSpan.style.color = '#8a6aaa';
+                estadoSpan.style.background = 'rgba(30,15,50,0.10)';
+                return;
+            }
+            
+            var sat = parseFloat(satInput.value);
+            
+            if (isNaN(sat) || satInput.value === '') {
+                estadoSpan.textContent = '⏳ Pendiente';
+                estadoSpan.style.color = '#8a6aaa';
+                estadoSpan.style.background = 'rgba(30,15,50,0.15)';
+                return;
+            }
+            
+            var estado = '';
+            var color = '';
+            var bg = '';
+            
+            if (sat < 85) {
+                estado = '🚨 Hipoxemia severa (< 85%)';
+                color = '#b54040';
+                bg = 'rgba(181,64,64,0.15)';
+            } else if (sat >= 85 && sat < 90) {
+                estado = '🔥 Hipoxemia moderada (85-89%)';
+                color = '#c95a5a';
+                bg = 'rgba(201,90,90,0.12)';
+            } else if (sat >= 90 && sat < 94) {
+                estado = '📉 Hipoxemia leve (90-93%)';
+                color = '#d4875e';
+                bg = 'rgba(212,135,94,0.10)';
+            } else if (sat >= 94 && sat <= 100) {
+                estado = '✅ Normoxemia (94-100%)';
+                color = '#6b8c5e';
+                bg = 'rgba(107,140,94,0.12)';
+            }
+            
+            estadoSpan.textContent = estado;
+            estadoSpan.style.color = color;
+            estadoSpan.style.background = bg;
+        }
+
+        // =============================================
+        // CÁLCULO DE IMC AUTOMÁTICO
+        // =============================================
+        function calcularIMC() {
+            const bloqueo = obtenerEvaluacionPorCurso();
+            const imcBloqueado = bloqueo && bloqueo.activo && bloqueo.campos_bloqueados && bloqueo.campos_bloqueados.includes('imc');
+            
+            const tallaInput = document.getElementById('talla');
+            const pesoInput = document.getElementById('peso');
+            const imcInput = document.getElementById('imc');
+            const estadoInput = document.getElementById('estadoImc');
+            const mensaje = document.getElementById('imcMensaje');
+            
+            if (imcBloqueado) {
+                if (mensaje) {
+                    mensaje.textContent = '🔒 Cálculo automático desactivado. Ingrese IMC manualmente.';
+                    mensaje.style.color = '#d4875e';
+                }
+                if (tallaInput) { tallaInput.placeholder = '170'; tallaInput.style.opacity = '1'; tallaInput.disabled = false; }
+                if (pesoInput) { pesoInput.placeholder = '70'; pesoInput.style.opacity = '1'; pesoInput.disabled = false; }
+                if (imcInput) { imcInput.placeholder = 'Ingrese IMC manualmente'; imcInput.style.opacity = '1'; imcInput.style.color = '#c8a8e8'; imcInput.readOnly = false; }
+                if (estadoInput) { estadoInput.placeholder = 'Ingrese estado manualmente'; estadoInput.style.opacity = '1'; estadoInput.style.color = '#c8a8e8'; estadoInput.readOnly = false; }
+                return;
+            } else {
+                if (mensaje) {
+                    mensaje.textContent = 'ℹ️ El IMC se calcula automáticamente al ingresar talla y peso.';
+                    mensaje.style.color = '#8a6aaa';
+                }
+                if (tallaInput) { tallaInput.disabled = false; tallaInput.placeholder = '170'; tallaInput.style.opacity = '1'; }
+                if (pesoInput) { pesoInput.disabled = false; pesoInput.placeholder = '70'; pesoInput.style.opacity = '1'; }
+                if (imcInput) { imcInput.readOnly = true; imcInput.placeholder = 'Calculado automáticamente'; imcInput.style.opacity = '1'; imcInput.style.color = '#c8a8e8'; }
+                if (estadoInput) { estadoInput.readOnly = true; estadoInput.placeholder = '---'; estadoInput.style.opacity = '1'; estadoInput.style.color = '#8a6aaa'; }
+            }
+            
+            const talla = parseFloat(tallaInput.value);
+            const peso = parseFloat(pesoInput.value);
+            
+            if (talla > 0 && peso > 0) {
+                const tallaMetros = talla / 100;
+                const imc = peso / (tallaMetros * tallaMetros);
+                imcInput.value = imc.toFixed(1);
+                
+                let estado = '';
+                let color = '';
+                if (imc < 16.0) { estado = 'Delgadez severa'; color = '#d4875e'; }
+                else if (imc < 17.0) { estado = 'Delgadez moderada'; color = '#d4875e'; }
+                else if (imc < 18.5) { estado = 'Delgadez leve'; color = '#d4875e'; }
+                else if (imc < 25.0) { estado = 'Peso normal'; color = '#6b8c5e'; }
+                else if (imc < 30.0) { estado = 'Sobrepeso'; color = '#c9a84c'; }
+                else if (imc < 35.0) { estado = 'Obesidad grado I'; color = '#d4875e'; }
+                else if (imc < 40.0) { estado = 'Obesidad grado II'; color = '#c95a5a'; }
+                else { estado = 'Obesidad grado III (mórbida)'; color = '#b54040'; }
+                
+                estadoInput.value = estado;
+                estadoInput.style.color = color;
+                imcInput.style.color = '#c8a8e8';
+            } else {
+                if (!imcBloqueado) {
+                    imcInput.value = '';
+                    estadoInput.value = '---';
+                    estadoInput.style.color = '#8a6aaa';
+                    imcInput.style.color = '#8a6aaa';
+                }
+            }
+        }
+
+        // =============================================
+        // APLICAR BLOQUEO - BANNER Y OPCIONES
+        // =============================================
+        function aplicarBloqueoCampos() {
+            const bloqueo = obtenerEvaluacionPorCurso();
+            const hayBloqueo = bloqueo && bloqueo.activo;
+            const camposBloqueados = (bloqueo && bloqueo.activo) ? (bloqueo.campos_bloqueados || []) : [];
+
+            // IMC
+            const imcBloqueado = camposBloqueados.includes('imc');
+            const talla = document.getElementById('talla');
+            const peso = document.getElementById('peso');
+            const imc = document.getElementById('imc');
+            const estadoImc = document.getElementById('estadoImc');
+            const mensaje = document.getElementById('imcMensaje');
+            
+            if (imcBloqueado) {
+                if (talla) { talla.disabled = false; talla.placeholder = '170'; talla.style.opacity = '1'; }
+                if (peso) { peso.disabled = false; peso.placeholder = '70'; peso.style.opacity = '1'; }
+                if (imc) { imc.readOnly = false; imc.placeholder = 'Ingrese IMC manualmente'; imc.style.opacity = '1'; imc.style.color = '#c8a8e8'; }
+                if (estadoImc) { estadoImc.readOnly = false; estadoImc.placeholder = 'Ingrese estado manualmente'; estadoImc.style.opacity = '1'; estadoImc.style.color = '#c8a8e8'; }
+                if (mensaje) {
+                    mensaje.textContent = '🔒 Cálculo automático desactivado. Ingrese IMC manualmente.';
+                    mensaje.style.color = '#d4875e';
+                }
+            } else {
+                if (talla) { talla.disabled = false; talla.placeholder = '170'; talla.style.opacity = '1'; }
+                if (peso) { peso.disabled = false; peso.placeholder = '70'; peso.style.opacity = '1'; }
+                if (imc) { imc.readOnly = true; imc.placeholder = 'Calculado automáticamente'; imc.style.opacity = '1'; imc.style.color = '#c8a8e8'; }
+                if (estadoImc) { estadoImc.readOnly = true; estadoImc.placeholder = '---'; estadoImc.style.opacity = '1'; estadoImc.style.color = '#8a6aaa'; }
+                if (mensaje) {
+                    mensaje.textContent = 'ℹ️ El IMC se calcula automáticamente al ingresar talla y peso.';
+                    mensaje.style.color = '#8a6aaa';
+                }
+                calcularIMC();
+            }
+
+            // Derivación
+            const derivacionBloqueado = camposBloqueados.includes('derivacion');
+            const seccionDerivacion = document.getElementById('seccionDerivacion');
+            if (derivacionBloqueado) {
+                if (seccionDerivacion) seccionDerivacion.style.display = 'none';
+            } else {
+                if (seccionDerivacion) seccionDerivacion.style.display = 'block';
+            }
+
+            // Banner
+            const divBloqueo = document.getElementById('bloqueoActivo');
+            const infoSpan = document.getElementById('infoBloqueoPanel');
+            const infoDuracion = document.getElementById('infoDuracionPanel');
+            const infoHora = document.getElementById('infoHoraPanel');
+            const infoAdmin = document.getElementById('infoAdminPanel');
+            const cursoLabel = document.getElementById('cursoEvaluacionLabel');
+            const opcionesInfo = document.getElementById('opcionesBloqueadasInfo');
+
+            if (hayBloqueo && camposBloqueados.length > 0) {
+                divBloqueo.style.display = 'block';
+                cursoLabel.textContent = bloqueo.curso || obtenerCursoEnfermero() || '--';
+                infoAdmin.textContent = bloqueo.admin || '--';
+                infoDuracion.textContent = bloqueo.duracion || '--';
+                infoHora.textContent = bloqueo.hora_inicio || '--';
+                infoSpan.innerHTML = 'Algunos indicadores automáticos están desactivados durante la evaluación.';
+                
+                const nombres = camposBloqueados.map(c => {
+                    const map = {
+                        'temperatura': '🌡️ Temperatura',
+                        'frecuencia_cardiaca': '❤️ Frecuencia Cardíaca',
+                        'presion': '💓 Presión Arterial',
+                        'saturacion': '🫁 Saturación O₂',
+                        'imc': '📊 Cálculo automático de IMC',
+                        'derivacion': '🚑 Derivación'
+                    };
+                    return map[c] || c;
+                }).join(', ');
+                opcionesInfo.textContent = '🚫 Indicadores desactivados: ' + nombres;
+            } else if (hayBloqueo) {
+                divBloqueo.style.display = 'block';
+                cursoLabel.textContent = bloqueo.curso || obtenerCursoEnfermero() || '--';
+                infoAdmin.textContent = bloqueo.admin || '--';
+                infoDuracion.textContent = bloqueo.duracion || '--';
+                infoHora.textContent = bloqueo.hora_inicio || '--';
+                infoSpan.innerHTML = 'Algunos indicadores automáticos están desactivados durante la evaluación.';
+                opcionesInfo.textContent = 'No hay indicadores desactivados';
+            } else {
+                divBloqueo.style.display = 'none';
+            }
+
+            actualizarEstadoTemperatura();
+            actualizarEstadoFC();
+            actualizarEstadoPresion();
+            actualizarEstadoSaturacion();
+        }
+
+        // =============================================
+        // BASE DE DATOS DE ESTUDIANTES (ENFERMEROS)
         // =============================================
         const estudiantesPorCurso = {
-            "3° A": [
-                { nombre: "Valentina Acosta Curin", rut: "23202294-9" },
-                { nombre: "Trinidad Adrian Urrea", rut: "22556342-K" },
-                { nombre: "Christofer Alvarez Subero", rut: "27387697-9" },
-                { nombre: "Andrea Barrios Chacón", rut: "100512206-2" },
-                { nombre: "Alexandra Bravo Donoso", rut: "23137764-6" },
-                { nombre: "Amaro Bustamante Quiroga", rut: "23037613-3" },
-                { nombre: "Scarlett Candia Mardones", rut: "23047810-4" },
-                { nombre: "Mia Castillo Gallardo", rut: "23176106-3" },
-                { nombre: "Andra Castro Tobar", rut: "23205058-0" },
-                { nombre: "Tatiana Cavieres Cavieres", rut: "23180361-0" },
-                { nombre: "Carla Contreras Pérez", rut: "23272113-8" },
-                { nombre: "Agustina Cortés Tapia", rut: "23067046-3" },
-                { nombre: "Anais Donoso Mella", rut: "23086985-5" },
-                { nombre: "Sofía Durán Fierro", rut: "22824657-3" },
-                { nombre: "Zeynna Faúndez Hormazábal", rut: "23081704-9" },
-                { nombre: "Cristina González Jorquera", rut: "23239451-K" },
-                { nombre: "Martina González Meneses", rut: "23105971-7" },
-                { nombre: "Sofía Gutierrez Yévenes", rut: "23265111-3" },
-                { nombre: "Lorencira Gutierrez Jaramillo", rut: "23192246-6" },
-                { nombre: "Luna Jiménez Barra", rut: "23126491-4" },
-                { nombre: "Maite Lagos Lucero", rut: "23098906-0" },
-                { nombre: "Pía Medina García", rut: "23045665-8" },
-                { nombre: "Franchesca Olguín Cabrera", rut: "22984728-7" },
-                { nombre: "Paloma Ordenes Espina", rut: "23130458-4" },
-                { nombre: "Julexy Pacheco Moreta", rut: "27383924-0" },
-                { nombre: "Romina Palominos Devia", rut: "23083026-6" },
-                { nombre: "Jesús Peñaloza León", rut: "23095618-9" },
-                { nombre: "Antonia Pino Labrán", rut: "23275630-6" },
-                { nombre: "Florencia Pino Salinas", rut: "22572166-1" },
-                { nombre: "Alejandro Rodríguez Panguilf", rut: "22998561-2" },
-                { nombre: "Javiera Salazar Montecino", rut: "23033405-6" },
-                { nombre: "Kiara San Martín Aranda", rut: "22905556-9" },
-                { nombre: "Lilian Soto Muñoz", rut: "23099393-9" },
-                { nombre: "Joaquín Toro Muñoz", rut: "23208346-8" },
-                { nombre: "Cristóbal Yanez Soto", rut: "23232601-8" }
-            ],
-            "3° B": [
-                { nombre: "Yerlis Aguilar Salazar", rut: "23352101-9" },
-                { nombre: "Isamara Araya Cabrera", rut: "22975787-3" },
-                { nombre: "Yessenia Busto Pavez", rut: "23146140-K" },
-                { nombre: "Scarlett Campos Cabrera", rut: "22841263-5" },
-                { nombre: "Lourdes Cirius", rut: "26554371-5" },
-                { nombre: "Darla Clerger Jose", rut: "27040890-7" },
-                { nombre: "Britany Conejo Cacuango", rut: "23254292-6" },
-                { nombre: "Francisca Contreras Espinoza", rut: "23234650-7" },
-                { nombre: "Agustín Díaz Cáceres", rut: "22740832-4" },
-                { nombre: "Maite Escudero Castillo", rut: "23343065-K" },
-                { nombre: "Ámbar Espinoza Muñoz", rut: "23072747-3" },
-                { nombre: "Carla Freire Canales", rut: "23120948-4" },
-                { nombre: "Antonia Guerrero Menares", rut: "23071280-8" },
-                { nombre: "Javiera Huerta Vargas", rut: "23168418-2" },
-                { nombre: "Debora Jara Urrutia", rut: "23220372-2" },
-                { nombre: "Alexander Jerez Valenzuela", rut: "22697673-6" },
-                { nombre: "Valentina Jerez Valenzuela", rut: "23268747-9" },
-                { nombre: "Jasmine Medina Monsalves", rut: "22897270-3" },
-                { nombre: "Jetzabet Melita Galaz", rut: "23104320-9" },
-                { nombre: "Kyara Muñoz Muñoz", rut: "23155118-2" },
-                { nombre: "Leonor Núñez Delgado", rut: "22945238-K" },
-                { nombre: "Isidora Osorio Guajardo", rut: "22900911-7" },
-                { nombre: "Isidora Palacios Aguilera", rut: "23155850-0" },
-                { nombre: "Mayra Parrague Pacheco", rut: "23401180-4" },
-                { nombre: "Javiera Pérez Pozo", rut: "23010076-4" },
-                { nombre: "Camila Reyes Torrealba", rut: "23234911-5" },
-                { nombre: "Anyelo Ruz Caro", rut: "22861980-9" },
-                { nombre: "Claudia Sánchez González", rut: "22997569-2" },
-                { nombre: "María Sandoval Sandoval", rut: "23152005-8" },
-                { nombre: "Rocio Urbina Moraga", rut: "23038158-5" },
-                { nombre: "Smyalim Valdivia Ramírez", rut: "23263336-0" },
-                { nombre: "Magdalena Yanez Palominos", rut: "23024091-4" },
-                { nombre: "Isai Zamorano Gajardo", rut: "23106183-5" },
-                { nombre: "Antonella Zamorano Palomino", rut: "23315147-5" }
-            ],
-            "4° A": [
-                { nombre: "Carolina Aedo Salas", rut: "22501525-2" },
-                { nombre: "Constanza Álvarez Jaramillo", rut: "22760453-0" },
-                { nombre: "Nazaret Aravena Colombo", rut: "22894931-0" },
-                { nombre: "Francisco Auger Del Valle", rut: "23044639-3" },
-                { nombre: "Monserrat Becerra Madariaga", rut: "22908336-8" },
-                { nombre: "Constanza Díaz Yáñez", rut: "22797558-K" },
-                { nombre: "Hanny Duran Marquez", rut: "28577111-0" },
-                { nombre: "Damián Farías Palominos", rut: "22905769-3" },
-                { nombre: "Cristina Flores Morales", rut: "22995162-9" },
-                { nombre: "Diana González González", rut: "22852044-6" },
-                { nombre: "Constanza González Carreno", rut: "22795868-5" },
-                { nombre: "Lisbeth Guajardo Zenteno", rut: "22528627-2" },
-                { nombre: "Nicole Herrera Andrade", rut: "22874416-6" },
-                { nombre: "Kevin Ibarra Lueiza", rut: "22637189-3" },
-                { nombre: "Ana Jiménez Orellana", rut: "22260862-7" },
-                { nombre: "Florencia Latoja Yáñez", rut: "22240963-2" },
-                { nombre: "Giovanna Loguercio Frías", rut: "22805444-5" },
-                { nombre: "Marcela Marchant Gálvez", rut: "22755497-5" },
-                { nombre: "Krishna Mardones Mondaca", rut: "22938858-4" },
-                { nombre: "Maria Martinez Marcano", rut: "28648624-K" },
-                { nombre: "Katia Martínez Núñez", rut: "22908766-5" },
-                { nombre: "Florencia Mella Muñoz", rut: "22922577-4" },
-                { nombre: "Denis Moya Luque", rut: "22836306-5" },
-                { nombre: "Pascal Muñoz Gómez", rut: "22928183-6" },
-                { nombre: "Antonia Neira Becerra", rut: "22694267-K" },
-                { nombre: "Cynara Ortiz Soto", rut: "22982361-2" },
-                { nombre: "Valentina Pérez Chávez", rut: "22805096-2" },
-                { nombre: "Sofía Rebolledo Correa", rut: "22858386-3" },
-                { nombre: "Benjamín Rencoret Díaz", rut: "22849829-7" },
-                { nombre: "Valentina Riquelme Orellana", rut: "22809940-6" },
-                { nombre: "Isidora Rojas González", rut: "22684438-4" },
-                { nombre: "Annika Román Caris", rut: "22695402-3" },
-                { nombre: "Valentina Salazar Córdova", rut: "22722809-1" },
-                { nombre: "Martina Salinas Salas", rut: "22497978-9" },
-                { nombre: "María Valenzuela Calderón", rut: "22766287-5" },
-                { nombre: "Scarlette Valladares Cornejo", rut: "23017523-3" },
-                { nombre: "Pascal Vergara Valenzuela", rut: "22924380-2" },
-                { nombre: "Fernando Yáñez Jeldres", rut: "22880198-4" }
-            ],
-            "4° B": [
-                { nombre: "Allan Arenas Seguel", rut: "22856988-7" },
-                { nombre: "Alyson Beltran Salazar", rut: "22944328-3" },
-                { nombre: "Anahella Bustamante Rivas", rut: "22734656-6" },
-                { nombre: "Carolain Carquín Rivera", rut: "22827992-7" },
-                { nombre: "Micaela Figueroa Fernández", rut: "22584764-9" },
-                { nombre: "Valentina Inostroza Moreno", rut: "22210918-3" },
-                { nombre: "Kedna Lacroix", rut: "28670765-3" },
-                { nombre: "Antonieta Manríquez Aguayo", rut: "22213130-8" },
-                { nombre: "Renata Martínez Viveros", rut: "22989683-0" },
-                { nombre: "Shelda Mathurin", rut: "28518406-1" },
-                { nombre: "Daniela Núñez Salas", rut: "22883024-0" },
-                { nombre: "Consuelo Osorio Clarke", rut: "22680363-7" },
-                { nombre: "Laura Prieto Garay", rut: "22826933-6" },
-                { nombre: "Evelyn Reyes", rut: "26930726-9" },
-                { nombre: "Karol Reyes Moreno", rut: "26074601-4" },
-                { nombre: "Annayz Romero Cabello", rut: "22841161-2" },
-                { nombre: "Nayareth Seguel Rojas", rut: "22764242-4" },
-                { nombre: "Paula Sepúlveda Pino", rut: "22689537-K" },
-                { nombre: "Leonardo Silva Flores", rut: "22124753-1" },
-                { nombre: "Isidora Torres Gutiérrez", rut: "22742161-4" },
-                { nombre: "Mariana Torres Ibarra", rut: "22824891-6" },
-                { nombre: "Dallan Valenzuela Martínez", rut: "22676708-8" },
-                { nombre: "Alicia Valenzuela Yáñez", rut: "22899663-7" }
-            ]
+            // ... (todos los estudiantes)
+            "3° A": [],
+            "3° B": [],
+            "4° A": [],
+            "4° B": []
+            // (Aquí van todos los estudiantes de tu base de datos)
         };
+
+        // =============================================
+        // FUNCIONES PARA OBTENER TODOS LOS PACIENTES
+        // =============================================
 
         function obtenerTodosLosEstudiantes() {
             const todos = [];
@@ -314,6 +713,58 @@
             return todos;
         }
 
+        function obtenerTodosLosPacientes() {
+            const pacientes = [];
+            
+            const solicitudes = JSON.parse(localStorage.getItem('solicitudes_pacientes')) || [];
+            solicitudes.forEach(s => {
+                if (s.nombre && s.rut) {
+                    pacientes.push({ 
+                        nombre: s.nombre, 
+                        rut: s.rut, 
+                        curso: s.curso || 'Paciente' 
+                    });
+                }
+            });
+            
+            const fichas = JSON.parse(localStorage.getItem('fichas_medicas')) || [];
+            fichas.forEach(f => {
+                const nombre = f.nombre || f.nombrePaciente;
+                const rut = f.rut || f.rutPaciente;
+                if (nombre && rut) {
+                    const existe = pacientes.some(p => p.rut === rut);
+                    if (!existe) {
+                        pacientes.push({ 
+                            nombre: nombre, 
+                            rut: rut, 
+                            curso: f.curso || 'Paciente' 
+                        });
+                    }
+                }
+            });
+            
+            const atenciones = JSON.parse(localStorage.getItem('atenciones_enfermeria')) || [];
+            atenciones.forEach(a => {
+                const nombre = a.nombre || a.nombrePaciente;
+                const rut = a.rut || a.rutPaciente;
+                if (nombre && rut) {
+                    const existe = pacientes.some(p => p.rut === rut);
+                    if (!existe) {
+                        pacientes.push({ 
+                            nombre: nombre, 
+                            rut: rut, 
+                            curso: a.curso || 'Paciente' 
+                        });
+                    }
+                }
+            });
+            
+            return pacientes;
+        }
+
+        // =============================================
+        // REGISTROS
+        // =============================================
         let registrosData = [];
         let enfermeroActual = null;
         let editandoId = null;
@@ -369,7 +820,8 @@
                 container.innerHTML = '<div class="empty-message">📋 No hay registros guardados aún</div>';
                 return;
             }
-            let html = '<table class="tabla-registros"><thead><tr><th>ID</th><th>Paciente</th><th>RUT</th><th>Fecha</th><th>Hora</th><th>Enfermero</th><th>Temp.</th><th>F.C.</th><th>Presión</th><th>Sat. O₂</th><th>Resultado</th><th>Acciones</th></tr></thead><tbody>';
+
+            let html = '<table class="tabla-registros"><thead><tr><th>ID</th><th>Paciente</th><th>RUT</th><th>Fecha</th><th>Hora</th><th>Enfermero</th><th>Temp.</th><th>F.C.</th><th>Presión</th><th>Sat. O₂</th><th>Talla</th><th>Peso</th><th>IMC</th><th>Derivación</th><th>Resultado</th><th>Acciones</th></tr></thead><tbody>';
             data.forEach(r => {
                 const nombre = r.nombre || r.nombrePaciente || 'Paciente';
                 const rut = r.rut || r.rutPaciente || 'N/E';
@@ -386,10 +838,33 @@
                     html += '<td><input type="number" id="edit_fc_' + r.id + '" value="' + (r.frecuenciaCardiaca || '') + '" placeholder="72"></td>';
                     html += '<td><input type="text" id="edit_presion_' + r.id + '" value="' + (r.presion || '') + '" placeholder="120/80"></td>';
                     html += '<td><input type="number" id="edit_sat_' + r.id + '" value="' + (r.saturacion || '') + '" placeholder="98" min="0" max="100"></td>';
+                    html += '<td><input type="number" step="0.1" id="edit_talla_' + r.id + '" value="' + (r.talla || '') + '" placeholder="170"></td>';
+                    html += '<td><input type="number" step="0.1" id="edit_peso_' + r.id + '" value="' + (r.peso || '') + '" placeholder="70"></td>';
+                    html += '<td><input type="text" id="edit_imc_' + r.id + '" value="' + (r.imc || '') + '" style="font-weight:700;color:#c8a8e8;"></td>';
+                    html += '<td><select id="edit_derivacion_' + r.id + '" style="width:100%;padding:4px 8px;border:2px solid rgba(180,140,210,0.08);border-radius:6px;font-size:12px;background:rgba(30,15,50,0.70);color:#f0e8f8;">' +
+                        '<option value="">Seleccionar...</option>' +
+                        '<option value="No derivado" ' + (r.derivacion === 'No derivado' ? 'selected' : '') + '>No derivado</option>' +
+                        '<option value="Hospital" ' + (r.derivacion === 'Hospital' ? 'selected' : '') + '>Hospital</option>' +
+                        '<option value="Centro de Salud" ' + (r.derivacion === 'Centro de Salud' ? 'selected' : '') + '>Centro de Salud</option>' +
+                        '<option value="Especialista" ' + (r.derivacion === 'Especialista' ? 'selected' : '') + '>Especialista</option>' +
+                        '<option value="Urgencias" ' + (r.derivacion === 'Urgencias' ? 'selected' : '') + '>Urgencias</option>' +
+                        '<option value="Traumatología" ' + (r.derivacion === 'Traumatología' ? 'selected' : '') + '>Traumatología</option>' +
+                        '<option value="Neurología" ' + (r.derivacion === 'Neurología' ? 'selected' : '') + '>Neurología</option>' +
+                        '<option value="Cardiología" ' + (r.derivacion === 'Cardiología' ? 'selected' : '') + '>Cardiología</option>' +
+                        '<option value="Dermatología" ' + (r.derivacion === 'Dermatología' ? 'selected' : '') + '>Dermatología</option>' +
+                        '<option value="Ginecología" ' + (r.derivacion === 'Ginecología' ? 'selected' : '') + '>Ginecología</option>' +
+                        '<option value="Oftalmología" ' + (r.derivacion === 'Oftalmología' ? 'selected' : '') + '>Oftalmología</option>' +
+                        '<option value="Otorrinolaringología" ' + (r.derivacion === 'Otorrinolaringología' ? 'selected' : '') + '>Otorrinolaringología</option>' +
+                        '<option value="Psiquiatría" ' + (r.derivacion === 'Psiquiatría' ? 'selected' : '') + '>Psiquiatría</option>' +
+                        '<option value="Rehabilitación" ' + (r.derivacion === 'Rehabilitación' ? 'selected' : '') + '>Rehabilitación</option>' +
+                        '<option value="Laboratorio" ' + (r.derivacion === 'Laboratorio' ? 'selected' : '') + '>Laboratorio</option>' +
+                        '<option value="Imagenología" ' + (r.derivacion === 'Imagenología' ? 'selected' : '') + '>Imagenología</option>' +
+                        '<option value="Otro" ' + (r.derivacion === 'Otro' ? 'selected' : '') + '>Otro</option>' +
+                        '</select></td>';
                     html += '<td><textarea id="edit_resultado_' + r.id + '" rows="1">' + escapeHtml(r.resultado || r.descripcion || '') + '</textarea></td>';
                     html += '<td><div class="acciones-celda"><button class="btn-accion btn-guardar-reg" onclick="guardarEdicionRegistro(' + r.id + ')">💾</button><button class="btn-accion btn-cancelar-reg" onclick="cancelarEdicionRegistro()">✖</button></div></td>';
                 } else {
-                    html += '<td>' + escapeHtml(nombre) + '</td><td>' + escapeHtml(rut) + '</td><td>' + (r.fecha || 'N/E') + '</td><td>' + (r.hora || 'N/E') + '</td><td>' + escapeHtml(enfermero) + '</td><td>' + (r.temperatura || 'N/E') + '</td><td>' + (r.frecuenciaCardiaca || 'N/E') + '</td><td>' + (r.presion || 'N/E') + '</td><td>' + (r.saturacion || 'N/E') + '</td><td>' + escapeHtml(r.resultado || r.descripcion || 'Sin observaciones') + '</td>';
+                    html += '<td>' + escapeHtml(nombre) + '</td><td>' + escapeHtml(rut) + '</td><td>' + (r.fecha || 'N/E') + '</td><td>' + (r.hora || 'N/E') + '</td><td>' + escapeHtml(enfermero) + '</td><td>' + (r.temperatura || 'N/E') + '</td><td>' + (r.frecuenciaCardiaca || 'N/E') + '</td><td>' + (r.presion || 'N/E') + '</td><td>' + (r.saturacion || 'N/E') + '</td><td>' + (r.talla || 'N/E') + '</td><td>' + (r.peso || 'N/E') + '</td><td>' + (r.imc || 'N/E') + '</td><td>' + (r.derivacion || 'N/E') + '</td><td>' + escapeHtml(r.resultado || r.descripcion || 'Sin observaciones') + '</td>';
                     html += '<td><div class="acciones-celda"><button class="btn-accion btn-editar-reg" onclick="editarRegistro(' + r.id + ')">✏️</button><button class="btn-accion btn-eliminar-reg" onclick="eliminarRegistro(' + r.id + ')">🗑️</button></div></td>';
                 }
                 html += '</tr>';
@@ -415,12 +890,24 @@
             document.getElementById('frecuenciaCardiaca').value = registro.frecuenciaCardiaca || '';
             document.getElementById('presion').value = registro.presion || '';
             document.getElementById('saturacion').value = registro.saturacion || '';
+            document.getElementById('talla').value = registro.talla || '';
+            document.getElementById('peso').value = registro.peso || '';
+            document.getElementById('imc').value = registro.imc || '';
+            document.getElementById('estadoImc').value = registro.estadoImc || '---';
+            document.getElementById('derivacion').value = registro.derivacion || '';
+            document.getElementById('motivoDerivacion').value = registro.motivoDerivacion || '';
             document.getElementById('resultadoAtencion').value = registro.resultado || registro.descripcion || '';
             document.getElementById('editandoId').value = id;
             document.getElementById('fichaTitulo').textContent = '✏️ Editando Ficha';
             document.getElementById('btnGuardar').textContent = '💾 Actualizar ficha';
             document.getElementById('btnCancelarEdicion').style.display = 'inline-flex';
             document.getElementById('fichaMedica').scrollIntoView({ behavior: 'smooth' });
+            calcularIMC();
+            actualizarEstadoTemperatura();
+            actualizarEstadoFC();
+            actualizarEstadoPresion();
+            actualizarEstadoSaturacion();
+            aplicarBloqueoCampos();
         }
 
         function guardarEdicionRegistro(id) {
@@ -433,7 +920,12 @@
             const frecuenciaCardiaca = document.getElementById('edit_fc_' + id).value.trim();
             const presion = document.getElementById('edit_presion_' + id).value.trim();
             const saturacion = document.getElementById('edit_sat_' + id).value.trim();
+            const talla = document.getElementById('edit_talla_' + id).value.trim();
+            const peso = document.getElementById('edit_peso_' + id).value.trim();
+            const imc = document.getElementById('edit_imc_' + id).value.trim();
+            const derivacion = document.getElementById('edit_derivacion_' + id).value;
             const resultado = document.getElementById('edit_resultado_' + id).value.trim();
+            
             if (!nombre || !rut) { alert("❌ El nombre y RUT son obligatorios"); return; }
             const index = registrosData.findIndex(r => r.id === id);
             if (index === -1) { alert("❌ No se encontró el registro"); return; }
@@ -449,6 +941,10 @@
             registrosData[index].frecuenciaCardiaca = frecuenciaCardiaca || undefined;
             registrosData[index].presion = presion || undefined;
             registrosData[index].saturacion = saturacion || undefined;
+            registrosData[index].talla = talla || undefined;
+            registrosData[index].peso = peso || undefined;
+            registrosData[index].imc = imc || undefined;
+            registrosData[index].derivacion = derivacion || undefined;
             registrosData[index].resultado = resultado;
             registrosData[index].descripcion = resultado;
             localStorage.setItem('fichas_medicas', JSON.stringify(registrosData));
@@ -491,6 +987,13 @@
             document.getElementById('frecuenciaCardiaca').value = '';
             document.getElementById('presion').value = '';
             document.getElementById('saturacion').value = '';
+            document.getElementById('talla').value = '';
+            document.getElementById('peso').value = '';
+            document.getElementById('imc').value = '';
+            document.getElementById('estadoImc').value = '---';
+            document.getElementById('estadoImc').style.color = '#8a6aaa';
+            document.getElementById('derivacion').value = '';
+            document.getElementById('motivoDerivacion').value = '';
             document.getElementById('resultadoAtencion').value = '';
             document.getElementById('editandoId').value = '';
             document.getElementById('fichaTitulo').textContent = 'Nueva Ficha Médica';
@@ -498,11 +1001,11 @@
             document.getElementById('btnCancelarEdicion').style.display = 'none';
             editandoId = null;
             
-            var estadoSpan = document.getElementById('estadoFiebre');
-            if (estadoSpan) {
-                estadoSpan.textContent = '🌡️ Esperando temperatura...';
-                estadoSpan.className = 'fiebre-esperando';
-            }
+            actualizarEstadoTemperatura();
+            actualizarEstadoFC();
+            actualizarEstadoPresion();
+            actualizarEstadoSaturacion();
+            aplicarBloqueoCampos();
         }
 
         function cancelarEdicion() { limpiarFicha(); }
@@ -512,76 +1015,54 @@
         function irAlInicio() { cerrarModalSalir(); window.location.href = 'index.html'; }
 
         // =============================================
-        // ⭐ AUTO-DETECCIÓN DE FIEBRE - SIN REPETIR GRADOS
+        // CONFIGURAR AUTOCOMPLETADO (ENFERMEROS + PACIENTES)
         // =============================================
-        function actualizarEstadoFiebre() {
-            var tempInput = document.getElementById('temperatura');
-            var estadoSpan = document.getElementById('estadoFiebre');
-            
-            if (!tempInput || !estadoSpan) return;
-            
-            var temp = parseFloat(tempInput.value);
-            
-            if (isNaN(temp) || tempInput.value === '') {
-                estadoSpan.textContent = '🌡️ Esperando temperatura...';
-                estadoSpan.className = 'fiebre-esperando';
-                return;
-            }
-            
-            var estado = '';
-            var clase = '';
-            
-            if (temp < 32.0) {
-                estado = '🚨 Hipotermia grave - ¡URGENCIA!';
-                clase = 'fiebre-hipotermia-grave';
-            } else if (temp >= 32.0 && temp < 35.0) {
-                estado = '❄️ Hipotermia - requiere atención';
-                clase = 'fiebre-hipotermia';
-            } else if (temp >= 35.0 && temp <= 35.9) {
-                estado = '🌡️ Temperatura baja - vigilar';
-                clase = 'fiebre-baja';
-            } else if (temp >= 36.0 && temp <= 37.4) {
-                estado = '✅ Temperatura normal';
-                clase = 'fiebre-normal';
-            } else if (temp >= 37.5 && temp <= 37.9) {
-                estado = '🌡️ Fiebre leve';
-                clase = 'fiebre-leve';
-            } else if (temp >= 38.0 && temp <= 38.9) {
-                estado = '🔥 Fiebre moderada';
-                clase = 'fiebre-moderada';
-            } else if (temp >= 39.0 && temp <= 40.0) {
-                estado = '🔥 Fiebre alta - requiere atención';
-                clase = 'fiebre-alta';
-            } else if (temp > 40.0) {
-                estado = '🚨 Fiebre muy alta o hipertermia - ¡URGENCIA!';
-                clase = 'fiebre-muy-alta';
-            }
-            
-            // ✅ Solo muestra el mensaje, sin repetir los grados
-            estadoSpan.textContent = estado;
-            estadoSpan.className = clase;
-        }
-
         function configurarAutocompletado() {
             const rutInput = document.getElementById('pacienteRut');
             const sugerenciasDiv = document.getElementById('sugerenciasRut');
             if (!rutInput) return;
+            
             rutInput.addEventListener('input', function() {
                 const rut = this.value.trim();
-                if (rut.length < 3) { sugerenciasDiv.style.display = 'none'; return; }
-                const todos = obtenerTodosLosEstudiantes();
-                const coincidencias = todos.filter(e => e.rut.includes(rut) || e.nombre.toLowerCase().includes(rut.toLowerCase()));
-                if (coincidencias.length === 0) { sugerenciasDiv.style.display = 'none'; return; }
+                if (rut.length < 3) { 
+                    sugerenciasDiv.style.display = 'none'; 
+                    return; 
+                }
+                
+                const estudiantes = obtenerTodosLosEstudiantes();
+                const pacientes = obtenerTodosLosPacientes();
+                const todos = [...estudiantes, ...pacientes];
+                
+                const unicos = [];
+                const rutsVistos = new Set();
+                todos.forEach(item => {
+                    if (!rutsVistos.has(item.rut)) {
+                        rutsVistos.add(item.rut);
+                        unicos.push(item);
+                    }
+                });
+                
+                const coincidencias = unicos.filter(e => 
+                    e.rut.includes(rut) || 
+                    e.nombre.toLowerCase().includes(rut.toLowerCase())
+                );
+                
+                if (coincidencias.length === 0) { 
+                    sugerenciasDiv.style.display = 'none'; 
+                    return; 
+                }
+                
                 let html = '';
                 coincidencias.slice(0, 10).forEach(e => {
-                    html += '<div onclick="seleccionarEstudiante(\'' + e.rut + '\', \'' + e.nombre.replace(/'/g, "\\'") + '\', \'' + e.curso + '\')">';
+                    html += '<div onclick="seleccionarEstudiante(\'' + e.rut + '\', \'' + e.nombre.replace(/'/g, "\\'") + '\', \'' + (e.curso || 'Paciente') + '\')">';
                     html += '<span><strong>' + e.nombre + '</strong></span>';
-                    html += '<span class="sugerencia-curso">' + e.rut + ' - ' + e.curso + '</span>';
+                    html += '<span class="sugerencia-curso">' + e.rut + ' - ' + (e.curso || 'Paciente') + '</span>';
                     html += '</div>';
                 });
                 sugerenciasDiv.innerHTML = html;
                 sugerenciasDiv.style.display = 'block';
             });
+            
             document.addEventListener('click', function(e) {
                 if (e.target !== rutInput && e.target !== sugerenciasDiv) {
                     sugerenciasDiv.style.display = 'none';
@@ -596,13 +1077,34 @@
             document.getElementById('sugerenciasRut').style.display = 'none';
         }
 
-        // ⭐ Escuchar cambios en temperatura
+        // =============================================
+        // EVENTOS Y GUARDAR
+        // =============================================
         document.addEventListener('DOMContentLoaded', function() {
             var tempInput = document.getElementById('temperatura');
+            var fcInput = document.getElementById('frecuenciaCardiaca');
+            var presionInput = document.getElementById('presion');
+            var satInput = document.getElementById('saturacion');
+            
             if (tempInput) {
-                tempInput.addEventListener('input', actualizarEstadoFiebre);
-                tempInput.addEventListener('change', actualizarEstadoFiebre);
+                tempInput.addEventListener('input', actualizarEstadoTemperatura);
+                tempInput.addEventListener('change', actualizarEstadoTemperatura);
             }
+            if (fcInput) {
+                fcInput.addEventListener('input', actualizarEstadoFC);
+                fcInput.addEventListener('change', actualizarEstadoFC);
+            }
+            if (presionInput) {
+                presionInput.addEventListener('input', actualizarEstadoPresion);
+                presionInput.addEventListener('change', actualizarEstadoPresion);
+            }
+            if (satInput) {
+                satInput.addEventListener('input', actualizarEstadoSaturacion);
+                satInput.addEventListener('change', actualizarEstadoSaturacion);
+            }
+            
+            calcularIMC();
+            aplicarBloqueoCampos();
         });
 
         document.getElementById('fichaMedicaForm').addEventListener('submit', async function(e) {
@@ -622,6 +1124,12 @@
             const frecuenciaCardiaca = document.getElementById('frecuenciaCardiaca').value.trim();
             const presion = document.getElementById('presion').value.trim();
             const saturacion = document.getElementById('saturacion').value.trim();
+            const talla = document.getElementById('talla').value.trim();
+            const peso = document.getElementById('peso').value.trim();
+            const imc = document.getElementById('imc').value.trim();
+            const estadoImc = document.getElementById('estadoImc').value.trim();
+            const derivacion = document.getElementById('derivacion').value;
+            const motivoDerivacion = document.getElementById('motivoDerivacion').value.trim();
             const resultado = document.getElementById('resultadoAtencion').value.trim();
             const editando = document.getElementById('editandoId').value;
             
@@ -654,6 +1162,12 @@
                 registrosData[index].frecuenciaCardiaca = frecuenciaCardiaca || undefined;
                 registrosData[index].presion = presion || undefined;
                 registrosData[index].saturacion = saturacion || undefined;
+                registrosData[index].talla = talla || undefined;
+                registrosData[index].peso = peso || undefined;
+                registrosData[index].imc = imc || undefined;
+                registrosData[index].estadoImc = estadoImc || undefined;
+                registrosData[index].derivacion = derivacion || undefined;
+                registrosData[index].motivoDerivacion = motivoDerivacion || undefined;
                 registrosData[index].resultado = resultado;
                 registrosData[index].descripcion = resultado;
                 
@@ -674,6 +1188,7 @@
                 limpiarFicha();
                 btn.textContent = textoOriginal;
                 btn.disabled = false;
+                aplicarBloqueoCampos();
                 return;
             }
             
@@ -687,12 +1202,17 @@
                 frecuenciaCardiaca: frecuenciaCardiaca || '',
                 presion: presion || '',
                 saturacion: saturacion || '',
+                talla: talla || '',
+                peso: peso || '',
+                imc: imc || '',
+                estadoImc: estadoImc || '',
+                derivacion: derivacion || '',
+                motivoDerivacion: motivoDerivacion || '',
                 resultado: resultado || 'Sin observaciones'
             };
             
             try {
                 const resultadoCloud = await guardarAtencionCloud(datosAtencion);
-                
                 if (resultadoCloud.success) {
                     const ficha = {
                         id: Date.now(),
@@ -713,12 +1233,17 @@
                         frecuenciaCardiaca: frecuenciaCardiaca || undefined,
                         presion: presion || undefined,
                         saturacion: saturacion || undefined,
+                        talla: talla || undefined,
+                        peso: peso || undefined,
+                        imc: imc || undefined,
+                        estadoImc: estadoImc || undefined,
+                        derivacion: derivacion || undefined,
+                        motivoDerivacion: motivoDerivacion || undefined,
                         resultado: resultado || 'Sin observaciones',
                         descripcion: resultado || 'Sin observaciones',
                         enfermero_registro: enfermeroActual ? enfermeroActual.nombre : 'Desconocido',
                         enfermero: enfermeroActual ? enfermeroActual.nombre : 'Desconocido',
-                        fecha_registro: new Date().toLocaleString(),
-                        estado: 'Activo'
+                        fecha_registro: new Date().toLocaleString()
                     };
                     
                     registrosData.push(ficha);
@@ -742,6 +1267,7 @@
             
             btn.textContent = textoOriginal;
             btn.disabled = false;
+            aplicarBloqueoCampos();
         });
 
         document.getElementById('searchRegistros').addEventListener('keyup', function() {
@@ -752,9 +1278,14 @@
             if (e.target === this) cerrarModalSalir();
         });
 
+        setInterval(() => {
+            aplicarBloqueoCampos();
+        }, 3000);
+
         cargarInfoEnfermero();
         cargarRegistros();
         configurarAutocompletado();
+        aplicarBloqueoCampos();
     </script>
 </body>
 </html>
