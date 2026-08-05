@@ -1,7 +1,21 @@
 /* ============================================
    SISTEMA DE ENFERMERÍA
-   PALETA: Morado pastel dominante en toda la página
+   PALETA: Azul, Celeste y Blanco
    ============================================ */
+
+:root {
+    --azul-oscuro: #1a3a6a;
+    --azul-medio: #2a5a8a;
+    --azul-claro: #4a8aba;
+    --celeste: #7ab8d8;
+    --celeste-claro: #b8ddf0;
+    --celeste-muy-claro: #e0f0f8;
+    --blanco: #ffffff;
+    --blanco-humo: #f0f5fa;
+    --texto-claro: #1a2a3a;
+    --texto-medio: #2a4a6a;
+    --texto-oscuro: #0a1a2a;
+}
 
 /* ---------- RESET Y BASE ---------- */
 * {
@@ -12,14 +26,14 @@
 
 body {
     font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-    background: #7a5a9a;
+    background: var(--celeste-muy-claro);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
     margin: 0;
-    color: #f0e8f8;
+    color: var(--texto-oscuro);
 }
 
 /* ---------- CONTENEDORES ---------- */
@@ -33,19 +47,19 @@ body {
    TARJETAS
    ============================================ */
 .card {
-    background: rgba(40, 20, 60, 0.85);
+    background: var(--blanco);
     backdrop-filter: blur(10px);
     border-radius: 24px;
-    box-shadow: 0 20px 60px rgba(60, 30, 90, 0.40);
+    box-shadow: 0 20px 60px rgba(26, 58, 106, 0.12);
     padding: 40px 35px 30px;
     width: 100%;
     max-width: 440px;
-    border: 1px solid rgba(180, 140, 210, 0.15);
+    border: 1px solid rgba(42, 90, 138, 0.06);
     transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 .card:hover {
-    box-shadow: 0 25px 70px rgba(60, 30, 90, 0.50);
+    box-shadow: 0 25px 70px rgba(26, 58, 106, 0.16);
     transform: translateY(-2px);
 }
 
@@ -54,58 +68,55 @@ body {
     padding: 30px 35px 25px;
 }
 
-/* ============================================
-   ESPACIADOS - MENÚ PRINCIPAL
-   ============================================ */
+.panel-container {
+    max-width: 1400px !important;
+    width: 100% !important;
+}
 
-/* Logo */
+/* ============================================
+   MENÚ PRINCIPAL
+   ============================================ */
 .card .logo-icon {
     display: block;
     font-size: 52px;
     margin-bottom: 4px;
 }
 
-/* Título */
 .card h1 {
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
     font-size: 28px;
     font-weight: 700;
     margin-bottom: 4px;
 }
 
-/* Subtítulo */
 .card .text-muted {
-    border-bottom: 2px solid rgba(180, 140, 210, 0.10);
+    border-bottom: 2px solid rgba(42, 90, 138, 0.06);
     padding-bottom: 18px;
     margin-bottom: 22px;
-    color: #b898d8;
+    color: var(--texto-medio);
 }
 
-/* Botones del menú */
 .card .btn-block {
     margin-bottom: 10px;
 }
 
-/* Footer del menú */
 .card .footer-menu {
     margin-top: 16px;
     padding-top: 14px;
-    border-top: 1px solid rgba(180, 140, 210, 0.08);
+    border-top: 1px solid rgba(42, 90, 138, 0.04);
 }
 
 .card .footer-menu span {
-    background: rgba(180, 140, 210, 0.08);
+    background: rgba(42, 90, 138, 0.04);
     padding: 4px 18px;
     border-radius: 30px;
     font-size: 12px;
-    color: #b898d8;
+    color: var(--texto-medio);
 }
 
 /* ============================================
-   ESPACIADOS - LOGIN
+   LOGIN
    ============================================ */
-
-/* Icono del login */
 .login-card .icon {
     display: block;
     font-size: 48px;
@@ -113,38 +124,37 @@ body {
 }
 
 .login-card h2 {
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 4px;
 }
 
 .login-card .subtitle {
-    color: #b898d8;
+    color: var(--texto-medio);
     font-size: 13px;
     margin-bottom: 22px;
 }
 
-/* Información de RUT */
 .login-card .info-nombre {
-    background: rgba(180, 140, 210, 0.08);
+    background: rgba(74, 138, 186, 0.06);
     padding: 10px 14px;
     border-radius: 8px;
     margin-top: 8px;
     font-size: 14px;
-    color: #f0e8f8;
-    border-left: 3px solid #a878c8;
+    color: var(--texto-oscuro);
+    border-left: 3px solid var(--azul-claro);
     display: none;
 }
 
 .login-card .info-nombre strong {
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
 }
 
 .login-card .info-nombre .curso-badge {
     display: inline-block;
-    background: rgba(180, 140, 210, 0.12);
-    color: #c8a8e8;
+    background: rgba(42, 90, 138, 0.06);
+    color: var(--azul-medio);
     padding: 2px 12px;
     border-radius: 20px;
     font-size: 12px;
@@ -152,43 +162,43 @@ body {
 }
 
 .login-card .info-contrasena {
-    background: rgba(180, 140, 210, 0.06);
+    background: rgba(74, 138, 186, 0.04);
     padding: 8px 12px;
     border-radius: 8px;
     margin-top: 6px;
     font-size: 13px;
-    color: #d8b8e8;
-    border-left: 3px solid #a878c8;
+    color: var(--texto-medio);
+    border-left: 3px solid var(--azul-claro);
     display: none;
 }
 
 .login-card .info-contrasena strong {
-    color: #d8b8e8;
+    color: var(--azul-medio);
 }
 
 .login-card .info-contrasena .hint {
     font-size: 12px;
-    color: #a888c8;
+    color: #8a9aaa;
 }
 
 .login-card .info-rut {
-    background: rgba(180, 140, 210, 0.08);
+    background: rgba(74, 138, 186, 0.06);
     padding: 8px 12px;
     border-radius: 8px;
     margin-top: 6px;
     font-size: 13px;
-    color: #f0e8f8;
-    border-left: 3px solid #a878c8;
+    color: var(--texto-oscuro);
+    border-left: 3px solid var(--azul-claro);
     display: none;
 }
 
 .login-card .info-rut strong {
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
 }
 
 .login-card .info-rut .badge-autorizado {
-    background: rgba(180, 140, 210, 0.12);
-    color: #c8a8e8;
+    background: rgba(42, 90, 138, 0.06);
+    color: var(--azul-medio);
     padding: 2px 12px;
     border-radius: 20px;
     font-size: 11px;
@@ -196,52 +206,47 @@ body {
     margin-left: 6px;
 }
 
-.login-card .info-rut .badge-no-autorizado {
-    color: #d8b8e8;
-}
-
 .login-card .info-contrasena-admin {
-    background: rgba(180, 140, 210, 0.06);
+    background: rgba(74, 138, 186, 0.04);
     padding: 8px 12px;
     border-radius: 8px;
     margin-top: 6px;
     font-size: 13px;
-    color: #d8b8e8;
-    border-left: 3px solid #a878c8;
+    color: var(--texto-medio);
+    border-left: 3px solid var(--azul-claro);
     display: none;
 }
 
 .login-card .info-contrasena-admin strong {
-    color: #d8b8e8;
+    color: var(--azul-medio);
 }
 
 .login-card .info-contrasena-admin .hint {
     font-size: 12px;
-    color: #a888c8;
+    color: #8a9aaa;
 }
 
-/* Formulario del login */
 .login-card form label {
     display: block;
     font-weight: 600;
-    color: #d8c0e8;
+    color: var(--texto-medio);
     margin-top: 16px;
     margin-bottom: 4px;
 }
- 
+
 .login-card form input {
     width: 100%;
     padding: 12px 16px;
     border-radius: 12px;
-    border: 2px solid rgba(180, 140, 210, 0.15);
-    background: rgba(30, 15, 50, 0.70);
-    color: #f0e8f8;
+    border: 2px solid rgba(42, 90, 138, 0.10);
+    background: var(--blanco-humo);
+    color: var(--texto-oscuro);
 }
 
 .login-card form input:focus {
     outline: none;
-    border-color: #a878c8;
-    box-shadow: 0 0 0 4px rgba(168, 120, 200, 0.15);
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 0 4px rgba(74, 138, 186, 0.12);
 }
 
 .login-card form .btn-block {
@@ -252,55 +257,54 @@ body {
     margin-top: 10px;
 }
 
-/* Footer del login */
 .login-card .footer-login {
     text-align: center;
     margin-top: 18px;
     padding-top: 14px;
-    border-top: 1px solid rgba(180, 140, 210, 0.06);
+    border-top: 1px solid rgba(42, 90, 138, 0.04);
 }
 
 .login-card .footer-login span {
-    background: rgba(180, 140, 210, 0.06);
+    background: rgba(42, 90, 138, 0.04);
     padding: 4px 18px;
     border-radius: 30px;
     font-size: 11px;
-    color: #b898d8;
+    color: var(--texto-medio);
 }
 
 .login-card .total-users {
     font-size: 12px;
-    color: #a888c8;
+    color: #8a9aaa;
     text-align: center;
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px solid rgba(180, 140, 210, 0.04);
+    border-top: 1px solid rgba(42, 90, 138, 0.04);
 }
 
 /* ============================================
    ENCABEZADOS
    ============================================ */
 .header {
-    background: linear-gradient(135deg, #5a3a7a, #8a5aaa);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
+    color: var(--blanco);
     padding: 25px 30px;
     border-radius: 18px 18px 0 0;
-    box-shadow: 0 4px 16px rgba(60, 30, 90, 0.30);
+    box-shadow: 0 4px 16px rgba(26, 58, 106, 0.20);
 }
 
 .header h1 {
     font-size: 28px;
     font-weight: 700;
     letter-spacing: -0.5px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.10);
+    color: var(--blanco);
 }
 
 .header p {
     margin-top: 6px;
     opacity: 0.9;
     font-size: 14px;
-    color: #d8c0e8;
+    color: var(--celeste-claro);
 }
 
 .badge {
@@ -312,7 +316,7 @@ body {
     font-weight: 500;
     margin-top: 12px;
     border: 1px solid rgba(255, 255, 255, 0.06);
-    color: #ffffff;
+    color: var(--blanco);
 }
 
 /* ============================================
@@ -321,7 +325,7 @@ body {
 .section-title {
     font-size: 20px;
     font-weight: 700;
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -332,12 +336,12 @@ body {
     content: '';
     flex: 1;
     height: 2px;
-    background: linear-gradient(90deg, #a878c8, transparent);
+    background: linear-gradient(90deg, var(--azul-claro), transparent);
 }
 
 .section-divider {
     border: none;
-    border-top: 2px solid rgba(180, 140, 210, 0.08);
+    border-top: 2px solid rgba(42, 90, 138, 0.06);
     margin: 10px 0 18px 0;
 }
 
@@ -348,7 +352,7 @@ form label {
     display: block;
     font-size: 13px;
     font-weight: 600;
-    color: #d8c0e8;
+    color: var(--texto-medio);
     margin-top: 14px;
     margin-bottom: 4px;
 }
@@ -358,31 +362,31 @@ form select,
 form textarea {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid rgba(180, 140, 210, 0.15);
+    border: 2px solid rgba(42, 90, 138, 0.10);
     border-radius: 12px;
     font-size: 14px;
     font-family: inherit;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    background: rgba(30, 15, 50, 0.70);
-    color: #f0e8f8;
+    background: var(--blanco-humo);
+    color: var(--texto-oscuro);
 }
 
 form input::placeholder {
-    color: #8a6aaa;
+    color: #8a9aaa;
 }
 
 form input:focus,
 form select:focus,
 form textarea:focus {
     outline: none;
-    border-color: #a878c8;
-    box-shadow: 0 0 0 4px rgba(168, 120, 200, 0.15);
-    background: rgba(30, 15, 50, 0.85);
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 0 4px rgba(74, 138, 186, 0.12);
+    background: var(--blanco);
 }
 
 form select option {
-    background: #2a1a3a;
-    color: #f0e8f8;
+    background: var(--blanco);
+    color: var(--texto-oscuro);
 }
 
 form textarea {
@@ -408,7 +412,7 @@ form textarea {
     gap: 8px;
     text-decoration: none;
     letter-spacing: 0.3px;
-    color: #ffffff;
+    color: var(--blanco);
 }
 
 .btn-block {
@@ -417,74 +421,74 @@ form textarea {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #7a4a9a, #a878c8);
-    box-shadow: 0 4px 16px rgba(122, 74, 154, 0.35);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+    box-shadow: 0 4px 16px rgba(42, 90, 138, 0.30);
+    color: var(--blanco);
 }
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(122, 74, 154, 0.45);
-    background: linear-gradient(135deg, #6a3a8a, #9868b8);
+    box-shadow: 0 8px 28px rgba(42, 90, 138, 0.40);
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
 }
 
 .btn-success {
-    background: linear-gradient(135deg, #7a4a9a, #a878c8);
-    box-shadow: 0 4px 16px rgba(122, 74, 154, 0.35);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+    box-shadow: 0 4px 16px rgba(42, 90, 138, 0.30);
+    color: var(--blanco);
 }
 
 .btn-success:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(122, 74, 154, 0.45);
-    background: linear-gradient(135deg, #6a3a8a, #9868b8);
+    box-shadow: 0 8px 28px rgba(42, 90, 138, 0.40);
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
 }
 
 .btn-danger {
-    background: linear-gradient(135deg, #8a5aaa, #b888c8);
-    box-shadow: 0 4px 16px rgba(138, 90, 170, 0.35);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+    box-shadow: 0 4px 16px rgba(42, 90, 138, 0.30);
+    color: var(--blanco);
 }
 
 .btn-danger:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(138, 90, 170, 0.45);
-    background: linear-gradient(135deg, #7a4a9a, #a878b8);
+    box-shadow: 0 8px 28px rgba(42, 90, 138, 0.40);
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
 }
 
 .btn-secondary {
-    background: linear-gradient(135deg, #8a5aaa, #b888c8);
-    box-shadow: 0 4px 16px rgba(138, 90, 170, 0.35);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+    box-shadow: 0 4px 16px rgba(42, 90, 138, 0.30);
+    color: var(--blanco);
 }
 
 .btn-secondary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(138, 90, 170, 0.45);
-    background: linear-gradient(135deg, #7a4a9a, #a878b8);
+    box-shadow: 0 8px 28px rgba(42, 90, 138, 0.40);
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
 }
 
 .btn-info {
-    background: linear-gradient(135deg, #6a7aba, #8a9ac8);
-    box-shadow: 0 4px 16px rgba(106, 122, 186, 0.35);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--celeste), var(--azul-claro));
+    box-shadow: 0 4px 16px rgba(74, 138, 186, 0.25);
+    color: var(--blanco);
 }
 
 .btn-info:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(106, 122, 186, 0.45);
-    background: linear-gradient(135deg, #5a6aaa, #7a8ab8);
+    box-shadow: 0 8px 28px rgba(74, 138, 186, 0.35);
+    background: linear-gradient(135deg, var(--azul-claro), var(--celeste));
 }
 
 .btn-outline {
     background: transparent;
-    color: #c8a8e8;
-    border: 2px solid #c8a8e8;
+    color: var(--azul-medio);
+    border: 2px solid var(--azul-claro);
 }
 
 .btn-outline:hover {
-    background: #7a4a9a;
-    color: #ffffff;
+    background: var(--azul-medio);
+    color: var(--blanco);
     transform: translateY(-2px);
 }
 
@@ -501,8 +505,8 @@ form textarea {
     overflow-x: auto;
     margin-top: 4px;
     border-radius: 14px;
-    border: 1px solid rgba(180, 140, 210, 0.06);
-    background: rgba(30, 15, 50, 0.60);
+    border: 1px solid rgba(42, 90, 138, 0.06);
+    background: rgba(26, 58, 106, 0.02);
     backdrop-filter: blur(4px);
 }
 
@@ -513,8 +517,8 @@ table {
 }
 
 table thead th {
-    background: linear-gradient(135deg, #5a3a7a, #8a5aaa);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
+    color: var(--blanco);
     padding: 14px 14px;
     text-align: left;
     font-weight: 600;
@@ -525,13 +529,13 @@ table thead th {
 
 table tbody td {
     padding: 12px 14px;
-    border-bottom: 1px solid rgba(180, 140, 210, 0.04);
-    color: #f0e8f8;
+    border-bottom: 1px solid rgba(42, 90, 138, 0.04);
+    color: var(--texto-oscuro);
     vertical-align: middle;
 }
 
 table tbody tr:hover {
-    background: rgba(180, 140, 210, 0.06);
+    background: rgba(74, 138, 186, 0.04);
 }
 
 table tbody tr:last-child td {
@@ -539,37 +543,37 @@ table tbody tr:last-child td {
 }
 
 /* ============================================
-   ETIQUETAS / BADGES
+   BADGES Y ETIQUETAS
    ============================================ */
 .tag {
-    background: rgba(180, 140, 210, 0.08);
+    background: rgba(42, 90, 138, 0.06);
     padding: 4px 14px;
     border-radius: 30px;
     font-size: 12px;
     font-weight: 500;
-    color: #f0e8f8;
+    color: var(--texto-medio);
     display: inline-block;
     white-space: nowrap;
 }
 
 .tag-blue {
-    background: rgba(180, 140, 210, 0.12);
-    color: #c8a8e8;
+    background: rgba(74, 138, 186, 0.10);
+    color: var(--azul-medio);
 }
 
 .tag-purple {
-    background: rgba(180, 140, 210, 0.10);
-    color: #d8b8e8;
+    background: rgba(42, 90, 138, 0.06);
+    color: var(--azul-medio);
 }
 
 .tag-green {
-    background: rgba(180, 140, 210, 0.08);
-    color: #c8a8e8;
+    background: rgba(42, 90, 138, 0.04);
+    color: var(--azul-medio);
 }
 
 .tag-red {
-    background: rgba(180, 140, 210, 0.08);
-    color: #d8b8e8;
+    background: rgba(42, 90, 138, 0.06);
+    color: var(--azul-medio);
 }
 
 .badge-tipo {
@@ -580,18 +584,18 @@ table tbody tr:last-child td {
 }
 
 .badge-enfermero {
-    background: rgba(180, 140, 210, 0.10);
-    color: #c8a8e8;
+    background: rgba(74, 138, 186, 0.10);
+    color: var(--azul-medio);
 }
 
 .badge-admin {
-    background: rgba(180, 140, 210, 0.08);
-    color: #d8b8e8;
+    background: rgba(42, 90, 138, 0.06);
+    color: var(--azul-oscuro);
 }
 
 .badge-programador {
-    background: rgba(180, 140, 210, 0.06);
-    color: #c8a8e8;
+    background: rgba(74, 138, 186, 0.06);
+    color: var(--azul-medio);
 }
 
 .badge-estado {
@@ -602,33 +606,83 @@ table tbody tr:last-child td {
 }
 
 .badge-registrado {
-    background: rgba(180, 140, 210, 0.10);
-    color: #c8a8e8;
+    background: rgba(42, 90, 138, 0.06);
+    color: var(--azul-medio);
 }
 
 .badge-atendido {
-    background: rgba(180, 140, 210, 0.06);
-    color: #c8a8e8;
+    background: rgba(42, 90, 138, 0.04);
+    color: var(--azul-medio);
 }
 
 .badge-pendiente {
-    background: rgba(180, 140, 210, 0.10);
-    color: #d8b8e8;
+    background: rgba(74, 138, 186, 0.08);
+    color: var(--azul-medio);
 }
 
 .badge-cancelado {
-    background: rgba(180, 140, 210, 0.06);
-    color: #d8b8e8;
+    background: rgba(180, 200, 220, 0.08);
+    color: #8a9aaa;
 }
 
 .badge-count {
-    background: rgba(180, 140, 210, 0.08);
+    background: rgba(42, 90, 138, 0.06);
     padding: 4px 16px;
     border-radius: 30px;
     font-size: 13px;
     font-weight: 500;
-    color: #c8a8e8;
+    color: var(--azul-medio);
     display: inline-block;
+}
+
+.badge-grave {
+    background: rgba(26, 58, 106, 0.10);
+    color: var(--azul-oscuro);
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.badge-normal {
+    background: rgba(42, 90, 138, 0.06);
+    color: var(--azul-medio);
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.badge-sobrepeso {
+    background: rgba(74, 138, 186, 0.08);
+    color: var(--azul-medio);
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.badge-obesidad {
+    background: rgba(26, 58, 106, 0.10);
+    color: var(--azul-oscuro);
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.badge-derivacion {
+    background: rgba(74, 138, 186, 0.08);
+    color: var(--azul-medio);
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 6px;
 }
 
 /* ============================================
@@ -638,16 +692,16 @@ table tbody tr:last-child td {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(30, 15, 50, 0.70);
+    background: var(--blanco-humo);
     padding: 4px 14px 4px 18px;
     border-radius: 40px;
-    border: 2px solid rgba(180, 140, 210, 0.12);
+    border: 2px solid rgba(42, 90, 138, 0.08);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .search-box:focus-within {
-    border-color: #a878c8;
-    box-shadow: 0 0 0 4px rgba(168, 120, 200, 0.08);
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 0 4px rgba(74, 138, 186, 0.08);
 }
 
 .search-box input {
@@ -658,15 +712,15 @@ table tbody tr:last-child td {
     outline: none;
     background: transparent;
     font-family: inherit;
-    color: #f0e8f8;
+    color: var(--texto-oscuro);
 }
 
 .search-box input::placeholder {
-    color: #8a6aaa;
+    color: #8a9aaa;
 }
 
 .search-box .search-icon {
-    color: #8a6aaa;
+    color: var(--azul-claro);
     font-size: 15px;
 }
 
@@ -678,35 +732,35 @@ table tbody tr:last-child td {
     flex-wrap: wrap;
     gap: 16px;
     padding: 16px 24px;
-    background: rgba(30, 15, 50, 0.50);
+    background: rgba(26, 58, 106, 0.03);
     backdrop-filter: blur(4px);
     border-radius: 14px;
     margin-top: 16px;
-    border: 1px solid rgba(180, 140, 210, 0.06);
+    border: 1px solid rgba(42, 90, 138, 0.06);
 }
 
 .stat-item {
-    background: rgba(30, 15, 50, 0.70);
+    background: rgba(26, 58, 106, 0.04);
     padding: 10px 24px;
     border-radius: 12px;
-    border: 1px solid rgba(180, 140, 210, 0.04);
+    border: 1px solid rgba(42, 90, 138, 0.04);
     font-size: 14px;
     font-weight: 500;
-    color: #f0e8f8;
+    color: var(--texto-medio);
 }
 
 .stat-item span {
     font-weight: 700;
-    color: #c8a8e8;
+    color: var(--azul-medio);
     margin-left: 4px;
 }
 
 .stat-unica {
-    background: rgba(30, 15, 50, 0.60);
+    background: rgba(26, 58, 106, 0.04);
     backdrop-filter: blur(4px);
     border-radius: 14px;
     padding: 16px 24px;
-    border: 1px solid rgba(180, 140, 210, 0.06);
+    border: 1px solid rgba(42, 90, 138, 0.06);
     margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
@@ -728,12 +782,12 @@ table tbody tr:last-child td {
 .stat-unica .stat-item .numero {
     font-size: 36px;
     font-weight: 800;
-    color: #c8a8e8;
+    color: var(--azul-medio);
 }
 
 .stat-unica .stat-item .label {
     font-size: 14px;
-    color: #b898d8;
+    color: var(--texto-medio);
 }
 
 /* ============================================
@@ -742,20 +796,20 @@ table tbody tr:last-child td {
 .empty-message {
     text-align: center;
     padding: 50px 20px;
-    color: #8a6aaa;
+    color: var(--texto-medio);
     font-size: 15px;
 }
 
 /* ============================================
-   FOOTER GENERAL
+   FOOTER
    ============================================ */
 .footer {
     text-align: center;
     margin-top: 30px;
     padding: 20px;
-    color: #8a6aaa;
+    color: var(--texto-medio);
     font-size: 12px;
-    border-top: 1px solid rgba(180, 140, 210, 0.06);
+    border-top: 1px solid rgba(42, 90, 138, 0.04);
 }
 
 /* ============================================
@@ -766,7 +820,7 @@ table tbody tr:last-child td {
     flex-wrap: wrap;
     gap: 12px;
     padding: 18px 0 4px 0;
-    border-top: 1px solid rgba(180, 140, 210, 0.06);
+    border-top: 1px solid rgba(42, 90, 138, 0.04);
     margin-top: 20px;
 }
 
@@ -784,7 +838,7 @@ table tbody tr:last-child td {
 }
 
 .text-muted {
-    color: #b898d8;
+    color: var(--texto-medio);
 }
 
 .text-small {
@@ -801,16 +855,15 @@ table tbody tr:last-child td {
 .mb-16 { margin-bottom: 16px; }
 
 /* ============================================
-   INTRO ÉPICA - ENFERMERÍA
+   INTRO ÉPICA
    ============================================ */
-
 #introOverlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(145deg, #2a1a3a, #1a0a2a);
+    background: linear-gradient(145deg, var(--azul-oscuro), #0a1a3a);
     z-index: 9999;
     display: flex;
     justify-content: center;
@@ -830,12 +883,12 @@ table tbody tr:last-child td {
     width: 100%;
     height: 100%;
     background-image:
-        radial-gradient(2px 2px at 20px 30px, rgba(200, 168, 232, 0.20), transparent),
-        radial-gradient(2px 2px at 40px 70px, rgba(216, 184, 232, 0.12), transparent),
-        radial-gradient(2px 2px at 50px 160px, rgba(200, 168, 232, 0.15), transparent),
-        radial-gradient(2px 2px at 90px 40px, rgba(216, 184, 232, 0.12), transparent),
-        radial-gradient(2px 2px at 130px 80px, rgba(200, 168, 232, 0.20), transparent),
-        radial-gradient(2px 2px at 160px 30px, rgba(216, 184, 232, 0.12), transparent);
+        radial-gradient(2px 2px at 20px 30px, rgba(122, 184, 216, 0.20), transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(184, 221, 240, 0.12), transparent),
+        radial-gradient(2px 2px at 50px 160px, rgba(122, 184, 216, 0.15), transparent),
+        radial-gradient(2px 2px at 90px 40px, rgba(184, 221, 240, 0.12), transparent),
+        radial-gradient(2px 2px at 130px 80px, rgba(122, 184, 216, 0.20), transparent),
+        radial-gradient(2px 2px at 160px 30px, rgba(184, 221, 240, 0.12), transparent);
     background-size: 200px 200px;
     background-repeat: repeat;
     opacity: 0.6;
@@ -849,7 +902,7 @@ table tbody tr:last-child td {
     position: relative;
     z-index: 2;
     font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-    text-shadow: 0 0 80px rgba(168, 120, 200, 0.05);
+    text-shadow: 0 0 80px rgba(74, 138, 186, 0.05);
     transform: translateY(-300px);
     opacity: 0;
     animation: caerTitulo 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
@@ -864,14 +917,14 @@ table tbody tr:last-child td {
 
 .intro-titulo .letra {
     display: inline-block;
-    background: linear-gradient(135deg, #a878c8, #c8a8e8, #b888c8, #d8b8e8, #a878c8);
+    background: linear-gradient(135deg, var(--celeste), var(--azul-claro), var(--celeste), var(--azul-claro));
     background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: arcoiris 4s ease infinite;
     text-shadow: none;
-    filter: drop-shadow(0 0 60px rgba(168, 120, 200, 0.05));
+    filter: drop-shadow(0 0 60px rgba(74, 138, 186, 0.05));
     font-weight: 900;
 }
 
@@ -892,28 +945,28 @@ table tbody tr:last-child td {
     animation: fadeInUp 1s ease 1.2s forwards;
     font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
     text-transform: uppercase;
-    text-shadow: 0 0 40px rgba(168, 120, 200, 0.02);
+    text-shadow: 0 0 40px rgba(74, 138, 186, 0.02);
 }
 
 .intro-curso .curso-3 {
-    color: #c8a8e8;
-    -webkit-text-fill-color: #c8a8e8;
-    text-shadow: 0 0 40px rgba(200, 168, 232, 0.08);
+    color: var(--celeste);
+    -webkit-text-fill-color: var(--celeste);
+    text-shadow: 0 0 40px rgba(122, 184, 216, 0.08);
 }
 
 .intro-curso .curso-4 {
-    color: #d8b8e8;
-    -webkit-text-fill-color: #d8b8e8;
-    text-shadow: 0 0 40px rgba(216, 184, 232, 0.08);
+    color: var(--azul-claro);
+    -webkit-text-fill-color: var(--azul-claro);
+    text-shadow: 0 0 40px rgba(74, 138, 186, 0.08);
 }
 
 .intro-curso .separador {
-    color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.10);
     margin: 0 12px;
 }
 
 .intro-subtitulo {
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.30);
     font-size: 18px;
     letter-spacing: 14px;
     font-weight: 300;
@@ -944,7 +997,7 @@ table tbody tr:last-child td {
 .polvo {
     position: absolute;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(168, 120, 200, 0.03), transparent 70%);
+    background: radial-gradient(circle, rgba(74, 138, 186, 0.03), transparent 70%);
     animation: polvoExpand 2s ease-out forwards;
 }
 
@@ -956,7 +1009,7 @@ table tbody tr:last-child td {
 .impacto {
     position: absolute;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(168, 120, 200, 0.04), transparent 70%);
+    background: radial-gradient(circle, rgba(74, 138, 186, 0.04), transparent 70%);
     animation: impactoExpand 1.5s ease-out forwards;
     pointer-events: none;
     z-index: 0;
@@ -970,7 +1023,7 @@ table tbody tr:last-child td {
 .linea-luz {
     position: absolute;
     height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(168, 120, 200, 0.06), transparent);
+    background: linear-gradient(90deg, transparent, rgba(74, 138, 186, 0.06), transparent);
     animation: lineaLuz 2s ease-in-out infinite;
     z-index: 1;
 }
@@ -1013,13 +1066,13 @@ table tbody tr:last-child td {
     z-index: 100;
     padding: 4px 6px;
     border-radius: 8px;
-    color: #8a6aaa;
+    color: var(--texto-medio);
     font-family: inherit;
 }
 
 #gameLauncher:hover {
     opacity: 0.4;
-    background: rgba(168, 120, 200, 0.04);
+    background: rgba(74, 138, 186, 0.04);
 }
 
 /* ============================================
@@ -1032,7 +1085,7 @@ table tbody tr:last-child td {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(26, 10, 42, 0.92);
+    background: rgba(10, 26, 42, 0.92);
     z-index: 9999;
     justify-content: center;
     align-items: center;
@@ -1045,10 +1098,10 @@ table tbody tr:last-child td {
 }
 
 #gameCanvas {
-    background: #1a0a2a;
-    border: 3px solid #5a3a7a;
+    background: var(--azul-oscuro);
+    border: 3px solid var(--azul-medio);
     border-radius: 14px;
-    box-shadow: 0 0 80px rgba(168, 120, 200, 0.04);
+    box-shadow: 0 0 80px rgba(74, 138, 186, 0.04);
     cursor: none;
 }
 
@@ -1058,7 +1111,7 @@ table tbody tr:last-child td {
     align-items: center;
     width: 600px;
     margin-bottom: 10px;
-    color: #f0e8f8;
+    color: var(--texto-claro);
     font-size: 15px;
     font-weight: 600;
     flex-wrap: wrap;
@@ -1066,11 +1119,11 @@ table tbody tr:last-child td {
 }
 
 .game-header span {
-    background: rgba(30, 15, 50, 0.60);
+    background: rgba(26, 58, 106, 0.06);
     padding: 5px 16px;
     border-radius: 20px;
-    border: 1px solid rgba(180, 140, 210, 0.08);
-    color: #f0e8f8;
+    border: 1px solid rgba(42, 90, 138, 0.06);
+    color: var(--texto-oscuro);
 }
 
 .game-controls {
@@ -1091,42 +1144,42 @@ table tbody tr:last-child td {
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: inherit;
-    color: #ffffff;
+    color: var(--blanco);
 }
 
 .btn-skin {
-    background: rgba(30, 15, 50, 0.60);
-    color: #f0e8f8;
-    border: 1px solid rgba(180, 140, 210, 0.10);
+    background: rgba(26, 58, 106, 0.06);
+    color: var(--texto-oscuro);
+    border: 1px solid rgba(42, 90, 138, 0.06);
 }
 
 .btn-skin:hover {
-    background: #8a5aaa;
-    color: #ffffff;
+    background: var(--azul-medio);
+    color: var(--blanco);
     transform: scale(1.05);
 }
 
 .btn-skin.active {
-    box-shadow: 0 0 40px rgba(168, 120, 200, 0.08);
-    border-color: #a878c8;
+    box-shadow: 0 0 40px rgba(74, 138, 186, 0.08);
+    border-color: var(--azul-claro);
 }
 
-.btn-skin[data-skin="0"].active { background: #7a4a9a; }
-.btn-skin[data-skin="1"].active { background: #8a5aaa; }
-.btn-skin[data-skin="2"].active { background: #b888c8; }
+.btn-skin[data-skin="0"].active { background: var(--azul-medio); }
+.btn-skin[data-skin="1"].active { background: var(--azul-claro); }
+.btn-skin[data-skin="2"].active { background: var(--celeste); }
 
 .btn-close-game {
-    background: #8a5aaa;
+    background: var(--azul-medio);
     padding: 7px 20px;
 }
 
 .btn-close-game:hover {
-    background: #a878c8;
+    background: var(--azul-claro);
     transform: scale(1.05);
 }
 
 .skin-indicator {
-    color: rgba(255, 255, 255, 0.30);
+    color: rgba(0, 0, 0, 0.20);
     font-size: 12px;
     margin-top: 6px;
 }
@@ -1137,13 +1190,13 @@ table tbody tr:last-child td {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(26, 10, 42, 0.88);
+    background: rgba(10, 26, 42, 0.88);
     display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     border-radius: 14px;
-    color: #f0e8f8;
+    color: var(--blanco);
 }
 
 .game-over-overlay.show {
@@ -1153,14 +1206,14 @@ table tbody tr:last-child td {
 .game-over-overlay h2 {
     font-size: 44px;
     margin-bottom: 8px;
-    text-shadow: 0 0 60px rgba(216, 184, 232, 0.06);
-    color: #d8b8e8;
+    text-shadow: 0 0 60px rgba(122, 184, 216, 0.06);
+    color: var(--celeste);
 }
 
 .game-over-overlay p {
     font-size: 18px;
     opacity: 0.7;
-    color: #d8c0e8;
+    color: var(--celeste-claro);
 }
 
 .game-over-overlay .btn-restart {
@@ -1168,8 +1221,8 @@ table tbody tr:last-child td {
     padding: 10px 30px;
     border: none;
     border-radius: 12px;
-    background: linear-gradient(135deg, #7a4a9a, #a878c8);
-    color: #fff;
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+    color: var(--blanco);
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -1178,7 +1231,7 @@ table tbody tr:last-child td {
 
 .game-over-overlay .btn-restart:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 60px rgba(168, 120, 200, 0.04);
+    box-shadow: 0 0 60px rgba(74, 138, 186, 0.04);
 }
 
 .canvas-wrapper {
@@ -1187,18 +1240,18 @@ table tbody tr:last-child td {
 }
 
 .difficulty-indicator {
-    color: rgba(255, 255, 255, 0.20);
+    color: rgba(0, 0, 0, 0.15);
     font-size: 11px;
     margin-top: 4px;
 }
 
 .difficulty-indicator span {
-    color: #d8b8e8;
+    color: var(--azul-medio);
     font-weight: 700;
 }
 
 .direction-hint {
-    color: rgba(255, 255, 255, 0.04);
+    color: rgba(0, 0, 0, 0.04);
     font-size: 11px;
     margin-top: 4px;
     text-align: center;
@@ -1208,37 +1261,73 @@ table tbody tr:last-child td {
    ADMIN PANEL
    ============================================ */
 .admin-header {
-    background: linear-gradient(135deg, #5a3a7a, #8a5aaa);
-    color: white;
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
+    color: var(--blanco);
     padding: 20px 24px;
     border-radius: 18px 18px 0 0;
     margin: -30px -35px 20px -35px;
-    box-shadow: 0 4px 16px rgba(60, 30, 90, 0.30);
+    box-shadow: 0 4px 16px rgba(26, 58, 106, 0.30);
 }
 
 .admin-header h2 {
     font-size: 22px;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--blanco);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.10);
 }
 
 .admin-header p {
     opacity: 0.9;
     font-size: 14px;
-    color: #d8c0e8;
+    color: var(--celeste-claro);
+}
+
+.admin-header-eval {
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
+    color: var(--blanco);
+    padding: 20px 24px;
+    border-radius: 18px 18px 0 0;
+    margin: -30px -35px 20px -35px;
+    box-shadow: 0 4px 16px rgba(26, 58, 106, 0.30);
+}
+
+.admin-header-eval h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--blanco);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.10);
+}
+
+.admin-header-eval p {
+    opacity: 0.9;
+    font-size: 14px;
+    color: var(--celeste-claro);
+}
+
+.badge-eval {
+    background: rgba(255, 215, 0, 0.15);
+    border: 1px solid rgba(255, 215, 0, 0.30);
+    display: inline-block;
+    padding: 4px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    margin-top: 8px;
+    color: #c8a040;
 }
 
 /* ============================================
    CALENDARIO
    ============================================ */
 .calendario-container {
-    background: rgba(30, 15, 50, 0.60);
+    background: rgba(26, 58, 106, 0.04);
     backdrop-filter: blur(4px);
     border-radius: 14px;
     padding: 20px;
-    border: 1px solid rgba(180, 140, 210, 0.06);
+    border: 1px solid rgba(42, 90, 138, 0.06);
     margin-bottom: 24px;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
 }
 
 .calendario-header {
@@ -1252,7 +1341,7 @@ table tbody tr:last-child td {
 
 .calendario-header h3 {
     font-size: 18px;
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
     font-weight: 600;
 }
 
@@ -1263,19 +1352,19 @@ table tbody tr:last-child td {
 }
 
 .calendario-header .mes-ano button {
-    background: rgba(30, 15, 50, 0.70);
-    border: 1px solid rgba(180, 140, 210, 0.10);
+    background: var(--blanco-humo);
+    border: 1px solid rgba(42, 90, 138, 0.08);
     border-radius: 8px;
     padding: 6px 16px;
     cursor: pointer;
     font-size: 16px;
     transition: all 0.2s ease;
-    color: #c8a8e8;
+    color: var(--azul-medio);
     font-weight: 600;
 }
 
 .calendario-header .mes-ano button:hover {
-    background: rgba(180, 140, 210, 0.08);
+    background: rgba(74, 138, 186, 0.08);
 }
 
 .calendario-header .mes-ano span {
@@ -1283,21 +1372,23 @@ table tbody tr:last-child td {
     font-size: 16px;
     min-width: 140px;
     text-align: center;
-    color: #d8c0e8;
+    color: var(--texto-oscuro);
 }
 
 .calendario-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    gap: 4px !important;
+    width: 100% !important;
 }
 
 .calendario-grid .dia-semana {
     text-align: center;
     font-weight: 600;
     font-size: 13px;
-    color: #b898d8;
+    color: var(--azul-medio);
     padding: 8px 0;
+    width: 100% !important;
 }
 
 .calendario-grid .dia {
@@ -1307,8 +1398,8 @@ table tbody tr:last-child td {
     font-size: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
-    background: rgba(30, 15, 50, 0.40);
-    color: #d8c0e8;
+    background: rgba(26, 58, 106, 0.04);
+    color: var(--texto-oscuro);
     min-height: 45px;
     display: flex;
     flex-direction: column;
@@ -1316,12 +1407,13 @@ table tbody tr:last-child td {
     justify-content: center;
     position: relative;
     border: 1px solid transparent;
+    width: 100% !important;
 }
 
 .calendario-grid .dia:hover {
-    background: rgba(180, 140, 210, 0.06);
+    background: rgba(74, 138, 186, 0.06);
     transform: scale(1.02);
-    border-color: rgba(180, 140, 210, 0.10);
+    border-color: rgba(42, 90, 138, 0.08);
 }
 
 .calendario-grid .dia.vacio {
@@ -1331,25 +1423,37 @@ table tbody tr:last-child td {
 }
 
 .calendario-grid .dia.otro-mes {
-    color: #5a3a6a;
+    color: #aab8c8;
 }
 
 .calendario-grid .dia.hoy {
-    background: rgba(168, 120, 200, 0.10);
-    border: 2px solid #a878c8;
+    background: rgba(42, 90, 138, 0.08);
+    border: 2px solid var(--azul-claro);
     font-weight: 700;
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
 }
 
 .calendario-grid .dia.con-atencion {
-    background: rgba(180, 140, 210, 0.08);
-    border: 2px solid #b888c8;
+    background: rgba(74, 138, 186, 0.08);
+    border: 2px solid var(--azul-claro);
     font-weight: 600;
-    color: #d8b8e8;
+    color: var(--azul-medio);
 }
 
 .calendario-grid .dia.con-atencion:hover {
-    background: rgba(180, 140, 210, 0.12);
+    background: rgba(74, 138, 186, 0.14);
+}
+
+.calendario-grid .dia.con-evaluacion-activa {
+    background: rgba(74, 138, 186, 0.15);
+    border: 2px solid var(--azul-medio);
+    color: var(--azul-oscuro);
+}
+
+.calendario-grid .dia.con-evaluacion-finalizada {
+    background: rgba(180, 200, 220, 0.15);
+    border: 2px solid #8a9aaa;
+    color: var(--texto-medio);
 }
 
 .calendario-grid .dia .indicador {
@@ -1361,8 +1465,8 @@ table tbody tr:last-child td {
     position: absolute;
     top: -6px;
     right: -6px;
-    background: #8a5aaa;
-    color: white;
+    background: var(--azul-medio);
+    color: var(--blanco);
     font-size: 9px;
     font-weight: 700;
     border-radius: 50%;
@@ -1371,7 +1475,7 @@ table tbody tr:last-child td {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(60, 30, 90, 0.20);
+    box-shadow: 0 2px 8px rgba(26, 58, 106, 0.15);
 }
 
 .calendario-leyenda {
@@ -1387,42 +1491,52 @@ table tbody tr:last-child td {
     align-items: center;
     gap: 6px;
     font-size: 12px;
-    color: #b898d8;
+    color: var(--texto-medio);
 }
 
 .calendario-leyenda .item .color {
     width: 18px;
     height: 18px;
     border-radius: 6px;
-    border: 1px solid rgba(180, 140, 210, 0.06);
+    border: 1px solid rgba(42, 90, 138, 0.06);
 }
 
 .calendario-leyenda .item .color.verde {
-    background: rgba(180, 140, 210, 0.15);
-    border-color: #b888c8;
+    background: var(--celeste);
+    border-color: var(--azul-claro);
 }
 
 .calendario-leyenda .item .color.azul {
-    background: rgba(168, 120, 200, 0.10);
-    border-color: #a878c8;
+    background: var(--azul-claro);
+    border-color: var(--azul-medio);
+}
+
+.calendario-leyenda .item .color.naranja {
+    background: var(--celeste);
+    border-color: var(--azul-medio);
+}
+
+.calendario-leyenda .item .color.gris {
+    background: #c8d8e8;
+    border-color: #aab8c8;
 }
 
 /* ============================================
    ATENCIÓN ITEM DETALLE
    ============================================ */
 .atencion-item-detalle {
-    background: rgba(30, 15, 50, 0.60);
+    background: rgba(26, 58, 106, 0.04);
     backdrop-filter: blur(4px);
     border-radius: 12px;
     padding: 14px 18px;
     margin-bottom: 10px;
-    border-left: 4px solid #a878c8;
+    border-left: 4px solid var(--azul-claro);
     transition: all 0.2s ease;
     cursor: pointer;
 }
 
 .atencion-item-detalle:hover {
-    background: rgba(30, 15, 50, 0.80);
+    background: rgba(74, 138, 186, 0.06);
     transform: translateX(6px);
 }
 
@@ -1436,31 +1550,31 @@ table tbody tr:last-child td {
 
 .atencion-item-detalle .fecha {
     font-weight: 600;
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
 }
 
 .atencion-item-detalle .paciente-nombre {
     font-weight: 600;
-    color: #f0e8f8;
+    color: var(--texto-oscuro);
 }
 
 .atencion-item-detalle .enfermero {
-    color: #b898d8;
+    color: var(--texto-medio);
     font-size: 13px;
 }
 
 .atencion-item-detalle .resultado {
     margin-top: 6px;
-    color: #f0e8f8;
+    color: var(--texto-oscuro);
     font-size: 14px;
     padding: 8px 14px;
-    background: rgba(30, 15, 50, 0.40);
+    background: rgba(26, 58, 106, 0.04);
     border-radius: 8px;
-    border: 1px solid rgba(180, 140, 210, 0.03);
+    border: 1px solid rgba(42, 90, 138, 0.03);
 }
 
 .atencion-item-detalle .resultado strong {
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
 }
 
 /* ============================================
@@ -1473,8 +1587,8 @@ table tbody tr:last-child td {
 }
 
 .tabla-accesos thead th {
-    background: linear-gradient(135deg, #5a3a7a, #8a5aaa);
-    color: white;
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
+    color: var(--blanco);
     padding: 10px 14px;
     text-align: left;
     font-weight: 600;
@@ -1482,12 +1596,12 @@ table tbody tr:last-child td {
 
 .tabla-accesos tbody td {
     padding: 10px 14px;
-    border-bottom: 1px solid rgba(180, 140, 210, 0.04);
-    color: #f0e8f8;
+    border-bottom: 1px solid rgba(42, 90, 138, 0.04);
+    color: var(--texto-oscuro);
 }
 
 .tabla-accesos tbody tr:hover {
-    background: rgba(180, 140, 210, 0.04);
+    background: rgba(74, 138, 186, 0.04);
 }
 
 .accesos-wrapper {
@@ -1500,17 +1614,17 @@ table tbody tr:last-child td {
 }
 
 .accesos-wrapper::-webkit-scrollbar-track {
-    background: rgba(30, 15, 50, 0.40);
+    background: rgba(26, 58, 106, 0.04);
     border-radius: 10px;
 }
 
 .accesos-wrapper::-webkit-scrollbar-thumb {
-    background: #8a5aaa;
+    background: var(--azul-claro);
     border-radius: 10px;
 }
 
 .accesos-wrapper::-webkit-scrollbar-thumb:hover {
-    background: #7a4a9a;
+    background: var(--azul-medio);
 }
 
 /* ============================================
@@ -1523,7 +1637,7 @@ table tbody tr:last-child td {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.50);
+    background: rgba(0, 0, 0, 0.40);
     backdrop-filter: blur(4px);
     z-index: 1000;
     justify-content: center;
@@ -1536,7 +1650,7 @@ table tbody tr:last-child td {
 }
 
 .modal-content {
-    background: rgba(30, 15, 50, 0.90);
+    background: var(--blanco);
     backdrop-filter: blur(8px);
     border-radius: 20px;
     padding: 30px;
@@ -1544,8 +1658,8 @@ table tbody tr:last-child td {
     width: 100%;
     max-height: 80vh;
     overflow-y: auto;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.40);
-    border: 1px solid rgba(180, 140, 210, 0.04);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(42, 90, 138, 0.04);
 }
 
 .modal-content .modal-header {
@@ -1553,12 +1667,12 @@ table tbody tr:last-child td {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
-    border-bottom: 2px solid rgba(180, 140, 210, 0.04);
+    border-bottom: 2px solid rgba(42, 90, 138, 0.04);
     padding-bottom: 12px;
 }
 
 .modal-content .modal-header h3 {
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
     font-size: 20px;
 }
 
@@ -1567,41 +1681,41 @@ table tbody tr:last-child td {
     border: none;
     font-size: 24px;
     cursor: pointer;
-    color: #b898d8;
+    color: var(--texto-medio);
     transition: all 0.2s ease;
 }
 
 .modal-content .modal-header .close-btn:hover {
-    color: #d8b8e8;
+    color: var(--azul-oscuro);
     transform: rotate(90deg);
 }
 
 .modal-content .modal-body .campo {
     display: flex;
     padding: 6px 0;
-    border-bottom: 1px solid rgba(180, 140, 210, 0.03);
+    border-bottom: 1px solid rgba(42, 90, 138, 0.03);
 }
 
 .modal-content .modal-body .campo .etiqueta {
     font-weight: 600;
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
     min-width: 140px;
 }
 
 .modal-content .modal-body .campo .valor {
-    color: #f0e8f8;
+    color: var(--texto-oscuro);
 }
 
 /* ============================================
    MODAL LIMPIEZA
    ============================================ */
 .modal-limpieza .aviso-limpieza {
-    background: rgba(180, 140, 210, 0.08);
-    border: 1px solid rgba(180, 140, 210, 0.10);
+    background: rgba(74, 138, 186, 0.06);
+    border: 1px solid rgba(74, 138, 186, 0.10);
     border-radius: 10px;
     padding: 10px 16px;
     font-size: 13px;
-    color: #d8b8e8;
+    color: var(--texto-medio);
     margin-bottom: 16px;
 }
 
@@ -1610,7 +1724,7 @@ table tbody tr:last-child td {
     align-items: flex-start;
     gap: 12px;
     padding: 12px 16px;
-    border: 2px solid rgba(180, 140, 210, 0.06);
+    border: 2px solid rgba(42, 90, 138, 0.06);
     border-radius: 12px;
     margin-bottom: 10px;
     cursor: pointer;
@@ -1618,8 +1732,8 @@ table tbody tr:last-child td {
 }
 
 .modal-limpieza .opcion-limpieza:hover {
-    background: rgba(180, 140, 210, 0.03);
-    border-color: rgba(180, 140, 210, 0.10);
+    background: rgba(74, 138, 186, 0.03);
+    border-color: rgba(42, 90, 138, 0.08);
 }
 
 .modal-limpieza .opcion-limpieza input[type="checkbox"] {
@@ -1628,7 +1742,7 @@ table tbody tr:last-child td {
     cursor: pointer;
     margin-top: 2px;
     flex-shrink: 0;
-    accent-color: #a878c8;
+    accent-color: var(--azul-claro);
 }
 
 .modal-limpieza .opcion-limpieza .info {
@@ -1637,18 +1751,18 @@ table tbody tr:last-child td {
 
 .modal-limpieza .opcion-limpieza .info .titulo {
     font-weight: 600;
-    color: #f0e8f8;
+    color: var(--texto-oscuro);
 }
 
 .modal-limpieza .opcion-limpieza .info .descripcion {
     font-size: 12px;
-    color: #b898d8;
+    color: var(--texto-medio);
     margin-top: 2px;
 }
 
 .btn-limpiar-seleccion {
-    background: linear-gradient(135deg, #8a5aaa, #b888c8);
-    color: white;
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+    color: var(--blanco);
     padding: 12px 24px;
     border: none;
     border-radius: 12px;
@@ -1662,11 +1776,12 @@ table tbody tr:last-child td {
 
 .btn-limpiar-seleccion:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(138, 90, 170, 0.20);
+    box-shadow: 0 8px 28px rgba(42, 90, 138, 0.20);
 }
 
 .btn-limpiar-seleccion:disabled {
-    background: #3a2a4a;
+    background: #aab8c8;
+    color: #d8e0e8;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
@@ -1676,8 +1791,8 @@ table tbody tr:last-child td {
    ENFERMERO PANEL
    ============================================ */
 .enfermero-header {
-    background: linear-gradient(135deg, #5a3a7a, #8a5aaa);
-    color: white;
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
+    color: var(--blanco);
     padding: 20px 24px;
     border-radius: 18px 18px 0 0;
     margin: -30px -35px 20px -35px;
@@ -1686,26 +1801,26 @@ table tbody tr:last-child td {
     align-items: center;
     flex-wrap: wrap;
     gap: 12px;
-    box-shadow: 0 4px 16px rgba(60, 30, 90, 0.30);
+    box-shadow: 0 4px 16px rgba(26, 58, 106, 0.30);
 }
 
 .enfermero-header .header-text h2 {
     font-size: 22px;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--blanco);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.10);
 }
 
 .enfermero-header .header-text p {
     opacity: 0.9;
     font-size: 14px;
-    color: #d8c0e8;
+    color: var(--celeste-claro);
 }
 
 .btn-casa {
     background: rgba(255, 255, 255, 0.06);
     border: 2px solid rgba(255, 255, 255, 0.08);
-    color: #ffffff;
+    color: var(--blanco);
     padding: 10px 18px;
     border-radius: 12px;
     font-size: 22px;
@@ -1729,48 +1844,47 @@ table tbody tr:last-child td {
 }
 
 /* ============================================
-   FICHA MÉDICA - MORADO PASTEL
+   FICHA MÉDICA
    ============================================ */
-
 .ficha-medica {
-    background: rgba(40, 20, 60, 0.85);
+    background: var(--blanco);
     backdrop-filter: blur(4px);
     border-radius: 18px;
     padding: 24px 28px;
-    border: 2px solid rgba(180, 140, 210, 0.15);
+    border: 2px solid rgba(42, 90, 138, 0.08);
     transition: all 0.3s ease;
     margin-bottom: 24px;
 }
 
 .ficha-medica:hover {
-    border-color: rgba(180, 140, 210, 0.35);
-    box-shadow: 0 4px 20px rgba(168, 120, 200, 0.15);
+    border-color: rgba(42, 90, 138, 0.20);
+    box-shadow: 0 4px 20px rgba(74, 138, 186, 0.10);
 }
 
 .ficha-medica .titulo-ficha {
     display: flex;
     align-items: center;
     gap: 12px;
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 16px;
-    border-bottom: 2px solid rgba(180, 140, 210, 0.10);
+    border-bottom: 2px solid rgba(42, 90, 138, 0.06);
     padding-bottom: 12px;
 }
 
 .ficha-medica .seccion {
-    background: rgba(40, 20, 60, 0.40);
+    background: rgba(26, 58, 106, 0.03);
     border-radius: 12px;
     padding: 16px 18px;
     margin-bottom: 16px;
-    border: 1px solid rgba(180, 140, 210, 0.06);
+    border: 1px solid rgba(42, 90, 138, 0.04);
 }
 
 .ficha-medica .seccion .seccion-titulo {
     font-size: 14px;
     font-weight: 600;
-    color: #d8b8e8;
+    color: var(--azul-medio);
     margin-bottom: 12px;
     display: flex;
     align-items: center;
@@ -1778,11 +1892,11 @@ table tbody tr:last-child td {
 }
 
 .ficha-medica .seccion .seccion-titulo span {
-    background: rgba(180, 140, 210, 0.10);
+    background: rgba(42, 90, 138, 0.06);
     padding: 2px 12px;
     border-radius: 20px;
     font-size: 11px;
-    color: #c8a8e8;
+    color: var(--azul-medio);
 }
 
 .ficha-medica .row {
@@ -1805,12 +1919,12 @@ table tbody tr:last-child td {
     display: block;
     font-size: 13px;
     font-weight: 600;
-    color: #d8c0e8;
+    color: var(--texto-medio);
     margin-bottom: 4px;
 }
 
 .ficha-medica label .required {
-    color: #d8b8e8;
+    color: var(--azul-claro);
 }
 
 .ficha-medica input,
@@ -1818,12 +1932,12 @@ table tbody tr:last-child td {
 .ficha-medica textarea {
     width: 100%;
     padding: 10px 14px;
-    border: 2px solid rgba(180, 140, 210, 0.12);
+    border: 2px solid rgba(42, 90, 138, 0.08);
     border-radius: 10px;
     font-size: 14px;
     font-family: inherit;
-    background: rgba(30, 15, 50, 0.70);
-    color: #f0e8f8;
+    background: var(--blanco-humo);
+    color: var(--texto-oscuro);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -1831,9 +1945,9 @@ table tbody tr:last-child td {
 .ficha-medica select:focus,
 .ficha-medica textarea:focus {
     outline: none;
-    border-color: #a878c8;
-    box-shadow: 0 0 0 4px rgba(168, 120, 200, 0.10);
-    background: rgba(30, 15, 50, 0.85);
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 0 4px rgba(74, 138, 186, 0.08);
+    background: var(--blanco);
 }
 
 .ficha-medica textarea {
@@ -1853,8 +1967,8 @@ table tbody tr:last-child td {
 }
 
 .ficha-medica .btn-guardar {
-    background: linear-gradient(135deg, #7a4a9a, #a878c8);
-    color: white;
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+    color: var(--blanco);
     padding: 12px 24px;
     border: none;
     border-radius: 10px;
@@ -1865,20 +1979,20 @@ table tbody tr:last-child td {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    box-shadow: 0 4px 16px rgba(122, 74, 154, 0.25);
+    box-shadow: 0 4px 16px rgba(42, 90, 138, 0.20);
 }
 
 .ficha-medica .btn-guardar:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(122, 74, 154, 0.35);
-    background: linear-gradient(135deg, #6a3a8a, #9868b8);
+    box-shadow: 0 8px 28px rgba(42, 90, 138, 0.30);
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
 }
 
 .ficha-medica .btn-limpiar {
-    background: rgba(180, 140, 210, 0.08);
-    color: #d8c0e8;
+    background: rgba(42, 90, 138, 0.06);
+    color: var(--texto-medio);
     padding: 12px 24px;
-    border: 2px solid rgba(180, 140, 210, 0.08);
+    border: 2px solid rgba(42, 90, 138, 0.06);
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
@@ -1887,13 +2001,13 @@ table tbody tr:last-child td {
 }
 
 .ficha-medica .btn-limpiar:hover {
-    background: rgba(180, 140, 210, 0.12);
+    background: rgba(74, 138, 186, 0.08);
     transform: translateY(-2px);
 }
 
 .ficha-medica .btn-cancelar-edicion {
-    background: linear-gradient(135deg, #8a5aaa, #b888c8);
-    color: white;
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+    color: var(--blanco);
     padding: 12px 24px;
     border: none;
     border-radius: 10px;
@@ -1901,13 +2015,13 @@ table tbody tr:last-child td {
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 15px;
-    box-shadow: 0 4px 16px rgba(138, 90, 170, 0.25);
+    box-shadow: 0 4px 16px rgba(42, 90, 138, 0.20);
 }
 
 .ficha-medica .btn-cancelar-edicion:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(138, 90, 170, 0.35);
-    background: linear-gradient(135deg, #7a4a9a, #a878b8);
+    box-shadow: 0 8px 28px rgba(42, 90, 138, 0.30);
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
 }
 
 .ficha-medica .acciones {
@@ -1919,14 +2033,14 @@ table tbody tr:last-child td {
 
 .success-message {
     display: none;
-    background: rgba(180, 140, 210, 0.08);
-    color: #c8a8e8;
+    background: rgba(74, 138, 186, 0.08);
+    color: var(--azul-medio);
     padding: 12px 16px;
     border-radius: 10px;
     margin-top: 16px;
     text-align: center;
     font-weight: 500;
-    border: 1px solid rgba(180, 140, 210, 0.08);
+    border: 1px solid rgba(74, 138, 186, 0.08);
 }
 
 .success-message.show {
@@ -1940,7 +2054,7 @@ table tbody tr:last-child td {
 }
 
 /* ============================================
-   TABLA REGISTROS (Enfermero Panel)
+   TABLA REGISTROS
    ============================================ */
 .tabla-registros {
     width: 100%;
@@ -1949,8 +2063,8 @@ table tbody tr:last-child td {
 }
 
 .tabla-registros thead th {
-    background: linear-gradient(135deg, #5a3a7a, #8a5aaa);
-    color: white;
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
+    color: var(--blanco);
     padding: 10px 14px;
     text-align: left;
     font-weight: 600;
@@ -1960,17 +2074,17 @@ table tbody tr:last-child td {
 
 .tabla-registros tbody td {
     padding: 8px 12px;
-    border-bottom: 1px solid rgba(180, 140, 210, 0.04);
-    color: #f0e8f8;
+    border-bottom: 1px solid rgba(42, 90, 138, 0.04);
+    color: var(--texto-oscuro);
     vertical-align: middle;
 }
 
 .tabla-registros tbody tr:hover {
-    background: rgba(180, 140, 210, 0.04);
+    background: rgba(74, 138, 186, 0.04);
 }
 
 .tabla-registros tbody tr.en-edicion {
-    background: rgba(180, 140, 210, 0.08);
+    background: rgba(74, 138, 186, 0.06);
 }
 
 .tabla-registros tbody td input,
@@ -1978,19 +2092,19 @@ table tbody tr:last-child td {
 .tabla-registros tbody td textarea {
     width: 100%;
     padding: 4px 8px;
-    border: 2px solid rgba(180, 140, 210, 0.08);
+    border: 2px solid rgba(42, 90, 138, 0.06);
     border-radius: 6px;
     font-size: 12px;
     font-family: inherit;
-    background: rgba(30, 15, 50, 0.70);
-    color: #f0e8f8;
+    background: var(--blanco-humo);
+    color: var(--texto-oscuro);
 }
 
 .tabla-registros tbody td input:focus,
 .tabla-registros tbody td select:focus,
 .tabla-registros tbody td textarea:focus {
     outline: none;
-    border-color: #a878c8;
+    border-color: var(--azul-claro);
 }
 
 .tabla-registros tbody td textarea {
@@ -1999,7 +2113,7 @@ table tbody tr:last-child td {
 }
 
 /* ============================================
-   BOTONES DE ACCIÓN (tablas)
+   BOTONES DE ACCIÓN
    ============================================ */
 .btn-accion {
     padding: 3px 12px;
@@ -2010,36 +2124,36 @@ table tbody tr:last-child td {
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: inherit;
-    color: #ffffff;
+    color: var(--blanco);
 }
 
-.btn-editar-reg { background: #7a4a9a; }
-.btn-editar-reg:hover { background: #a878c8; }
+.btn-editar-reg { background: var(--azul-medio); }
+.btn-editar-reg:hover { background: var(--azul-claro); }
 
-.btn-guardar-reg { background: #7a4a9a; }
-.btn-guardar-reg:hover { background: #a878c8; }
+.btn-guardar-reg { background: var(--azul-medio); }
+.btn-guardar-reg:hover { background: var(--azul-claro); }
 
-.btn-cancelar-reg { background: #8a5aaa; }
-.btn-cancelar-reg:hover { background: #b888c8; }
+.btn-cancelar-reg { background: var(--azul-medio); }
+.btn-cancelar-reg:hover { background: var(--azul-claro); }
 
-.btn-eliminar-reg { background: #8a5aaa; }
-.btn-eliminar-reg:hover { background: #b888c8; }
+.btn-eliminar-reg { background: var(--azul-medio); }
+.btn-eliminar-reg:hover { background: var(--azul-claro); }
 
-.btn-editar { background: #7a4a9a; color: white; }
-.btn-editar:hover { background: #a878c8; }
+.btn-editar { background: var(--azul-medio); color: var(--blanco); }
+.btn-editar:hover { background: var(--azul-claro); }
 
-.btn-ver-ficha { background: #8a5aaa; color: white; }
-.btn-ver-ficha:hover { background: #b888c8; }
+.btn-ver-ficha { background: var(--azul-medio); color: var(--blanco); }
+.btn-ver-ficha:hover { background: var(--azul-claro); }
 
-.btn-guardar-edit { background: #7a4a9a; color: white; }
-.btn-guardar-edit:hover { background: #a878c8; }
+.btn-guardar-edit { background: var(--azul-medio); color: var(--blanco); }
+.btn-guardar-edit:hover { background: var(--azul-claro); }
 
-.btn-cancelar-edit { background: #8a5aaa; color: white; }
-.btn-cancelar-edit:hover { background: #b888c8; }
+.btn-cancelar-edit { background: var(--azul-medio); color: var(--blanco); }
+.btn-cancelar-edit:hover { background: var(--azul-claro); }
 
-.btn-eliminar { background: #8a5aaa; color: white; }
-.btn-eliminar:hover { background: #b888c8; }
-.btn-eliminar:disabled { background: #3a2a4a; cursor: not-allowed; }
+.btn-eliminar { background: var(--azul-medio); color: var(--blanco); }
+.btn-eliminar:hover { background: var(--azul-claro); }
+.btn-eliminar:disabled { background: #aab8c8; cursor: not-allowed; }
 
 .acciones-celda {
     display: flex;
@@ -2057,7 +2171,7 @@ table tbody tr:last-child td {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.50);
+    background: rgba(0, 0, 0, 0.40);
     backdrop-filter: blur(4px);
     z-index: 9999;
     justify-content: center;
@@ -2070,15 +2184,15 @@ table tbody tr:last-child td {
 }
 
 .modal-confirm .modal-box {
-    background: rgba(30, 15, 50, 0.90);
+    background: var(--blanco);
     backdrop-filter: blur(8px);
     border-radius: 20px;
     padding: 30px;
     max-width: 400px;
     width: 100%;
     text-align: center;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.40);
-    border: 1px solid rgba(180, 140, 210, 0.04);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(42, 90, 138, 0.04);
 }
 
 .modal-confirm .modal-box .icono {
@@ -2087,13 +2201,13 @@ table tbody tr:last-child td {
 }
 
 .modal-confirm .modal-box h3 {
-    color: #f0e8f8;
+    color: var(--azul-oscuro);
     font-size: 20px;
     margin-bottom: 8px;
 }
 
 .modal-confirm .modal-box p {
-    color: #b898d8;
+    color: var(--texto-medio);
     font-size: 14px;
     margin-bottom: 20px;
 }
@@ -2112,11 +2226,11 @@ table tbody tr:last-child td {
     cursor: pointer;
     font-size: 14px;
     transition: all 0.2s ease;
-    color: #ffffff;
+    color: var(--blanco);
 }
 
 .modal-confirm .modal-box .btn-si {
-    background: linear-gradient(135deg, #7a4a9a, #a878c8);
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
 }
 
 .modal-confirm .modal-box .btn-si:hover {
@@ -2124,20 +2238,20 @@ table tbody tr:last-child td {
 }
 
 .modal-confirm .modal-box .btn-no {
-    background: rgba(180, 140, 210, 0.06);
-    color: #d8c0e8;
+    background: rgba(42, 90, 138, 0.06);
+    color: var(--texto-medio);
 }
 
 .modal-confirm .modal-box .btn-no:hover {
-    background: rgba(180, 140, 210, 0.10);
+    background: rgba(74, 138, 186, 0.08);
 }
 
 /* ============================================
    SUGERENCIAS RUT
    ============================================ */
 #sugerenciasRut {
-    background: rgba(30, 15, 50, 0.90);
-    border: 2px solid rgba(180, 140, 210, 0.08);
+    background: var(--blanco);
+    border: 2px solid rgba(42, 90, 138, 0.08);
     border-radius: 10px;
     max-height: 200px;
     overflow-y: auto;
@@ -2145,21 +2259,21 @@ table tbody tr:last-child td {
     position: absolute;
     width: 100%;
     z-index: 1000;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.30);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
 #sugerenciasRut div {
     padding: 8px 14px;
     cursor: pointer;
-    border-bottom: 1px solid rgba(180, 140, 210, 0.04);
+    border-bottom: 1px solid rgba(42, 90, 138, 0.04);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #f0e8f8;
+    color: var(--texto-oscuro);
 }
 
 #sugerenciasRut div:hover {
-    background: rgba(180, 140, 210, 0.04);
+    background: rgba(74, 138, 186, 0.04);
 }
 
 /* ============================================
@@ -2168,66 +2282,66 @@ table tbody tr:last-child td {
 .form-card textarea {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid rgba(180, 140, 210, 0.10);
+    border: 2px solid rgba(42, 90, 138, 0.06);
     border-radius: 12px;
     font-size: 14px;
     font-family: inherit;
     transition: border-color 0.2s ease;
-    background: rgba(30, 15, 50, 0.70);
-    color: #f0e8f8;
+    background: var(--blanco-humo);
+    color: var(--texto-oscuro);
     resize: vertical;
     min-height: 70px;
 }
 
 .form-card textarea:focus {
     outline: none;
-    border-color: #a878c8;
-    box-shadow: 0 0 0 4px rgba(168, 120, 200, 0.05);
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 0 4px rgba(74, 138, 186, 0.06);
 }
 
 .info-box {
-    background: rgba(180, 140, 210, 0.04);
+    background: rgba(74, 138, 186, 0.04);
     padding: 12px 16px;
     border-radius: 12px;
     margin-bottom: 16px;
     font-size: 13px;
-    border-left: 4px solid #a878c8;
-    color: #d8c0e8;
+    border-left: 4px solid var(--azul-claro);
+    color: var(--texto-medio);
 }
 
 .info-box strong {
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
 }
 
 /* ============================================
    SOLICITUDES
    ============================================ */
 .solicitud-card {
-    background: rgba(30, 15, 50, 0.50);
+    background: rgba(26, 58, 106, 0.04);
     backdrop-filter: blur(4px);
     border-radius: 12px;
     padding: 16px 20px;
     margin-bottom: 12px;
-    border-left: 4px solid #b888c8;
+    border-left: 4px solid var(--azul-claro);
     transition: all 0.2s ease;
 }
 
 .solicitud-card:hover {
-    background: rgba(30, 15, 50, 0.70);
+    background: rgba(26, 58, 106, 0.06);
     transform: translateX(6px);
 }
 
 .solicitud-card.aceptada {
-    border-left-color: #a878c8;
+    border-left-color: var(--azul-medio);
 }
 
 .solicitud-card.rechazada {
-    border-left-color: #b888c8;
+    border-left-color: #aab8c8;
     opacity: 0.6;
 }
 
 .solicitud-card.atendida {
-    border-left-color: #c8a8e8;
+    border-left-color: var(--celeste);
 }
 
 .solicitud-card .header-row {
@@ -2240,7 +2354,7 @@ table tbody tr:last-child td {
 
 .solicitud-card .fecha {
     font-weight: 600;
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
 }
 
 .solicitud-card .estado {
@@ -2251,37 +2365,37 @@ table tbody tr:last-child td {
 }
 
 .estado-pendiente {
-    background: rgba(180, 140, 210, 0.12);
-    color: #d8b8e8;
+    background: rgba(74, 138, 186, 0.10);
+    color: var(--azul-medio);
 }
 
 .estado-aceptada {
-    background: rgba(168, 120, 200, 0.08);
-    color: #c8a8e8;
+    background: rgba(42, 90, 138, 0.06);
+    color: var(--azul-medio);
 }
 
 .estado-rechazada {
-    background: rgba(180, 140, 210, 0.08);
-    color: #d8b8e8;
+    background: rgba(180, 200, 220, 0.08);
+    color: #8a9aaa;
 }
 
 .estado-atendida {
-    background: rgba(168, 120, 200, 0.05);
-    color: #c8a8e8;
+    background: rgba(42, 90, 138, 0.04);
+    color: var(--azul-medio);
 }
 
 .solicitud-card .detalle {
     margin-top: 8px;
-    color: #f0e8f8;
+    color: var(--texto-oscuro);
     font-size: 14px;
 }
 
 .solicitud-card .detalle strong {
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
 }
 
 /* ============================================
-   FILTROS - MIS SOLICITUDES
+   FILTROS
    ============================================ */
 .filtros-mis {
     display: flex;
@@ -2293,43 +2407,43 @@ table tbody tr:last-child td {
 .filtros-mis select,
 .filtros-mis input {
     padding: 8px 14px;
-    border: 2px solid rgba(180, 140, 210, 0.08);
+    border: 2px solid rgba(42, 90, 138, 0.06);
     border-radius: 10px;
     font-size: 13px;
     font-family: inherit;
-    background: rgba(30, 15, 50, 0.70);
-    color: #f0e8f8;
+    background: var(--blanco-humo);
+    color: var(--texto-oscuro);
 }
 
 .filtros-mis select:focus,
 .filtros-mis input:focus {
     outline: none;
-    border-color: #a878c8;
+    border-color: var(--azul-claro);
 }
 
 /* ============================================
    PANEL PROGRAMACIÓN
    ============================================ */
 .programador-header {
-    background: linear-gradient(135deg, #5a3a7a, #8a5aaa);
-    color: white;
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
+    color: var(--blanco);
     padding: 20px 24px;
     border-radius: 18px 18px 0 0;
     margin: -30px -35px 20px -35px;
-    box-shadow: 0 4px 16px rgba(60, 30, 90, 0.30);
+    box-shadow: 0 4px 16px rgba(26, 58, 106, 0.30);
 }
 
 .programador-header h2 {
     font-size: 22px;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--blanco);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.10);
 }
 
 .programador-header p {
     opacity: 0.9;
     font-size: 14px;
-    color: #d8c0e8;
+    color: var(--celeste-claro);
 }
 
 .tabla-atenciones-edit {
@@ -2339,8 +2453,8 @@ table tbody tr:last-child td {
 }
 
 .tabla-atenciones-edit thead th {
-    background: linear-gradient(135deg, #5a3a7a, #8a5aaa);
-    color: white;
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
+    color: var(--blanco);
     padding: 10px 14px;
     text-align: left;
     font-weight: 600;
@@ -2350,17 +2464,17 @@ table tbody tr:last-child td {
 
 .tabla-atenciones-edit tbody td {
     padding: 8px 12px;
-    border-bottom: 1px solid rgba(180, 140, 210, 0.04);
-    color: #f0e8f8;
+    border-bottom: 1px solid rgba(42, 90, 138, 0.04);
+    color: var(--texto-oscuro);
     vertical-align: middle;
 }
 
 .tabla-atenciones-edit tbody tr:hover {
-    background: rgba(180, 140, 210, 0.04);
+    background: rgba(74, 138, 186, 0.04);
 }
 
 .tabla-atenciones-edit tbody tr.en-edicion {
-    background: rgba(180, 140, 210, 0.08);
+    background: rgba(74, 138, 186, 0.06);
 }
 
 .tabla-atenciones-edit tbody td input,
@@ -2368,19 +2482,19 @@ table tbody tr:last-child td {
 .tabla-atenciones-edit tbody td textarea {
     width: 100%;
     padding: 6px 10px;
-    border: 2px solid rgba(180, 140, 210, 0.08);
+    border: 2px solid rgba(42, 90, 138, 0.06);
     border-radius: 8px;
     font-size: 13px;
     font-family: inherit;
-    background: rgba(30, 15, 50, 0.70);
-    color: #f0e8f8;
+    background: var(--blanco-humo);
+    color: var(--texto-oscuro);
 }
 
 .tabla-atenciones-edit tbody td input:focus,
 .tabla-atenciones-edit tbody td select:focus,
 .tabla-atenciones-edit tbody td textarea:focus {
     outline: none;
-    border-color: #a878c8;
+    border-color: var(--azul-claro);
 }
 
 .tabla-atenciones-edit tbody td textarea {
@@ -2392,9 +2506,9 @@ table tbody tr:last-child td {
    CAMBIAR CONTRASEÑA
    ============================================ */
 .cambiar-pass-section {
-    background: rgba(30, 15, 50, 0.50);
+    background: rgba(26, 58, 106, 0.04);
     backdrop-filter: blur(4px);
-    border: 2px solid rgba(180, 140, 210, 0.06);
+    border: 2px solid rgba(42, 90, 138, 0.06);
     border-radius: 14px;
     padding: 20px 24px;
     margin-top: 20px;
@@ -2402,7 +2516,7 @@ table tbody tr:last-child td {
 }
 
 .cambiar-pass-section:hover {
-    border-color: rgba(180, 140, 210, 0.12);
+    border-color: rgba(42, 90, 138, 0.10);
 }
 
 .cambiar-pass-section .titulo {
@@ -2411,7 +2525,7 @@ table tbody tr:last-child td {
     gap: 10px;
     font-size: 17px;
     font-weight: 600;
-    color: #c8a8e8;
+    color: var(--azul-oscuro);
     margin-bottom: 12px;
 }
 
@@ -2431,31 +2545,31 @@ table tbody tr:last-child td {
     display: block;
     font-size: 13px;
     font-weight: 600;
-    color: #d8c0e8;
+    color: var(--texto-medio);
     margin-bottom: 4px;
 }
 
 .cambiar-pass-section input {
     width: 100%;
     padding: 10px 14px;
-    border: 2px solid rgba(180, 140, 210, 0.08);
+    border: 2px solid rgba(42, 90, 138, 0.06);
     border-radius: 10px;
     font-size: 14px;
     font-family: inherit;
     transition: border-color 0.2s ease;
-    background: rgba(30, 15, 50, 0.70);
-    color: #f0e8f8;
+    background: var(--blanco-humo);
+    color: var(--texto-oscuro);
 }
 
 .cambiar-pass-section input:focus {
     outline: none;
-    border-color: #a878c8;
-    box-shadow: 0 0 0 4px rgba(168, 120, 200, 0.05);
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 0 4px rgba(74, 138, 186, 0.06);
 }
 
 .btn-cambiar-pass {
-    background: linear-gradient(135deg, #7a4a9a, #a878c8);
-    color: white;
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+    color: var(--blanco);
     padding: 10px 24px;
     border: none;
     border-radius: 10px;
@@ -2469,18 +2583,18 @@ table tbody tr:last-child td {
 
 .btn-cambiar-pass:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(122, 74, 154, 0.20);
+    box-shadow: 0 8px 28px rgba(42, 90, 138, 0.20);
 }
 
 .pass-actual-display {
-    background: rgba(180, 140, 210, 0.04);
+    background: rgba(42, 90, 138, 0.04);
     padding: 10px 14px;
     border-radius: 8px;
     font-family: 'Courier New', monospace;
     font-weight: 700;
-    color: #c8a8e8;
+    color: var(--azul-medio);
     font-size: 15px;
-    border: 1px solid rgba(180, 140, 210, 0.04);
+    border: 1px solid rgba(42, 90, 138, 0.04);
 }
 
 .mensaje-pass {
@@ -2493,34 +2607,34 @@ table tbody tr:last-child td {
 
 .mensaje-pass.exito {
     display: block;
-    background: rgba(180, 140, 210, 0.06);
-    color: #c8a8e8;
-    border: 1px solid rgba(180, 140, 210, 0.06);
+    background: rgba(74, 138, 186, 0.06);
+    color: var(--azul-medio);
+    border: 1px solid rgba(74, 138, 186, 0.06);
 }
 
 .mensaje-pass.error {
     display: block;
-    background: rgba(180, 140, 210, 0.06);
-    color: #d8b8e8;
-    border: 1px solid rgba(180, 140, 210, 0.06);
+    background: rgba(74, 138, 186, 0.06);
+    color: var(--azul-medio);
+    border: 1px solid rgba(74, 138, 186, 0.06);
 }
 
 .mensaje-pass.info {
     display: block;
-    background: rgba(180, 140, 210, 0.03);
-    color: #c8a8e8;
-    border: 1px solid rgba(180, 140, 210, 0.04);
+    background: rgba(74, 138, 186, 0.04);
+    color: var(--azul-medio);
+    border: 1px solid rgba(42, 90, 138, 0.04);
 }
 
 /* ============================================
    FICHA COMPLETA
    ============================================ */
 .ficha-completa {
-    background: rgba(30, 15, 50, 0.40);
+    background: rgba(26, 58, 106, 0.04);
     border-radius: 10px;
     padding: 16px;
     margin-bottom: 8px;
-    border-left: 4px solid #a878c8;
+    border-left: 4px solid var(--azul-claro);
 }
 
 .ficha-completa .row {
@@ -2541,15 +2655,690 @@ table tbody tr:last-child td {
 .ficha-completa .campo-ficha .label {
     font-size: 11px;
     font-weight: 600;
-    color: #b898d8;
+    color: var(--texto-medio);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .ficha-completa .campo-ficha .value {
     font-size: 14px;
-    color: #f0e8f8;
+    color: var(--texto-oscuro);
     padding: 4px 0;
+}
+
+/* ============================================
+   INDICADOR DE FIEBRE
+   ============================================ */
+.fiebre-container {
+    margin-top: 10px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    background: rgba(26, 58, 106, 0.03);
+    text-align: center;
+    border: 1px solid rgba(42, 90, 138, 0.04);
+    transition: all 0.3s ease;
+}
+
+#estadoFiebre {
+    font-size: 15px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 10px;
+    display: inline-block;
+    transition: all 0.3s ease;
+    background: rgba(26, 58, 106, 0.04);
+    min-width: 180px;
+}
+
+.fiebre-esperando {
+    color: var(--texto-medio);
+    background: rgba(74, 138, 186, 0.04);
+}
+
+.fiebre-normal {
+    color: var(--azul-medio);
+    background: rgba(42, 90, 138, 0.08);
+    border: 1px solid rgba(42, 90, 138, 0.10);
+}
+
+.fiebre-leve {
+    color: var(--azul-medio);
+    background: rgba(74, 138, 186, 0.08);
+    border: 1px solid rgba(74, 138, 186, 0.10);
+}
+
+.fiebre-moderada {
+    color: var(--azul-medio);
+    background: rgba(74, 138, 186, 0.10);
+    border: 1px solid rgba(74, 138, 186, 0.12);
+}
+
+.fiebre-alta {
+    color: var(--azul-oscuro);
+    background: rgba(26, 58, 106, 0.10);
+    border: 1px solid rgba(26, 58, 106, 0.12);
+}
+
+.fiebre-muy-alta {
+    color: var(--azul-oscuro);
+    background: rgba(26, 58, 106, 0.12);
+    border: 1px solid rgba(26, 58, 106, 0.20);
+    animation: pulse-fiebre 1.0s ease-in-out infinite;
+}
+
+.fiebre-hipotermia {
+    color: var(--azul-medio);
+    background: rgba(42, 90, 138, 0.08);
+    border: 1px solid rgba(42, 90, 138, 0.10);
+}
+
+.fiebre-hipotermia-grave {
+    color: var(--azul-oscuro);
+    background: rgba(26, 58, 106, 0.12);
+    border: 1px solid rgba(26, 58, 106, 0.20);
+    animation: pulse-fiebre 1.0s ease-in-out infinite;
+}
+
+.fiebre-baja {
+    color: var(--texto-medio);
+    background: rgba(42, 90, 138, 0.04);
+    border: 1px solid rgba(42, 90, 138, 0.06);
+}
+
+@keyframes pulse-fiebre {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.98); }
+}
+
+@keyframes fadeInFiebre {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#estadoFiebre {
+    animation: fadeInFiebre 0.3s ease forwards;
+}
+
+/* ============================================
+   INDICADORES DE SIGNOS VITALES
+   ============================================ */
+.indicador-gravedad {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 8px;
+    margin-top: 4px;
+    text-align: center;
+    transition: all 0.3s ease;
+    min-height: 24px;
+}
+
+.indicador-esperando {
+    color: #b898d8;
+    background: rgba(180, 140, 210, 0.05);
+}
+
+.indicador-invalido {
+    color: #c95a5a;
+    background: rgba(201, 90, 90, 0.08);
+    border: 1px solid rgba(201, 90, 90, 0.10);
+}
+
+.indicador-normal {
+    color: #6b8c5e;
+    background: rgba(107, 140, 94, 0.08);
+    border: 1px solid rgba(107, 140, 94, 0.08);
+}
+
+.indicador-medio {
+    color: #c9a84c;
+    background: rgba(201, 168, 76, 0.08);
+    border: 1px solid rgba(201, 168, 76, 0.08);
+}
+
+.indicador-alto {
+    color: #d4875e;
+    background: rgba(212, 135, 94, 0.08);
+    border: 1px solid rgba(212, 135, 94, 0.10);
+}
+
+.indicador-bajo {
+    color: #5a8aa8;
+    background: rgba(90, 138, 168, 0.08);
+    border: 1px solid rgba(90, 138, 168, 0.08);
+}
+
+.indicador-critico {
+    color: #b54040;
+    background: rgba(181, 64, 64, 0.10);
+    border: 1px solid rgba(181, 64, 64, 0.15);
+    animation: pulse-critico 1.0s ease-in-out infinite;
+}
+
+@keyframes pulse-critico {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+        background: rgba(181, 64, 64, 0.10);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(0.97);
+        background: rgba(181, 64, 64, 0.18);
+    }
+}
+
+.indicador-gravedad {
+    animation: fadeInFiebre 0.3s ease forwards;
+}
+
+/* ============================================
+   PANELES MENSUALES (admin)
+   ============================================ */
+.mes-panel {
+    background: rgba(26, 58, 106, 0.03);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(42, 90, 138, 0.06);
+    overflow: hidden;
+}
+
+.mes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    background: rgba(26, 58, 106, 0.04);
+    user-select: none;
+}
+
+.mes-header:hover {
+    background: rgba(74, 138, 186, 0.04);
+}
+
+.mes-header .mes-titulo {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--azul-oscuro);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mes-header .mes-titulo .count {
+    background: rgba(42, 90, 138, 0.06);
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--azul-medio);
+}
+
+.mes-header .mes-flecha {
+    font-size: 18px;
+    color: var(--azul-claro);
+    transition: transform 0.3s ease;
+}
+
+.mes-header .mes-flecha.abierto {
+    transform: rotate(180deg);
+}
+
+.mes-contenido {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+
+.mes-contenido.abierto {
+    max-height: 10000px;
+}
+
+.mes-contenido .padding {
+    padding: 16px 20px;
+}
+
+.mes-contenido .atencion-item-detalle {
+    margin-bottom: 8px;
+}
+
+.mes-contenido .atencion-item-detalle:last-child {
+    margin-bottom: 0;
+}
+
+/* ============================================
+   EVALUACIÓN - ADMIN
+   ============================================ */
+.estado-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: rgba(26, 58, 106, 0.04);
+    border-radius: 14px;
+    padding: 20px 24px;
+    border: 2px solid rgba(42, 90, 138, 0.08);
+}
+
+.estado-card .estado-icono {
+    font-size: 48px;
+    line-height: 1;
+}
+
+.estado-card .estado-info h3 {
+    color: var(--azul-oscuro);
+    font-size: 20px;
+    margin: 0;
+}
+
+.estado-card .estado-info p {
+    color: var(--texto-medio);
+    margin: 4px 0 0 0;
+    font-size: 14px;
+}
+
+.estado-card.bloqueado {
+    border-color: var(--azul-medio);
+    background: rgba(42, 90, 138, 0.06);
+}
+
+.estado-card.bloqueado .estado-info h3 {
+    color: var(--azul-medio);
+}
+
+.config-evaluacion {
+    background: rgba(26, 58, 106, 0.03);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(42, 90, 138, 0.06);
+}
+
+.config-duracion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 12px 0 16px 0;
+}
+
+.config-duracion .grupo label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texto-medio);
+    margin-bottom: 4px;
+}
+
+.config-duracion .grupo input,
+.config-duracion .grupo select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid rgba(42, 90, 138, 0.10);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: var(--blanco-humo);
+    color: var(--texto-oscuro);
+}
+
+.config-duracion .grupo input:focus,
+.config-duracion .grupo select:focus {
+    outline: none;
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 0 4px rgba(74, 138, 186, 0.10);
+}
+
+.config-duracion .grupo input:disabled,
+.config-duracion .grupo select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.opciones-bloqueo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0 16px 0;
+}
+
+.opcion-bloqueo-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--blanco-humo);
+    border-radius: 10px;
+    border: 2px solid rgba(42, 90, 138, 0.08);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--texto-oscuro);
+}
+
+.opcion-bloqueo-item:hover {
+    background: rgba(74, 138, 186, 0.06);
+    border-color: rgba(42, 90, 138, 0.12);
+}
+
+.opcion-bloqueo-item.seleccionada {
+    border-color: var(--azul-medio);
+    background: rgba(42, 90, 138, 0.06);
+}
+
+.opcion-bloqueo-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--azul-claro);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.opcion-bloqueo-item .info-opcion {
+    flex: 1;
+}
+
+.opcion-bloqueo-item .info-opcion .titulo {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.opcion-bloqueo-item .info-opcion .descripcion {
+    font-size: 12px;
+    color: var(--texto-medio);
+}
+
+.opcion-bloqueo-item .check-icon {
+    font-size: 20px;
+    color: #aab8c8;
+}
+
+.opcion-bloqueo-item.seleccionada .check-icon {
+    color: var(--azul-medio);
+}
+
+.opciones-bloqueadas-lista {
+    background: rgba(26, 58, 106, 0.03);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(42, 90, 138, 0.06);
+}
+
+.opcion-bloqueada-activa {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px;
+    border-bottom: 1px solid rgba(42, 90, 138, 0.04);
+    color: var(--texto-oscuro);
+    font-size: 14px;
+}
+
+.opcion-bloqueada-activa:last-child {
+    border-bottom: none;
+}
+
+.opcion-bloqueada-activa .icono {
+    color: var(--azul-medio);
+}
+
+.info-evaluacion-activa {
+    background: rgba(42, 90, 138, 0.06);
+    padding: 12px 16px;
+    border-radius: 10px;
+    border-left: 3px solid var(--azul-medio);
+    margin: 12px 0;
+    color: var(--texto-medio);
+    font-size: 13px;
+}
+
+.info-evaluacion-activa strong {
+    color: var(--azul-oscuro);
+}
+
+.todas-evaluaciones {
+    background: rgba(26, 58, 106, 0.03);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(42, 90, 138, 0.06);
+}
+
+.todas-evaluaciones .titulo {
+    color: var(--azul-oscuro);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.evaluacion-card {
+    background: rgba(26, 58, 106, 0.04);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--azul-medio);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.evaluacion-card:last-child {
+    margin-bottom: 0;
+}
+
+.evaluacion-card .curso-tag {
+    display: inline-block;
+    background: rgba(42, 90, 138, 0.10);
+    padding: 2px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--azul-medio);
+}
+
+.evaluacion-card .admin-nombre {
+    color: var(--texto-oscuro);
+    font-weight: 600;
+}
+
+.evaluacion-card .campos-bloqueados {
+    color: var(--texto-medio);
+    font-size: 12px;
+}
+
+.evaluacion-card .tiempo-info {
+    color: #8a9aaa;
+    font-size: 12px;
+}
+
+.evaluacion-card .estado-activo {
+    color: var(--azul-medio);
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.evaluacion-card.mi-evaluacion {
+    border-left-color: #ffd700;
+    background: rgba(255, 215, 0, 0.04);
+}
+
+.evaluacion-card.mi-evaluacion .curso-tag {
+    background: rgba(255, 215, 0, 0.12);
+    color: #b89400;
+}
+
+.sin-evaluaciones {
+    color: #8a9aaa;
+    font-size: 14px;
+    text-align: center;
+    padding: 12px 0;
+}
+
+.btn-bloquear {
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+    color: var(--blanco);
+    padding: 12px 28px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 15px;
+    box-shadow: 0 4px 16px rgba(42, 90, 138, 0.25);
+}
+
+.btn-bloquear:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(42, 90, 138, 0.35);
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
+}
+
+.btn-bloquear:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn-desbloquear {
+    background: linear-gradient(135deg, var(--azul-medio), var(--azul-claro));
+    color: var(--blanco);
+    padding: 12px 28px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 15px;
+    box-shadow: 0 4px 16px rgba(42, 90, 138, 0.25);
+}
+
+.btn-desbloquear:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(42, 90, 138, 0.35);
+    background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-medio));
+}
+
+/* ============================================
+   CORRECCIONES
+   ============================================ */
+#pacienteCurso {
+    background: var(--blanco-humo) !important;
+    color: var(--texto-oscuro) !important;
+    border: 2px solid rgba(42, 90, 138, 0.08) !important;
+    border-radius: 10px !important;
+    padding: 10px 14px !important;
+    font-size: 14px !important;
+    width: 100% !important;
+    cursor: default !important;
+}
+
+#pacienteEdad {
+    background: var(--blanco-humo) !important;
+    color: var(--texto-oscuro) !important;
+    border: 2px solid rgba(42, 90, 138, 0.08) !important;
+    border-radius: 10px !important;
+    padding: 10px 14px !important;
+    font-size: 14px !important;
+    width: 100% !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+#pacienteEdad:focus {
+    outline: none !important;
+    border-color: var(--azul-claro) !important;
+    box-shadow: 0 0 0 4px rgba(74, 138, 186, 0.08) !important;
+    background: var(--blanco) !important;
+}
+
+#pacienteEdad::placeholder {
+    color: #8a9aaa !important;
+}
+
+.ficha-medica input[readonly] {
+    background: var(--blanco-humo) !important;
+    color: var(--texto-oscuro) !important;
+    border: 2px solid rgba(42, 90, 138, 0.06) !important;
+    cursor: default !important;
+    opacity: 0.9 !important;
+}
+
+.ficha-medica input[readonly]#pacienteCurso {
+    background: var(--blanco-humo) !important;
+    color: var(--texto-oscuro) !important;
+    border: 2px solid rgba(42, 90, 138, 0.06) !important;
+}
+
+.busqueda-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.filtro-mes select,
+.filtro-mes input {
+    padding: 8px 14px;
+    border: 2px solid rgba(42, 90, 138, 0.06);
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: inherit;
+    background: var(--blanco-humo);
+    color: var(--texto-oscuro);
+}
+
+.filtro-mes select:focus,
+.filtro-mes input:focus {
+    outline: none;
+    border-color: var(--azul-claro);
+}
+
+.detalle-evaluacion {
+    background: rgba(26, 58, 106, 0.04);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    border-left: 4px solid var(--azul-claro);
+}
+
+.detalle-evaluacion.finalizada {
+    border-left-color: #aab8c8;
+    opacity: 0.8;
+}
+
+.detalle-evaluacion .curso-tag {
+    display: inline-block;
+    background: rgba(42, 90, 138, 0.06);
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--azul-medio);
+}
+
+.detalle-evaluacion .estado-badge.activo {
+    background: rgba(74, 138, 186, 0.10);
+    color: var(--azul-medio);
+}
+
+.detalle-evaluacion .estado-badge.finalizado {
+    background: rgba(180, 200, 220, 0.08);
+    color: #8a9aaa;
+}
+
+.detalle-evaluacion .admin-nombre {
+    color: var(--texto-oscuro);
+    font-weight: 600;
+}
+
+.detalle-evaluacion .campos-lista {
+    color: var(--texto-medio);
+    font-size: 13px;
 }
 
 /* ============================================
@@ -2710,6 +3499,25 @@ table tbody tr:last-child td {
         font-size: 12px;
         letter-spacing: 6px;
     }
+
+    .config-duracion {
+        grid-template-columns: 1fr;
+    }
+    .estado-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .admin-header-eval {
+        margin: -20px -14px 16px -14px;
+        padding: 16px 18px;
+    }
+    .evaluacion-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .opciones-bloqueo-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 480px) {
@@ -2761,235 +3569,33 @@ table tbody tr:last-child td {
         font-size: 10px;
         letter-spacing: 4px;
     }
-}
 
-/* ============================================
-   CORRECCIÓN - CURSO Y EDAD (MORADO)
-   ============================================ */
-
-/* Campo de CURSO - que herede el estilo morado */
-#pacienteCurso {
-    background: rgba(30, 15, 50, 0.70) !important;
-    color: #f0e8f8 !important;
-    border: 2px solid rgba(180, 140, 210, 0.12) !important;
-    border-radius: 10px !important;
-    padding: 10px 14px !important;
-    font-size: 14px !important;
-    width: 100% !important;
-    cursor: default !important;
-}
-
-/* Campo de EDAD - mismo estilo morado */
-#pacienteEdad {
-    background: rgba(30, 15, 50, 0.70) !important;
-    color: #f0e8f8 !important;
-    border: 2px solid rgba(180, 140, 210, 0.12) !important;
-    border-radius: 10px !important;
-    padding: 10px 14px !important;
-    font-size: 14px !important;
-    width: 100% !important;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
-}
-
-#pacienteEdad:focus {
-    outline: none !important;
-    border-color: #a878c8 !important;
-    box-shadow: 0 0 0 4px rgba(168, 120, 200, 0.10) !important;
-    background: rgba(30, 15, 50, 0.85) !important;
-}
-
-#pacienteEdad::placeholder {
-    color: #8a6aaa !important;
-}
-
-/* Cualquier input readonly dentro de la ficha */
-.ficha-medica input[readonly] {
-    background: rgba(30, 15, 50, 0.70) !important;
-    color: #f0e8f8 !important;
-    border: 2px solid rgba(180, 140, 210, 0.10) !important;
-    cursor: default !important;
-    opacity: 0.9 !important;
-}
-
-/* También para el campo de curso que viene de la base de datos */
-.ficha-medica input[readonly]#pacienteCurso {
-    background: rgba(30, 15, 50, 0.70) !important;
-    color: #f0e8f8 !important;
-    border: 2px solid rgba(180, 140, 210, 0.10) !important;
-}
-
-/* ============================================
-   CORRECCIÓN - CALENDARIO MÁS ANCHO
-   ============================================ */
-
-/* Contenedor del calendario - forzar ancho completo */
-.calendario-container {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow-x: auto !important;
-}
-
-/* Grid del calendario - que ocupe todo el espacio */
-.calendario-grid {
-    display: grid !important;
-    grid-template-columns: repeat(7, 1fr) !important;
-    gap: 4px !important;
-    width: 100% !important;
-}
-
-/* Cada día del calendario - que se expanda */
-.calendario-grid .dia {
-    width: 100% !important;
-    min-height: 45px !important;
-    padding: 8px 2px !important;
-    font-size: 14px !important;
-}
-
-/* Los días de la semana */
-.calendario-grid .dia-semana {
-    width: 100% !important;
-    padding: 8px 2px !important;
-    font-size: 13px !important;
-}
-
-/* Asegurar que la tarjeta del panel admin sea más ancha */
-.panel-container {
-    max-width: 1400px !important;
-    width: 100% !important;
-}
-
-/* Para el contenedor del calendario en la tarjeta */
-.card-wide .calendario-container {
-    width: 100% !important;
-    max-width: 100% !important;
-}
-
-/* ============================================
-   ESTILOS PARA INDICADOR DE FIEBRE (integrado)
-   ============================================ */
-
-.fiebre-container {
-    margin-top: 10px;
-    padding: 8px 14px;
-    border-radius: 12px;
-    background: rgba(30, 15, 50, 0.25);
-    text-align: center;
-    border: 1px solid rgba(180, 140, 210, 0.06);
-    transition: all 0.3s ease;
-}
-
-#estadoFiebre {
-    font-size: 15px;
-    font-weight: 600;
-    padding: 8px 18px;
-    border-radius: 10px;
-    display: inline-block;
-    transition: all 0.3s ease;
-    background: rgba(30, 15, 50, 0.30);
-    min-width: 180px;
-}
-
-/* --- Estados de temperatura --- */
-.fiebre-esperando {
-    color: #b898d8;
-    background: rgba(180, 140, 210, 0.06);
-}
-
-.fiebre-normal {
-    color: #6b8c5e;
-    background: rgba(107, 140, 94, 0.12);
-    border: 1px solid rgba(107, 140, 94, 0.15);
-}
-
-.fiebre-leve {
-    color: #c9a84c;
-    background: rgba(201, 168, 76, 0.12);
-    border: 1px solid rgba(201, 168, 76, 0.15);
-}
-
-.fiebre-moderada {
-    color: #d4875e;
-    background: rgba(212, 135, 94, 0.12);
-    border: 1px solid rgba(212, 135, 94, 0.15);
-}
-
-.fiebre-alta {
-    color: #c95a5a;
-    background: rgba(201, 90, 90, 0.12);
-    border: 1px solid rgba(201, 90, 90, 0.15);
-}
-
-.fiebre-muy-alta {
-    color: #b54040;
-    background: rgba(181, 64, 64, 0.15);
-    border: 1px solid rgba(181, 64, 64, 0.25);
-    animation: pulse-fiebre 1.0s ease-in-out infinite;
-}
-
-.fiebre-hipotermia {
-    color: #5a8aa8;
-    background: rgba(90, 138, 168, 0.12);
-    border: 1px solid rgba(90, 138, 168, 0.15);
-}
-
-.fiebre-hipotermia-grave {
-    color: #3a6a8a;
-    background: rgba(58, 106, 138, 0.15);
-    border: 1px solid rgba(58, 106, 138, 0.25);
-    animation: pulse-fiebre 1.0s ease-in-out infinite;
-}
-
-.fiebre-baja {
-    color: #8a8aaa;
-    background: rgba(138, 138, 170, 0.10);
-    border: 1px solid rgba(138, 138, 170, 0.10);
-}
-
-/* --- Animaciones --- */
-@keyframes pulse-fiebre {
-    0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.6;
-        transform: scale(0.98);
-    }
-}
-
-@keyframes fadeInFiebre {
-    from {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-#estadoFiebre {
-    animation: fadeInFiebre 0.3s ease forwards;
-}
-
-/* --- Responsive fiebre --- */
-@media (max-width: 768px) {
     .fiebre-container {
         padding: 6px 10px;
         margin-top: 6px;
     }
-    
     #estadoFiebre {
         font-size: 13px;
         padding: 6px 12px;
         min-width: 140px;
     }
-}
-
-@media (max-width: 480px) {
-    #estadoFiebre {
-        font-size: 12px;
-        padding: 5px 10px;
-        min-width: 100px;
+    .indicador-gravedad {
+        font-size: 11px;
+        padding: 3px 8px;
+        min-height: 20px;
+    }
+    .busqueda-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-box input {
+        width: 100%;
+    }
+    .mes-header {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .mes-header .mes-titulo {
+        font-size: 14px;
     }
 }
