@@ -24,9 +24,13 @@
             </div>
             
             <div class="info-contrasena-admin" id="infoContrasena">
-                🔑 <strong>Contraseña:</strong> 2448enfermeria
+                🔑 <strong>Contraseñas disponibles:</strong>
                 <br>
-                <span>Contraseña general del sistema.</span>
+                <span style="font-size:12px; opacity:0.8;">
+                    • <strong>2448enfermeria</strong> - Panel de administración estándar
+                    <br>
+                    • <strong>EvaluacionCharme</strong> - Panel de control de evaluaciones
+                </span>
             </div>
             
             <label for="adminPass">Contraseña de acceso</label>
@@ -52,6 +56,7 @@
         ];
 
         const CONTRASENA_ADMIN = "2448enfermeria";
+        const CONTRASENA_EVALUACION = "EvaluacionCharme";
 
         document.getElementById('adminRut').addEventListener('input', function() {
             const rut = this.value.trim();
@@ -81,29 +86,54 @@
         });
 
         document.getElementById('adminLoginForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const rut = document.getElementById('adminRut').value.trim();
-    const pass = document.getElementById('adminPass').value.trim();
-    if (!rut || !pass) { alert("❌ Complete todos los campos"); return; }
-    const admin = administradoresAutorizados.find(a => a.rut === rut);
-    if (!admin) { alert("❌ RUT no autorizado"); return; }
-    if (pass !== CONTRASENA_ADMIN) { alert("❌ Contraseña incorrecta"); return; }
-    let accesos = JSON.parse(localStorage.getItem('accesos_admin')) || [];
-    accesos.push({ id: Date.now(), rutAdmin: rut, nombreAdmin: admin.nombre, fecha: new Date().toLocaleString(), accion: "Ingreso al panel de administración" });
-    localStorage.setItem('accesos_admin', JSON.stringify(accesos));
-    localStorage.setItem('admin_actual', JSON.stringify({ rut: rut, nombre: admin.nombre }));
-    
-    // ✅ Registrar acceso en la nube
-    await guardarAccesoCloud({
-        tipo: 'Administrador',
-        nombre: admin.nombre,
-        rut: admin.rut,
-        accion: 'Ingreso al panel de administración'
-    });
-    
-    alert("✅ Bienvenida " + admin.nombre);
-    window.location.href = "admin.html";
-});
+            event.preventDefault();
+            const rut = document.getElementById('adminRut').value.trim();
+            const pass = document.getElementById('adminPass').value.trim();
+            
+            if (!rut || !pass) { alert("❌ Complete todos los campos"); return; }
+            
+            const admin = administradoresAutorizados.find(a => a.rut === rut);
+            if (!admin) { alert("❌ RUT no autorizado"); return; }
+            
+            let tipoAcceso = 'admin';
+            if (pass === CONTRASENA_EVALUACION) {
+                tipoAcceso = 'evaluacion';
+            } else if (pass !== CONTRASENA_ADMIN) {
+                alert("❌ Contraseña incorrecta");
+                return;
+            }
+            
+            let accesos = JSON.parse(localStorage.getItem('accesos_admin')) || [];
+            accesos.push({ 
+                id: Date.now(), 
+                rutAdmin: rut, 
+                nombreAdmin: admin.nombre, 
+                fecha: new Date().toLocaleString(), 
+                accion: tipoAcceso === 'evaluacion' ? "Ingreso al panel de evaluación" : "Ingreso al panel de administración"
+            });
+            localStorage.setItem('accesos_admin', JSON.stringify(accesos));
+            
+            localStorage.setItem('admin_actual', JSON.stringify({ 
+                rut: rut, 
+                nombre: admin.nombre, 
+                tipo: tipoAcceso 
+            }));
+            
+            await guardarAccesoCloud({
+                tipo: tipoAcceso === 'evaluacion' ? 'Administrador (Evaluación)' : 'Administrador',
+                nombre: admin.nombre,
+                rut: admin.rut,
+                accion: tipoAcceso === 'evaluacion' ? 'Ingreso al panel de evaluación' : 'Ingreso al panel de administración'
+            });
+            
+            if (tipoAcceso === 'evaluacion') {
+                alert("✅ Bienvenida " + admin.nombre + " (Modo Evaluación)");
+                window.location.href = "admin_evaluacion.html";
+            } else {
+                alert("✅ Bienvenida " + admin.nombre);
+                window.location.href = "admin.html";
+            }
+        });
 
         document.getElementById('totalAdmins').textContent = administradoresAutorizados.length;
     </script>
