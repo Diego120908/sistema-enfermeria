@@ -322,26 +322,29 @@
             var color = '';
             var bg = '';
             
-            if (temp < 35.0) {
-                estado = '❄️ Hipotermia (< 35°C)';
+            // Rangos corregidos SIN huecos:
+            // < 35.5       → Hipotermia
+            // 35.5 - 37.4  → Afebril
+            // 37.5 - 40.0  → Subfebril
+            // > 40.0       → Hipertermia
+            
+            if (temp < 35.5) {
+                estado = '❄️ Hipotermia (< 35.5°C)';
                 color = '#5a8aa8';
                 bg = 'rgba(90,138,168,0.12)';
-            } else if (temp >= 35.5 && temp <= 36.5) {
-                estado = '✅ Afebril (35.5-36.5°C)';
+            } else if (temp >= 35.5 && temp < 37.5) {
+                estado = '✅ Afebril (35.5-37.4°C)';
                 color = '#6b8c5e';
                 bg = 'rgba(107,140,94,0.12)';
-            } else if (temp >= 37.5 && temp <= 38.5) {
-                estado = '🌡️ Subfebril (37.5-38.5°C)';
+            } else if (temp >= 37.5 && temp <= 40.0) {
+                estado = '🌡️ Subfebril (37.5-40.0°C)';
                 color = '#c9a84c';
                 bg = 'rgba(201,168,76,0.12)';
-            } else if (temp > 40.0) {
-                estado = '🔥 Hipertermia (> 40°C)';
+            } else {
+                // temp > 40.0
+                estado = '🔥 Hipertermia (> 40.0°C)';
                 color = '#b54040';
                 bg = 'rgba(181,64,64,0.15)';
-            } else {
-                estado = '📊 ' + temp + '°C';
-                color = '#8a6aaa';
-                bg = 'rgba(30,15,50,0.15)';
             }
             
             estadoSpan.textContent = estado;
