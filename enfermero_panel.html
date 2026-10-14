@@ -195,22 +195,10 @@
                         <select id="derivacion" style="width:100%; padding:10px 14px; border:2px solid rgba(180,140,210,0.10); border-radius:10px; font-size:14px; font-family:inherit; background:rgba(30,15,50,0.70); color:#f0e8f8;">
                             <option value="">Seleccione una opción...</option>
                             <option value="No derivado">No derivado</option>
-                            <option value="Hospital">Hospital</option>
-                            <option value="Centro de Salud">Centro de Salud</option>
-                            <option value="Especialista">Especialista</option>
                             <option value="Urgencias">Urgencias</option>
-                            <option value="Traumatología">Traumatología</option>
-                            <option value="Neurología">Neurología</option>
-                            <option value="Cardiología">Cardiología</option>
-                            <option value="Dermatología">Dermatología</option>
-                            <option value="Ginecología">Ginecología</option>
-                            <option value="Oftalmología">Oftalmología</option>
-                            <option value="Otorrinolaringología">Otorrinolaringología</option>
-                            <option value="Psiquiatría">Psiquiatría</option>
-                            <option value="Rehabilitación">Rehabilitación</option>
-                            <option value="Laboratorio">Laboratorio</option>
-                            <option value="Imagenología">Imagenología</option>
-                            <option value="Otro">Otro</option>
+                            <option value="Centro de Salud">Centro de Salud</option>
+                            <option value="Domicilio">Domicilio</option>
+                            <option value="Sala de clases">Sala de clases</option>
                         </select>
                     </div>
                     <div class="row-full mt-10">
@@ -840,22 +828,10 @@
                     html += '<td><select id="edit_derivacion_' + r.id + '" style="width:100%;padding:4px 8px;border:2px solid rgba(180,140,210,0.08);border-radius:6px;font-size:12px;background:rgba(30,15,50,0.70);color:#f0e8f8;">' +
                         '<option value="">Seleccionar...</option>' +
                         '<option value="No derivado" ' + (r.derivacion === 'No derivado' ? 'selected' : '') + '>No derivado</option>' +
-                        '<option value="Hospital" ' + (r.derivacion === 'Hospital' ? 'selected' : '') + '>Hospital</option>' +
-                        '<option value="Centro de Salud" ' + (r.derivacion === 'Centro de Salud' ? 'selected' : '') + '>Centro de Salud</option>' +
-                        '<option value="Especialista" ' + (r.derivacion === 'Especialista' ? 'selected' : '') + '>Especialista</option>' +
                         '<option value="Urgencias" ' + (r.derivacion === 'Urgencias' ? 'selected' : '') + '>Urgencias</option>' +
-                        '<option value="Traumatología" ' + (r.derivacion === 'Traumatología' ? 'selected' : '') + '>Traumatología</option>' +
-                        '<option value="Neurología" ' + (r.derivacion === 'Neurología' ? 'selected' : '') + '>Neurología</option>' +
-                        '<option value="Cardiología" ' + (r.derivacion === 'Cardiología' ? 'selected' : '') + '>Cardiología</option>' +
-                        '<option value="Dermatología" ' + (r.derivacion === 'Dermatología' ? 'selected' : '') + '>Dermatología</option>' +
-                        '<option value="Ginecología" ' + (r.derivacion === 'Ginecología' ? 'selected' : '') + '>Ginecología</option>' +
-                        '<option value="Oftalmología" ' + (r.derivacion === 'Oftalmología' ? 'selected' : '') + '>Oftalmología</option>' +
-                        '<option value="Otorrinolaringología" ' + (r.derivacion === 'Otorrinolaringología' ? 'selected' : '') + '>Otorrinolaringología</option>' +
-                        '<option value="Psiquiatría" ' + (r.derivacion === 'Psiquiatría' ? 'selected' : '') + '>Psiquiatría</option>' +
-                        '<option value="Rehabilitación" ' + (r.derivacion === 'Rehabilitación' ? 'selected' : '') + '>Rehabilitación</option>' +
-                        '<option value="Laboratorio" ' + (r.derivacion === 'Laboratorio' ? 'selected' : '') + '>Laboratorio</option>' +
-                        '<option value="Imagenología" ' + (r.derivacion === 'Imagenología' ? 'selected' : '') + '>Imagenología</option>' +
-                        '<option value="Otro" ' + (r.derivacion === 'Otro' ? 'selected' : '') + '>Otro</option>' +
+                        '<option value="Centro de Salud" ' + (r.derivacion === 'Centro de Salud' ? 'selected' : '') + '>Centro de Salud</option>' +
+                        '<option value="Domicilio" ' + (r.derivacion === 'Domicilio' ? 'selected' : '') + '>Domicilio</option>' +
+                        '<option value="Sala de clases" ' + (r.derivacion === 'Sala de clases' ? 'selected' : '') + '>Sala de clases</option>' +
                         '</select></td>';
                     html += '<td><textarea id="edit_resultado_' + r.id + '" rows="1">' + escapeHtml(r.resultado || r.descripcion || '') + '</textarea></td>';
                     html += '<td><div class="acciones-celda"><button class="btn-accion btn-guardar-reg" onclick="guardarEdicionRegistro(' + r.id + ')">💾</button><button class="btn-accion btn-cancelar-reg" onclick="cancelarEdicionRegistro()">✖</button></div></td>';
