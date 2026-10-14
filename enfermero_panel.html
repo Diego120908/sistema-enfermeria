@@ -84,6 +84,15 @@
                     </div>
                 </div>
 
+                <!-- NUEVA SECCIÓN: MOTIVO DE CONSULTA -->
+                <div class="seccion">
+                    <div class="seccion-titulo">📝 Motivo de Consulta</div>
+                    <div class="row-full">
+                        <label for="motivoConsulta">¿Por qué consulta el paciente?</label>
+                        <textarea id="motivoConsulta" placeholder="Describa el motivo por el cual el paciente acude a la atención..."></textarea>
+                    </div>
+                </div>
+
                 <div class="seccion">
                     <div class="seccion-titulo">📋 Antecedentes</div>
                     <div class="row-full">
@@ -186,10 +195,22 @@
                         <select id="derivacion" style="width:100%; padding:10px 14px; border:2px solid rgba(180,140,210,0.10); border-radius:10px; font-size:14px; font-family:inherit; background:rgba(30,15,50,0.70); color:#f0e8f8;">
                             <option value="">Seleccione una opción...</option>
                             <option value="No derivado">No derivado</option>
+                            <option value="Hospital">Hospital</option>
                             <option value="Centro de Salud">Centro de Salud</option>
+                            <option value="Especialista">Especialista</option>
                             <option value="Urgencias">Urgencias</option>
-                            <option value="Sala de clases">Sala de clases</option>
-                            <option value="Domicilio">Domicilio</option>
+                            <option value="Traumatología">Traumatología</option>
+                            <option value="Neurología">Neurología</option>
+                            <option value="Cardiología">Cardiología</option>
+                            <option value="Dermatología">Dermatología</option>
+                            <option value="Ginecología">Ginecología</option>
+                            <option value="Oftalmología">Oftalmología</option>
+                            <option value="Otorrinolaringología">Otorrinolaringología</option>
+                            <option value="Psiquiatría">Psiquiatría</option>
+                            <option value="Rehabilitación">Rehabilitación</option>
+                            <option value="Laboratorio">Laboratorio</option>
+                            <option value="Imagenología">Imagenología</option>
+                            <option value="Otro">Otro</option>
                         </select>
                     </div>
                     <div class="row-full mt-10">
@@ -310,12 +331,6 @@
             var color = '';
             var bg = '';
             
-            // Rangos corregidos SIN huecos:
-            // < 35.5       → Hipotermia
-            // 35.5 - 37.4  → Afebril
-            // 37.5 - 40.0  → Subfebril
-            // > 40.0       → Hipertermia
-            
             if (temp < 35.5) {
                 estado = '❄️ Hipotermia (< 35.5°C)';
                 color = '#5a8aa8';
@@ -329,7 +344,6 @@
                 color = '#c9a84c';
                 bg = 'rgba(201,168,76,0.12)';
             } else {
-                // temp > 40.0
                 estado = '🔥 Hipertermia (> 40.0°C)';
                 color = '#b54040';
                 bg = 'rgba(181,64,64,0.15)';
@@ -684,14 +698,11 @@
             
             if (!rutInput) return;
             
-            // Obtener todos los estudiantes
             let todosLosEstudiantes = [];
             
-            // Intentar usar la función global de data_pacientes.js
             if (typeof obtenerTodosLosEstudiantes === 'function') {
                 todosLosEstudiantes = obtenerTodosLosEstudiantes();
             } else {
-                // Si no está disponible, usar datos locales de estudiantesPorCurso
                 if (typeof estudiantesPorCurso !== 'undefined') {
                     for (const curso in estudiantesPorCurso) {
                         estudiantesPorCurso[curso].forEach(e => {
@@ -805,7 +816,7 @@
                 return;
             }
 
-            let html = '<table class="tabla-registros"><thead><tr><th>ID</th><th>Paciente</th><th>RUT</th><th>Fecha</th><th>Hora</th><th>Enfermero</th><th>Temp.</th><th>F.C.</th><th>Presión</th><th>Sat. O₂</th><th>Talla</th><th>Peso</th><th>IMC</th><th>Derivación</th><th>Resultado</th><th>Acciones</th></tr></thead><tbody>';
+            let html = '<table class="tabla-registros"><thead><tr><th>ID</th><th>Paciente</th><th>RUT</th><th>Fecha</th><th>Hora</th><th>Enfermero</th><th>Motivo Consulta</th><th>Temp.</th><th>F.C.</th><th>Presión</th><th>Sat. O₂</th><th>Talla</th><th>Peso</th><th>IMC</th><th>Derivación</th><th>Resultado</th><th>Acciones</th></tr></thead><tbody>';
             data.forEach(r => {
                 const nombre = r.nombre || r.nombrePaciente || 'Paciente';
                 const rut = r.rut || r.rutPaciente || 'N/E';
@@ -818,6 +829,7 @@
                     html += '<td><input type="date" id="edit_fecha_' + r.id + '" value="' + (r.fecha || '') + '"></td>';
                     html += '<td><input type="time" id="edit_hora_' + r.id + '" value="' + (r.hora || '') + '"></td>';
                     html += '<td><input type="text" id="edit_enfermero_' + r.id + '" value="' + escapeHtml(enfermero) + '"></td>';
+                    html += '<td><textarea id="edit_motivoConsulta_' + r.id + '" rows="1">' + escapeHtml(r.motivoConsulta || '') + '</textarea></td>';
                     html += '<td><input type="number" step="0.1" id="edit_temp_' + r.id + '" value="' + (r.temperatura || '') + '" placeholder="36.5"></td>';
                     html += '<td><input type="number" id="edit_fc_' + r.id + '" value="' + (r.frecuenciaCardiaca || '') + '" placeholder="72"></td>';
                     html += '<td><input type="text" id="edit_presion_' + r.id + '" value="' + (r.presion || '') + '" placeholder="120/80"></td>';
@@ -848,7 +860,7 @@
                     html += '<td><textarea id="edit_resultado_' + r.id + '" rows="1">' + escapeHtml(r.resultado || r.descripcion || '') + '</textarea></td>';
                     html += '<td><div class="acciones-celda"><button class="btn-accion btn-guardar-reg" onclick="guardarEdicionRegistro(' + r.id + ')">💾</button><button class="btn-accion btn-cancelar-reg" onclick="cancelarEdicionRegistro()">✖</button></div></td>';
                 } else {
-                    html += '<td>' + escapeHtml(nombre) + '</td><td>' + escapeHtml(rut) + '</td><td>' + (r.fecha || 'N/E') + '</td><td>' + (r.hora || 'N/E') + '</td><td>' + escapeHtml(enfermero) + '</td><td>' + (r.temperatura || 'N/E') + '</td><td>' + (r.frecuenciaCardiaca || 'N/E') + '</td><td>' + (r.presion || 'N/E') + '</td><td>' + (r.saturacion || 'N/E') + '</td><td>' + (r.talla || 'N/E') + '</td><td>' + (r.peso || 'N/E') + '</td><td>' + (r.imc || 'N/E') + '</td><td>' + (r.derivacion || 'N/E') + '</td><td>' + escapeHtml(r.resultado || r.descripcion || 'Sin observaciones') + '</td>';
+                    html += '<td>' + escapeHtml(nombre) + '</td><td>' + escapeHtml(rut) + '</td><td>' + (r.fecha || 'N/E') + '</td><td>' + (r.hora || 'N/E') + '</td><td>' + escapeHtml(enfermero) + '</td><td>' + escapeHtml(r.motivoConsulta || 'N/E') + '</td><td>' + (r.temperatura || 'N/E') + '</td><td>' + (r.frecuenciaCardiaca || 'N/E') + '</td><td>' + (r.presion || 'N/E') + '</td><td>' + (r.saturacion || 'N/E') + '</td><td>' + (r.talla || 'N/E') + '</td><td>' + (r.peso || 'N/E') + '</td><td>' + (r.imc || 'N/E') + '</td><td>' + (r.derivacion || 'N/E') + '</td><td>' + escapeHtml(r.resultado || r.descripcion || 'Sin observaciones') + '</td>';
                     html += '<td><div class="acciones-celda"><button class="btn-accion btn-editar-reg" onclick="editarRegistro(' + r.id + ')">✏️</button><button class="btn-accion btn-eliminar-reg" onclick="eliminarRegistro(' + r.id + ')">🗑️</button></div></td>';
                 }
                 html += '</tr>';
@@ -866,6 +878,7 @@
             document.getElementById('pacienteEdad').value = registro.edad || '';
             document.getElementById('pacienteDireccion').value = registro.direccion || '';
             document.getElementById('pacienteEncargado').value = registro.encargado || '';
+            document.getElementById('motivoConsulta').value = registro.motivoConsulta || '';
             document.getElementById('pacienteAntecedentesFamiliares').value = registro.antecedentesFamiliares || '';
             document.getElementById('pacienteAntecedentesMorbidos').value = registro.antecedentesMorbidos || '';
             document.getElementById('fechaAtencion').value = registro.fecha || '';
@@ -900,6 +913,7 @@
             const fecha = document.getElementById('edit_fecha_' + id).value;
             const hora = document.getElementById('edit_hora_' + id).value;
             const enfermero = document.getElementById('edit_enfermero_' + id).value.trim();
+            const motivoConsulta = document.getElementById('edit_motivoConsulta_' + id).value.trim();
             const temperatura = document.getElementById('edit_temp_' + id).value.trim();
             const frecuenciaCardiaca = document.getElementById('edit_fc_' + id).value.trim();
             const presion = document.getElementById('edit_presion_' + id).value.trim();
@@ -921,6 +935,7 @@
             registrosData[index].hora = hora;
             registrosData[index].enfermero_registro = enfermero;
             registrosData[index].enfermero = enfermero;
+            registrosData[index].motivoConsulta = motivoConsulta || undefined;
             registrosData[index].temperatura = temperatura || undefined;
             registrosData[index].frecuenciaCardiaca = frecuenciaCardiaca || undefined;
             registrosData[index].presion = presion || undefined;
@@ -963,6 +978,7 @@
             document.getElementById('pacienteEdad').value = '';
             document.getElementById('pacienteDireccion').value = '';
             document.getElementById('pacienteEncargado').value = '';
+            document.getElementById('motivoConsulta').value = '';
             document.getElementById('pacienteAntecedentesFamiliares').value = '';
             document.getElementById('pacienteAntecedentesMorbidos').value = '';
             document.getElementById('fechaAtencion').value = '';
@@ -1039,6 +1055,7 @@
             const edad = document.getElementById('pacienteEdad').value.trim();
             const direccion = document.getElementById('pacienteDireccion').value.trim();
             const encargado = document.getElementById('pacienteEncargado').value.trim();
+            const motivoConsulta = document.getElementById('motivoConsulta').value.trim();
             const antecedentesFamiliares = document.getElementById('pacienteAntecedentesFamiliares').value.trim();
             const antecedentesMorbidos = document.getElementById('pacienteAntecedentesMorbidos').value.trim();
             const fecha = document.getElementById('fechaAtencion').value;
@@ -1077,6 +1094,7 @@
                 registrosData[index].edad = edad || 'No especificada';
                 registrosData[index].direccion = direccion || 'No especificada';
                 registrosData[index].encargado = encargado || 'No especificado';
+                registrosData[index].motivoConsulta = motivoConsulta || undefined;
                 registrosData[index].antecedentesFamiliares = antecedentesFamiliares || 'No registrados';
                 registrosData[index].antecedentesMorbidos = antecedentesMorbidos || 'No registrados';
                 registrosData[index].fecha = fecha;
@@ -1121,6 +1139,7 @@
                 fecha: fecha,
                 hora: hora,
                 enfermero: enfermeroActual ? enfermeroActual.nombre : 'Desconocido',
+                motivoConsulta: motivoConsulta || '',
                 temperatura: temperatura || '',
                 frecuenciaCardiaca: frecuenciaCardiaca || '',
                 presion: presion || '',
@@ -1147,6 +1166,7 @@
                         edad: edad || 'No especificada',
                         direccion: direccion || 'No especificada',
                         encargado: encargado || 'No especificado',
+                        motivoConsulta: motivoConsulta || undefined,
                         antecedentesFamiliares: antecedentesFamiliares || 'No registrados',
                         antecedentesMorbidos: antecedentesMorbidos || 'No registrados',
                         fecha: fecha,
